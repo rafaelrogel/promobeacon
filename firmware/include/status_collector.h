@@ -68,12 +68,12 @@ extern "C" {
 #define DEFAULT_VREF              1100             /* mV — Default reference voltage */
 
 /**
- * @brief Device status structure (6 bytes for BLE transmission)
+ * @brief Device status structure (8 bytes for BLE transmission)
  */
 typedef struct __attribute__((packed)) {
     uint8_t flags;                    /* Bit0: AP active, Bit1: BLE active, Bits2-7: reserved */
     uint8_t client_count;             /* 0-6 connected clients */
-    uint16_t session_duration_sec;    /* Seconds since mode start */
+    uint32_t session_duration_sec;    /* Seconds since mode start (32-bit to avoid 18.2h wraparound) */
     uint8_t portal_time_avg_sec;      /* Average portal engagement time per client */
     uint8_t battery_percent;          /* 0-100 battery percentage */
 } StatusPacket;
@@ -106,10 +106,10 @@ void update_status(void);
 /**
  * @brief Serialize status to buffer
  * 
- * Packs the DeviceStatus structure into a 6-byte buffer
+ * Packs the DeviceStatus structure into an 8-byte buffer
  * suitable for BLE transmission.
  * 
- * @param buffer Buffer to receive packed data (6 bytes minimum)
+ * @param buffer Buffer to receive packed data (8 bytes minimum)
  */
 void serialize_status(uint8_t* buffer);
 
@@ -159,6 +159,13 @@ uint8_t get_portal_engagement_time(void);
  * @return Number of active client connections
  */
 uint8_t get_connected_client_count(void);
+
+/**
+ * @brief Get the actual number of connected WiFi clients directly from the driver
+ * 
+ * @return Number of connected clients, or 0 on error
+ */
+int get_current_wifi_client_count(void);
 
 /**
  * @brief Force battery update

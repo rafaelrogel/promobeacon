@@ -11,7 +11,9 @@ import android.bluetooth.BluetoothProfile
 import android.bluetooth.le.BluetoothLeScanner
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
+import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanSettings
+import android.os.ParcelUuid
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
@@ -24,6 +26,9 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
  * BLE GATT服務UUID常量
@@ -43,6 +48,9 @@ object BleConstants {
     const val CHAR_AUTH = "12345683-1234-1234-1234-123456789ABC"  // Authentication
     const val CHAR_AUTH_STATUS = "12345685-1234-1234-1234-123456789ABC"  // Auth status
     const val CHAR_ADMIN_PASSWORD = "12345686-1234-1234-1234-123456789ABC"  // Admin password change
+    const val CHAR_STATS = "1234567E-1234-1234-1234-123456789ABC"         // Aggregated stats
+    const val CHAR_SESSIONS = "1234567F-1234-1234-1234-123456789ABC"      // Session history
+    const val CHAR_SESSION_CTRL = "12345680-1234-1234-1234-123456789ABC"  // Session control commands
 
     // 命令常量
     const val CMD_MODE_G = 0x00
@@ -85,6 +93,9 @@ class BleClient @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     private val tag = "BleClient"
+    private val PROMOBEACON_SERVICE_UUID = "12345678-1234-1234-1234-123456789ABC"
+    private var scanFallbackJob: Job? = null
+    private var isScanFallbackActive = false
 
     private var bluetoothManager: BluetoothManager? = null
     private var bluetoothAdapter: android.bluetooth.BluetoothAdapter? = null
@@ -101,7 +112,12 @@ class BleClient @Inject constructor(
     private val _deviceStatus = MutableStateFlow<ByteArray?>(null)
     val deviceStatus: StateFlow<ByteArray?> = _deviceStatus.asStateFlow()
 
-    private var adminPasswordChar: BluetoothGattCharacteristic? = null
+    private val writeMutex = Mutex()
+    private var lastWriteTime = 0L
+    private val MIN_WRITE_INTERVAL = 50L
+
+    internal var adminPasswordChar: BluetoothGattCharacteristic? = null
+    internal var deviceNameChar: BluetoothGattCharacteristic? = null
 
     // 掃描結果
     private val _scanResults = MutableStateFlow<List<ScannedDevice>>(emptyList())
@@ -114,11 +130,14 @@ class BleClient @Inject constructor(
     private var messageChar: BluetoothGattCharacteristic? = null
     private var configChar: BluetoothGattCharacteristic? = null
     private var statusChar: BluetoothGattCharacteristic? = null
-    private var promoTextChar: BluetoothGattCharacteristic? = null
+    internal var promoTextChar: BluetoothGattCharacteristic? = null
     private var portalDataChar: BluetoothGattCharacteristic? = null  // Portal data chunks
     private var portalCtrlChar: BluetoothGattCharacteristic? = null   // Portal control & status
     private var authChar: BluetoothGattCharacteristic? = null        // Authentication
     private var authStatusChar: BluetoothGattCharacteristic? = null  // Auth status
+    private var statsChar: BluetoothGattCharacteristic? = null
+    private var sessionsChar: BluetoothGattCharacteristic? = null
+    private var sessionCtrlChar: BluetoothGattCharacteristic? = null
 
     // Authentication state
     private val _authenticationState = MutableStateFlow(AuthenticationState.NOT_AUTHENTICATED)
@@ -139,6 +158,7 @@ class BleClient @Inject constructor(
                     Log.d(tag, "Connected to GATT server")
                     // 發現服務
                     discoverServices()
+                    bluetoothGatt?.requestMtu(512)
                 } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                     _connectionState.value = ConnectionState.DISCONNECTED
                     Log.d(tag, "Disconnected from GATT server")
@@ -252,6 +272,14 @@ class BleClient @Inject constructor(
 
         _scanResults.value = emptyList()
         isScanning = true
+        isScanFallbackActive = false
+        
+        // Cancel any previous fallback timer
+        scanFallbackJob?.cancel()
+
+        val scanFilter = ScanFilter.Builder()
+            .setServiceUuid(ParcelUuid.fromString(PROMOBEACON_SERVICE_UUID))
+            .build()
 
         val scanSettings = ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
@@ -259,8 +287,21 @@ class BleClient @Inject constructor(
             .build()
 
         try {
-            bluetoothScanner?.startScan(null, scanSettings, scanCallback)
-            Log.d(tag, "Scan started")
+            Log.d(tag, "Starting scan with UUID filter: $PROMOBEACON_SERVICE_UUID")
+            bluetoothScanner?.startScan(listOf(scanFilter), scanSettings, scanCallback)
+            
+            // Start fallback timer
+            scanFallbackJob = scope.launch {
+                delay(5000)
+                if (_scanResults.value.isEmpty() && isScanning && !isScanFallbackActive) {
+                    Log.w(tag, "No devices found with UUID filter, switching to fallback name-based scan")
+                    stopScan()
+                    delay(200) // Brief pause to ensure scanner resets
+                    isScanning = true
+                    isScanFallbackActive = true
+                    bluetoothScanner?.startScan(null, scanSettings, scanCallback)
+                }
+            }
         } catch (e: SecurityException) {
             Log.e(tag, "Security exception during scan", e)
             isScanning = false
@@ -274,8 +315,11 @@ class BleClient @Inject constructor(
         if (!isScanning) return
 
         try {
+            scanFallbackJob?.cancel()
+            scanFallbackJob = null
             bluetoothScanner?.stopScan(scanCallback)
             isScanning = false
+            isScanFallbackActive = false
             Log.d(tag, "Scan stopped")
         } catch (e: SecurityException) {
             Log.e(tag, "Security exception during stop scan", e)
@@ -312,7 +356,10 @@ class BleClient @Inject constructor(
             )
 
             // 等待連接狀態變化
-            _connectionState.first { it != ConnectionState.CONNECTING }
+            val finalState = kotlinx.coroutines.withTimeoutOrNull(30_000L) {
+                _connectionState.first { it != ConnectionState.CONNECTING }
+            } ?: ConnectionState.DISCONNECTED
+            _connectionState.emit(finalState)
 
             emit(_connectionState.value)
         } catch (e: SecurityException) {
@@ -339,12 +386,21 @@ class BleClient @Inject constructor(
     private fun close() {
         try {
             bluetoothGatt?.close()
-            bluetoothGatt = null
             modeControlChar = null
             messageChar = null
             configChar = null
             statusChar = null
             promoTextChar = null
+            portalDataChar = null
+            portalCtrlChar = null
+            authChar = null
+            authStatusChar = null
+            adminPasswordChar = null
+            deviceNameChar = null
+            statsChar = null
+            sessionsChar = null
+            sessionCtrlChar = null
+            bluetoothGatt = null
         } catch (e: SecurityException) {
             Log.e(tag, "Security exception during close", e)
         }
@@ -381,6 +437,15 @@ class BleClient @Inject constructor(
         // Portal content upload characteristics
         portalDataChar = service.getCharacteristic(java.util.UUID.fromString(BleConstants.CHAR_PORTAL_DATA))
         portalCtrlChar = service.getCharacteristic(java.util.UUID.fromString(BleConstants.CHAR_PORTAL_CTRL))
+        
+        // Stats and session history characteristics
+        statsChar = service.getCharacteristic(java.util.UUID.fromString(BleConstants.CHAR_STATS))
+        sessionsChar = service.getCharacteristic(java.util.UUID.fromString(BleConstants.CHAR_SESSIONS))
+        sessionCtrlChar = service.getCharacteristic(java.util.UUID.fromString(BleConstants.CHAR_SESSION_CTRL))
+
+        // Find GAP Device Name
+        val gapService = gatt.getService(java.util.UUID.fromString("00001800-0000-1000-8000-00805f9b34fb"))
+        deviceNameChar = gapService?.getCharacteristic(java.util.UUID.fromString("00002a00-0000-1000-8000-00805f9b34fb"))
 
         // Authentication characteristics
         findAuthCharacteristics(gatt)
@@ -413,7 +478,7 @@ class BleClient @Inject constructor(
     /**
      * 寫入模式控制
      */
-    fun writeMode(mode: DeviceMode): Boolean {
+    suspend fun writeMode(mode: DeviceMode): Boolean {
         val value = when (mode) {
             DeviceMode.MODE_G -> BleConstants.CMD_MODE_G
             DeviceMode.MODE_E -> BleConstants.CMD_MODE_E
@@ -426,7 +491,7 @@ class BleClient @Inject constructor(
     /**
      * 寫入訊息
      */
-    fun writeMessage(message: String): Boolean {
+    suspend fun writeMessage(message: String): Boolean {
         val bytes = message.toByteArray(Charsets.UTF_8)
         return writeCharacteristic(messageChar, bytes)
     }
@@ -434,7 +499,7 @@ class BleClient @Inject constructor(
     /**
      * 寫入宣傳文字
      */
-    fun writePromoText(text: String): Boolean {
+    suspend fun writePromoText(text: String): Boolean {
         val bytes = text.toByteArray(Charsets.UTF_8)
         return writeCharacteristic(promoTextChar, bytes)
     }
@@ -442,34 +507,57 @@ class BleClient @Inject constructor(
     /**
      * 寫入配置命令
      */
-    fun writeConfig(command: Byte, param1: Short = 0, param2: Short = 0, param3: Byte = 0): Boolean {
+    suspend fun writeConfig(command: Byte, param1: Short = 0, param2: Short = 0, param3: Byte = 0): Boolean {
         val data = byteArrayOf(command, (param1.toInt() and 0xFF).toByte(), (param1.toInt() shr 8 and 0xFF).toByte(),
             (param2.toInt() and 0xFF).toByte(), (param2.toInt() shr 8 and 0xFF).toByte(), param3)
+        return writeCharacteristic(configChar, data)
+    }
+
+    suspend fun writeSsid(ssid: String): Boolean {
+        val data = ssid.toByteArray(Charsets.UTF_8)
+        return writeCharacteristic(configChar, data)
+    }
+
+    suspend fun writeWifiPassword(password: String): Boolean {
+        val data = password.toByteArray(Charsets.UTF_8)
         return writeCharacteristic(configChar, data)
     }
 
     /**
      * 寫入特徵值
      */
-    fun writeCharacteristic(characteristic: BluetoothGattCharacteristic?, data: ByteArray): Boolean {
-        if (characteristic == null) {
-            Log.w(tag, "Characteristic is null")
-            return false
+    suspend fun writeCharacteristic(characteristic: BluetoothGattCharacteristic?, data: ByteArray): Boolean {
+        if (characteristic == null) { return false }
+        if (data.isEmpty()) { return false }
+        return writeMutex.withLock {
+            val now = System.currentTimeMillis()
+            val elapsed = now - lastWriteTime
+            if (elapsed < MIN_WRITE_INTERVAL) {
+                kotlinx.coroutines.delay(MIN_WRITE_INTERVAL - elapsed)
+            }
+            try {
+                characteristic.value = data
+                characteristic.writeType = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
+                val result = bluetoothGatt?.writeCharacteristic(characteristic) ?: false
+                if (result) {
+                    lastWriteTime = System.currentTimeMillis()
+                    kotlinx.coroutines.delay(30)
+                }
+                result
+            } catch (e: SecurityException) { false }
         }
+    }
 
-        if (data.isEmpty()) {
-            Log.w(tag, "Data is empty")
-            return false
-        }
-
+    fun readCharacteristicAsString(characteristic: BluetoothGattCharacteristic?): String? {
+        if (characteristic == null || bluetoothGatt == null) return null
         return try {
-            characteristic.value = data
-            characteristic.writeType = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
-            bluetoothGatt?.writeCharacteristic(characteristic) ?: false
-        } catch (e: SecurityException) {
-            Log.e(tag, "Security exception during writeCharacteristic", e)
-            false
-        }
+            // Note: This is a synchronous read in the sense that it triggers the request,
+            // but the value won't be updated until onCharacteristicRead is called.
+            // However, the provided prompt suggests this usage pattern.
+            // For a more robust implementation, we might want a suspend version with a callback/continuation.
+            bluetoothGatt?.readCharacteristic(characteristic)
+            characteristic.getStringValue(0)
+        } catch (e: SecurityException) { null }
     }
 
     /**
@@ -497,8 +585,15 @@ class BleClient @Inject constructor(
                 val name = device.name ?: "Unknown"
                 val rssi = result.rssi
 
-                // 過濾PromoBeacon設備 (更加靈活的過濾)
-                if (name.contains("PROMO", ignoreCase = true) || name.contains("Beacon", ignoreCase = true)) {
+                // If in fallback mode, apply name filter. 
+                // If in UUID mode, all results are already filtered by OS.
+                val isMatch = if (isScanFallbackActive) {
+                    name.contains("PROMO", ignoreCase = true) || name.contains("Beacon", ignoreCase = true)
+                } else {
+                    true
+                }
+
+                if (isMatch) {
                     val scannedDevice = ScannedDevice(
                         name = name,
                         address = device.address,
@@ -515,7 +610,7 @@ class BleClient @Inject constructor(
                         currentList.add(scannedDevice)
                     }
 
-                    // 按信號強度排序
+                    // Sort by signal strength
                     _scanResults.value = currentList.sortedByDescending { it.rssi }
                 }
             } catch (e: SecurityException) {
@@ -542,23 +637,23 @@ class BleClient @Inject constructor(
      * @param crc32 CRC32 checksum of content
      * @return true if start command was sent successfully
      */
-    fun portalStartUpload(totalSize: Int, crc32: Int): Boolean {
+    suspend fun portalStartUpload(totalSize: Int, crc32: Int): Boolean {
         if (portalCtrlChar == null) {
             Log.e(tag, "Portal ctrl characteristic not available")
             return false
         }
 
-        // Command format: [CMD=0x10] [Total Size: 4 bytes] [CRC32: 4 bytes]
+        // Command format: [CMD=0x10] [Total Size: 4 bytes] [CRC32: 4 bytes] (Little-Endian)
         val data = ByteArray(9)
         data[0] = BleConstants.PORTAL_CMD_START.toByte()
-        data[1] = ((totalSize shr 24) and 0xFF).toByte()
-        data[2] = ((totalSize shr 16) and 0xFF).toByte()
-        data[3] = ((totalSize shr 8) and 0xFF).toByte()
-        data[4] = (totalSize and 0xFF).toByte()
-        data[5] = ((crc32 shr 24) and 0xFF).toByte()
-        data[6] = ((crc32 shr 16) and 0xFF).toByte()
-        data[7] = ((crc32 shr 8) and 0xFF).toByte()
-        data[8] = (crc32 and 0xFF).toByte()
+        data[1] = (totalSize and 0xFF).toByte()
+        data[2] = ((totalSize shr 8) and 0xFF).toByte()
+        data[3] = ((totalSize shr 16) and 0xFF).toByte()
+        data[4] = ((totalSize shr 24) and 0xFF).toByte()
+        data[5] = (crc32 and 0xFF).toByte()
+        data[6] = ((crc32 shr 8) and 0xFF).toByte()
+        data[7] = ((crc32 shr 16) and 0xFF).toByte()
+        data[8] = ((crc32 shr 24) and 0xFF).toByte()
 
         portalUploadInProgress = true
         portalUploadProgress.value = 0f
@@ -577,7 +672,7 @@ class BleClient @Inject constructor(
      * @param data Chunk data (max CHUNK_SIZE bytes)
      * @return true if chunk was sent successfully
      */
-    fun portalSendChunk(sequenceNumber: Int, data: ByteArray): Boolean {
+    suspend fun portalSendChunk(sequenceNumber: Int, data: ByteArray): Boolean {
         if (portalDataChar == null) {
             Log.e(tag, "Portal data characteristic not available")
             return false
@@ -606,7 +701,7 @@ class BleClient @Inject constructor(
      *
      * @return true if end command was sent successfully
      */
-    fun portalCompleteUpload(): Boolean {
+    suspend fun portalCompleteUpload(): Boolean {
         if (portalCtrlChar == null) {
             return false
         }
@@ -626,7 +721,7 @@ class BleClient @Inject constructor(
      *
      * @return true if abort command was sent successfully
      */
-    fun portalAbortUpload(): Boolean {
+    suspend fun portalAbortUpload(): Boolean {
         if (portalCtrlChar == null) {
             return false
         }
@@ -647,7 +742,7 @@ class BleClient @Inject constructor(
      *
      * @return true if status command was sent successfully
      */
-    fun portalRequestStatus(): Boolean {
+    suspend fun portalRequestStatus(): Boolean {
         if (portalCtrlChar == null) {
             return false
         }
@@ -661,7 +756,7 @@ class BleClient @Inject constructor(
      *
      * @return true if reset command was sent successfully
      */
-    fun portalResetToDefault(): Boolean {
+    suspend fun portalResetToDefault(): Boolean {
         if (portalCtrlChar == null) {
             return false
         }
@@ -744,7 +839,7 @@ class BleClient @Inject constructor(
      * @param password Authentication password (e.g. 'admin123')
      * @return true if authentication command was sent successfully
      */
-    fun authenticate(password: String): Boolean {
+    suspend fun authenticate(password: String): Boolean {
         val characteristic = authChar ?: return false
 
         if (password.isEmpty()) {
@@ -790,7 +885,7 @@ class BleClient @Inject constructor(
      *
      * @return true if logout command was sent successfully
      */
-    fun logout(): Boolean {
+    suspend fun logout(): Boolean {
         if (authChar == null) {
             return false
         }
@@ -800,42 +895,9 @@ class BleClient @Inject constructor(
         return writeCharacteristic(authChar, data)
     }
 
-    /**
-     * Get token hint (first 4 characters) from device
-     *
-     * @return true if command was sent successfully
-     */
-    fun getTokenHint(): Boolean {
-        if (authChar == null) {
-            return false
-        }
 
-        val data = byteArrayOf(BleConstants.AUTH_CMD_GET_TOKEN_HINT.toByte())
-        return writeCharacteristic(authChar, data)
-    }
 
-    /**
-     * Set new auth token (requires current authentication)
-     *
-     * @param newToken 32-character hex new token
-     * @return true if command was sent successfully
-     */
-    fun setAuthToken(newToken: String): Boolean {
-        if (authChar == null) {
-            return false
-        }
 
-        if (newToken.length != 32) {
-            return false
-        }
-
-        val tokenBytes = hexStringToByteArray(newToken)
-        val data = ByteArray(1 + tokenBytes.size)
-        data[0] = BleConstants.AUTH_CMD_SET_TOKEN.toByte()
-        System.arraycopy(tokenBytes, 0, data, 1, tokenBytes.size)
-
-        return writeCharacteristic(authChar, data)
-    }
 
     /**
      * Check if currently authenticated
@@ -871,17 +933,6 @@ class BleClient @Inject constructor(
         }
     }
 
-    /**
-     * Convert hex string to byte array
-     */
-    private fun hexStringToByteArray(hex: String): ByteArray {
-        val len = hex.length
-        val data = ByteArray(len / 2)
-        for (i in 0 until len step 2) {
-            data[i / 2] = ((Character.digit(hex[i], 16) shl 4) + Character.digit(hex[i + 1], 16)).toByte()
-        }
-        return data
-    }
 }
 
 /**

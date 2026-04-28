@@ -42,8 +42,12 @@ class DisconnectDeviceUseCase @Inject constructor(
     private val repository: DeviceRepository
 ) {
     suspend operator fun invoke(): Result<Unit> {
-        repository.disconnect()
-        return Result.success(Unit)
+        return try {
+            repository.disconnect()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }
 

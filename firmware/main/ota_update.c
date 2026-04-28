@@ -20,6 +20,8 @@ static ota_progress_t g_progress = {0};
 static ota_config_t g_config = {0};
 static bool g_ota_initialized = false;
 static esp_ota_handle_t g_update_handle = 0;
+static size_t g_ota_image_size = 0;
+static const esp_partition_t* g_update_partition = NULL;
 
 /* Forward declarations */
 static void ota_rollback(void);
@@ -153,17 +155,21 @@ void ota_reset(void)
 /**
  * @brief Begin OTA update process
  */
+void ota_set_image_size(size_t size) {
+    g_ota_image_size = size;
+}
+
 esp_err_t ota_begin(void)
 {
-    const esp_partition_t* update_partition = esp_ota_get_next_update_partition(NULL);
-    if (update_partition == NULL) {
+    g_update_partition = esp_ota_get_next_update_partition(NULL);
+    if (g_update_partition == NULL) {
         ESP_LOGE(TAG, "No OTA partition found");
-        return ESP_ERR_NOT_FOUND;
+        return ESP_FAIL;
     }
 
-    ESP_LOGI(TAG, "Starting OTA on partition: %s", update_partition->label);
+    ESP_LOGI(TAG, "Starting OTA on partition: %s", g_update_partition->label);
 
-    esp_err_t err = esp_ota_begin(update_partition, OTA_SIZE_UNKNOWN, &g_update_handle);
+    esp_err_t err = esp_ota_begin(g_update_partition, g_ota_image_size, &g_update_handle);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "esp_ota_begin failed: %s", esp_err_to_name(err));
         return err;
@@ -225,8 +231,14 @@ esp_err_t ota_end(void)
         return err;
     }
 
-    const esp_partition_t* update_partition = esp_ota_get_next_update_partition(NULL);
-    err = esp_ota_set_boot_partition(update_partition);
+    if (g_update_partition == NULL) {
+        ESP_LOGE(TAG, "No update partition stored");
+        esp_ota_abort(g_update_handle);
+        g_update_handle = 0;
+        return ESP_FAIL;
+    }
+    err = esp_ota_set_boot_partition(g_update_partition);
+    g_update_partition = NULL;
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "esp_ota_set_boot_partition failed: %s", esp_err_to_name(err));
         return err;
@@ -240,14 +252,29 @@ esp_err_t ota_end(void)
 
 void ota_abort(void)
 {
+    if (g_update_handle != 0) {
+        esp_ota_abort(g_update_handle);
+        g_update_handle = 0;
+    }
     g_progress.status = OTA_STATUS_FAILED;
-    ota_rollback();
+    ESP_LOGW(TAG, "OTA aborted, partition cleaned up");
 }
 
 static void ota_rollback(void)
 {
     ESP_LOGW(TAG, "Rollback requested");
-    /* Actual rollback logic would involve esp_ota_set_boot_partition to previous */
+    const esp_partition_t* running = esp_ota_get_running_partition();
+    if (running != NULL) {
+        esp_err_t ret = esp_ota_set_boot_partition(running);
+        if (ret == ESP_OK) {
+            ESP_LOGI(TAG, "Rollback successful, boot partition set to running partition");
+        } else {
+            ESP_LOGE(TAG, "Rollback failed: %s", esp_err_to_name(ret));
+        }
+    } else {
+        ESP_LOGE(TAG, "Could not get running partition for rollback");
+    }
+    g_update_partition = NULL;
 }
 
 const char* get_firmware_version(void)

@@ -48,6 +48,8 @@ static uint8_t g_auth_status = AUTH_STATUS_REQUIRED;
 static char g_device_name[MAX_DEVICE_NAME_LENGTH + 1] = "PromoBeacon";
 static char g_message_value[MAX_MESSAGE_LENGTH + 1] = "WELCOME";
 static char g_promo_text_value[MAX_PROMO_TEXT_LENGTH + 1] = "PromoBeacon";
+static mode_change_callback_t g_mode_change_cb = NULL;
+static status_update_callback_t g_status_update_cb = NULL;
 
 /* GATT Attribute Handles (Assigned by NimBLE) */
 static uint16_t h_mode_control;
@@ -189,6 +191,9 @@ static void ble_advertise(void)
     fields.name_len = strlen(g_device_name);
     fields.name_is_complete = 1;
 
+    /* Stop advertising if already active to apply new fields */
+    ble_gap_adv_stop();
+
     rc = ble_gap_adv_set_fields(&fields);
     if (rc != 0) {
         ESP_LOGE(TAG, "error setting advertisement data; rc=%d", rc);
@@ -200,7 +205,7 @@ static void ble_advertise(void)
     adv_params.disc_mode = BLE_GAP_DISC_MODE_GEN;
 
     rc = ble_gap_adv_start(BLE_OWN_ADDR_PUBLIC, NULL, BLE_HS_FOREVER, &adv_params, ble_gap_event, NULL);
-    if (rc != 0) {
+    if (rc != 0 && rc != BLE_HS_EALREADY) {
         ESP_LOGE(TAG, "error enabling advertisement; rc=%d", rc);
         return;
     }
@@ -211,7 +216,10 @@ static void ble_on_sync(void)
 {
     int rc;
     rc = ble_hs_util_ensure_addr(0);
-    assert(rc == 0);
+    if (rc != 0) {
+        ESP_LOGE(TAG, "Failed to ensure BLE address: %d", rc);
+        return;
+    }
     ble_advertise();
 }
 
@@ -287,7 +295,7 @@ esp_err_t ble_get_status(DeviceStatus *status)
     status->uptime_ms = (uint32_t)(xTaskGetTickCount() * portTICK_PERIOD_MS);
     status->rssi = -60; /* Placeholder until RSSI lookup implemented */
     status->client_count = (g_conn_state == CONN_STATE_CONNECTED) ? 1 : 0;
-    status->wifi_clients = get_client_count();
+    status->wifi_clients = get_current_wifi_client_count();
     
     strncpy(status->message, g_message_value, MAX_MESSAGE_LENGTH);
     strncpy(status->promo_text, g_promo_text_value, MAX_PROMO_TEXT_LENGTH);
@@ -346,16 +354,41 @@ esp_err_t ble_reset_defaults(void)
 }
 
 /* Stubs for remaining required API functions */
-esp_err_t ble_get_message(char* buffer, size_t buffer_size) { strncpy(buffer, g_message_value, buffer_size); return ESP_OK; }
-esp_err_t ble_get_promo_text(char* buffer, size_t buffer_size) { strncpy(buffer, g_promo_text_value, buffer_size); return ESP_OK; }
+esp_err_t ble_get_message(char* buffer, size_t buffer_size) { 
+    if (!buffer || buffer_size == 0) return ESP_ERR_INVALID_ARG;
+    strncpy(buffer, g_message_value, buffer_size - 1); 
+    buffer[buffer_size - 1] = '\0';
+    return ESP_OK; 
+}
+esp_err_t ble_get_promo_text(char* buffer, size_t buffer_size) { 
+    if (!buffer || buffer_size == 0) return ESP_ERR_INVALID_ARG;
+    strncpy(buffer, g_promo_text_value, buffer_size - 1); 
+    buffer[buffer_size - 1] = '\0';
+    return ESP_OK; 
+}
 esp_err_t ble_set_beacon_params(uint16_t major, uint16_t minor, int8_t tx_power) { return ESP_OK; }
 esp_err_t ble_get_ota_status(uint8_t* progress, char* status_text, size_t text_size) { return ESP_OK; }
 void ble_update_status(const DeviceStatus* status) {}
-void ble_register_mode_change_callback(mode_change_callback_t callback) {}
-void ble_register_status_callback(status_update_callback_t callback) {}
-void ble_notify_clients(void) {}
+void ble_register_mode_change_callback(mode_change_callback_t callback) {
+    g_mode_change_cb = callback;
+}
+void ble_register_status_callback(status_update_callback_t callback) {
+    g_status_update_cb = callback;
+}
+void ble_notify_clients(void) {
+    if (h_status != 0) {
+        ble_gatts_chr_updated(h_status);
+    }
+    if (h_stats != 0) {
+        ble_gatts_chr_updated(h_stats);
+    }
+}
 esp_err_t update_ble_advertising_name(const char* name) { return ble_set_device_name(name); }
-esp_err_t ble_get_rssi(int8_t* rssi) { *rssi = -60; return ESP_OK; }
+esp_err_t ble_get_rssi(int8_t* rssi) { 
+    if (!rssi) return ESP_ERR_INVALID_ARG;
+    *rssi = -60; 
+    return ESP_OK; 
+}
 esp_err_t ble_get_session_stats(char* stats_buffer, size_t buffer_size) { return ESP_OK; }
 uint16_t ble_get_session_data(uint8_t* buffer, size_t buffer_size, uint16_t start_index, uint8_t max_entries) { return 0; }
 uint32_t ble_get_session_history_size(void) { return 0; }
@@ -365,8 +398,31 @@ uint32_t ble_get_mac_count_data_size(void) { return 0; }
 uint32_t ble_get_mac_count(const uint8_t* mac) { return 0; }
 uint32_t ble_get_mac_total_time(const uint8_t* mac) { return 0; }
 esp_err_t ble_get_mac_count_summary(char* buffer, size_t buffer_size) { return ESP_OK; }
-esp_err_t ble_set_device_name(const char* name) { strncpy(g_device_name, name, MAX_DEVICE_NAME_LENGTH); g_device_name[MAX_DEVICE_NAME_LENGTH] = '\0'; return ESP_OK; }
-esp_err_t ble_get_device_name(char* buffer, size_t buffer_size) { strncpy(buffer, g_device_name, buffer_size); return ESP_OK; }
+esp_err_t ble_set_device_name(const char* name) 
+{ 
+    if (!name) return ESP_ERR_INVALID_ARG;
+
+    strncpy(g_device_name, name, MAX_DEVICE_NAME_LENGTH); 
+    g_device_name[MAX_DEVICE_NAME_LENGTH] = '\0'; 
+
+    /* Update GAP service characteristic */
+    ble_svc_gap_device_name_set(g_device_name);
+
+    if (g_conn_state == CONN_STATE_CONNECTED) {
+        ESP_LOGI(TAG, "Name updated, advertising will refresh on next disconnect");
+    } else {
+        ESP_LOGI(TAG, "Name updated, restarting advertising to apply changes: %s", g_device_name);
+        ble_advertise();
+    }
+
+    return ESP_OK; 
+}
+esp_err_t ble_get_device_name(char* buffer, size_t buffer_size) { 
+    if (!buffer || buffer_size == 0) return ESP_ERR_INVALID_ARG;
+    strncpy(buffer, g_device_name, buffer_size - 1); 
+    buffer[buffer_size - 1] = '\0';
+    return ESP_OK; 
+}
 esp_err_t ble_set_admin_password(const char* password) { return ESP_OK; }
 bool ble_is_authentication_required(void) { return true; }
 bool ble_is_authenticated(void) { return g_is_authenticated; }
@@ -406,6 +462,7 @@ static int ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, stru
             rc = os_mbuf_append(ctxt->om, &val, sizeof(val));
             return rc == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
         } else if (ctxt->op == BLE_GATT_ACCESS_OP_WRITE_CHR) {
+            if (!g_is_authenticated) return BLE_ATT_ERR_INSUFFICIENT_AUTHEN;
             if (OS_MBUF_PKTLEN(ctxt->om) < 1) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
             uint8_t val;
             rc = ble_hs_mbuf_to_flat(ctxt->om, &val, sizeof(val), NULL);
@@ -413,7 +470,11 @@ static int ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, stru
             
             if (val == CMD_MODE_G) {
                 ESP_LOGI(TAG, "Switching to G Mode via BLE");
-                /* Implementation of mode switch placeholder */
+                DeviceMode old_mode = g_current_mode;
+                g_current_mode = MODE_G;
+                if (g_mode_change_cb) {
+                    g_mode_change_cb(MODE_G, old_mode);
+                }
             } else if (val == CMD_REBOOT) {
                 ESP_LOGI(TAG, "Rebooting via BLE...");
                 esp_restart();
@@ -427,6 +488,7 @@ static int ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, stru
             rc = os_mbuf_append(ctxt->om, g_message_value, strlen(g_message_value));
             return rc == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
         } else if (ctxt->op == BLE_GATT_ACCESS_OP_WRITE_CHR) {
+            if (!g_is_authenticated) return BLE_ATT_ERR_INSUFFICIENT_AUTHEN;
             uint16_t len = OS_MBUF_PKTLEN(ctxt->om);
             if (len > MAX_MESSAGE_LENGTH) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
             rc = ble_hs_mbuf_to_flat(ctxt->om, g_message_value, sizeof(g_message_value) - 1, &len);
@@ -444,6 +506,7 @@ static int ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, stru
             rc = os_mbuf_append(ctxt->om, g_promo_text_value, strlen(g_promo_text_value));
             return rc == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
         } else if (ctxt->op == BLE_GATT_ACCESS_OP_WRITE_CHR) {
+            if (!g_is_authenticated) return BLE_ATT_ERR_INSUFFICIENT_AUTHEN;
             uint16_t len = OS_MBUF_PKTLEN(ctxt->om);
             if (len > MAX_PROMO_TEXT_LENGTH) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
             rc = ble_hs_mbuf_to_flat(ctxt->om, g_promo_text_value, sizeof(g_promo_text_value) - 1, &len);
@@ -496,6 +559,7 @@ static int ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, stru
             rc = os_mbuf_append(ctxt->om, g_device_name, strlen(g_device_name));
             return rc == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
         } else if (ctxt->op == BLE_GATT_ACCESS_OP_WRITE_CHR) {
+            if (!g_is_authenticated) return BLE_ATT_ERR_INSUFFICIENT_AUTHEN;
             uint16_t len = OS_MBUF_PKTLEN(ctxt->om);
             if (len > MAX_DEVICE_NAME_LENGTH) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
             rc = ble_hs_mbuf_to_flat(ctxt->om, g_device_name, sizeof(g_device_name) - 1, &len);
@@ -510,7 +574,7 @@ static int ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, stru
     
     if (attr_handle == h_admin_password) {
         if (ctxt->op == BLE_GATT_ACCESS_OP_WRITE_CHR) {
-            if (!g_is_authenticated) return BLE_ATT_ERR_READ_NOT_PERMITTED; // Should be WRITE restricted
+            if (!g_is_authenticated) return BLE_ATT_ERR_INSUFFICIENT_AUTHEN;
             
             char new_password[MAX_PASSWORD_LENGTH + 1];
             uint16_t len = OS_MBUF_PKTLEN(ctxt->om);
@@ -530,6 +594,7 @@ static int ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, stru
 
     if (attr_handle == h_config) {
         if (ctxt->op == BLE_GATT_ACCESS_OP_WRITE_CHR) {
+            if (!g_is_authenticated) return BLE_ATT_ERR_INSUFFICIENT_AUTHEN;
             ConfigCommand cmd;
             if (OS_MBUF_PKTLEN(ctxt->om) < sizeof(cmd)) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
             rc = ble_hs_mbuf_to_flat(ctxt->om, &cmd, sizeof(cmd), NULL);
@@ -556,7 +621,21 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
         case BLE_GAP_EVENT_DISCONNECT:
             ESP_LOGI(TAG, "BLE Disconnected");
             g_conn_state = CONN_STATE_DISCONNECTED;
+            g_is_authenticated = false;
+            g_auth_status = AUTH_STATUS_REQUIRED;
             ble_advertise();
+            break;
+
+        case BLE_GAP_EVENT_SUBSCRIBE:
+            ESP_LOGI(TAG, "Subscribe event: attr_handle=%d, cur_notify=%d",
+                     event->subscribe.attr_handle,
+                     event->subscribe.cur_notify);
+            break;
+
+        case BLE_GAP_EVENT_MTU:
+            ESP_LOGI(TAG, "MTU update: conn_handle=%d, mtu=%d",
+                     event->mtu.conn_handle,
+                     event->mtu.value);
             break;
     }
     return 0;

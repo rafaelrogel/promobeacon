@@ -74,7 +74,12 @@ class DashboardViewModel @Inject constructor(
         // Monitor authentication state
         viewModelScope.launch {
             bleClient.authenticationState.collect { state ->
-                _uiState.update { it.copy(authenticationState = state) }
+                _uiState.update { it.copy(
+                    authenticationState = state,
+                    isLoading = if (state == AuthenticationState.AUTHENTICATED || 
+                                   state == AuthenticationState.FAILED ||
+                                   state == AuthenticationState.LOCKED) false else it.isLoading
+                ) }
             }
         }
     }
@@ -314,7 +319,12 @@ class DashboardViewModel @Inject constructor(
      */
     fun disconnect() {
         bleClient.disconnect()
-        _uiState.update { it.copy(connectionState = ConnectionState.DISCONNECTED) }
+        _uiState.update { it.copy(
+            connectionState = ConnectionState.DISCONNECTED,
+            isLoading = false,
+            isSaving = false,
+            isUploading = false
+        ) }
     }
 
     /**

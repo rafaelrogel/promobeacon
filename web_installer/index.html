@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PromoBeacon Web Installer</title>
-    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js" integrity="sha384-DLSRQX8nILUsYRCKoOL+FvGRis5HoNA+9ak4QYqreENR9UVDIXUSoZrdt1Ibty96" crossorigin="anonymous"
+        onerror="document.querySelector('.installer-box').innerHTML='<p style=color:#ef4444;text-align:center;padding:32px>Could not load installer tools. Please check your internet connection and reload.</p>'">
+    </script>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -25,7 +27,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         .bg-gradient {
@@ -65,7 +67,9 @@
             margin-bottom: 8px;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            color: transparent;
             font-weight: 800;
         }
 
@@ -108,7 +112,7 @@
             padding-top: 24px;
         }
 
-        .steps b {
+        .steps > b {
             color: var(--primary);
             display: block;
             margin-bottom: 8px;
@@ -166,5 +170,13 @@
 
         <div class="footer">Version 2.0.0 • Supports ESP32, S3, and C3 Variants</div>
     </div>
+    <script>
+        if (!('serial' in navigator)) {
+            const installerBox = document.querySelector('.installer-box');
+            if (installerBox) {
+                installerBox.innerHTML = '<div style="padding: 32px; text-align: center;"><h3 style="color: #ef4444;">Browser Not Supported</h3><p style="color: #94a3b8;">Web Serial API requires Chrome, Edge, or Opera. Please use a supported browser.</p></div>';
+            }
+        }
+    </script>
 </body>
 </html>

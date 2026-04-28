@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.promobeacon.manager.BuildConfig
 import com.promobeacon.manager.data.ble.AuthenticationState
 import com.promobeacon.manager.domain.model.ConnectionState
 import com.promobeacon.manager.domain.model.GModeConfig
@@ -64,7 +65,6 @@ fun DashboardScreen(
                 navigationIcon = {
                     IconButton(onClick = {
                         viewModel.disconnect()
-                        onNavigateBack()
                     }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
@@ -87,7 +87,6 @@ fun DashboardScreen(
                     TextButton(
                         onClick = {
                             viewModel.disconnect()
-                            onNavigateBack()
                         },
                         colors = ButtonDefaults.textButtonColors(
                             contentColor = MaterialTheme.colorScheme.error
@@ -195,7 +194,7 @@ fun DashboardScreen(
                 }
             }
 
-            // Error snackbar
+            // Error and Success snackbars (Error takes priority)
             uiState.error?.let { error ->
                 Snackbar(
                     modifier = Modifier
@@ -209,10 +208,7 @@ fun DashboardScreen(
                 ) {
                     Text(error)
                 }
-            }
-
-            // Success snackbar
-            uiState.successMessage?.let { message ->
+            } ?: uiState.successMessage?.let { message ->
                 Snackbar(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -236,7 +232,6 @@ fun DashboardScreen(
                     onAuthenticate = { viewModel.authenticate(it) },
                     onDismiss = {
                         viewModel.disconnect()
-                        onNavigateBack()
                     }
                 )
             }
@@ -409,6 +404,14 @@ private fun GModeSettingsCard(
     var showPasswordField by remember { mutableStateOf(config.password.isNotEmpty()) }
     var password by remember { mutableStateOf(config.password) }
     var newAdminPassword by remember { mutableStateOf("") }
+
+    LaunchedEffect(config) {
+        ssid = config.ssid
+        promoText = config.promoText
+        showPasswordField = config.password.isNotEmpty()
+        password = config.password
+        newAdminPassword = config.newAdminPassword
+    }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -735,7 +738,7 @@ private fun DeviceActionsCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     
                     Text(
-                        text = "App Version: v2.1.4",
+                        text = "App Version: v${BuildConfig.VERSION_NAME}",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                         modifier = Modifier.align(Alignment.End)
@@ -921,15 +924,15 @@ private fun PortalUploadDialog(
                     readOnly = true,
                     supportingText = {
                         Text(
-                            "Size: ${formatBytes(htmlContent.toByteArray().size)} / 16 KB",
-                            color = if (htmlContent.toByteArray().size > 16384) {
+                            "Size: ${formatBytes(htmlContent.toByteArray(Charsets.UTF_8).size)} / 16 KB",
+                            color = if (htmlContent.toByteArray(Charsets.UTF_8).size > 16384) {
                                 MaterialTheme.colorScheme.error
                             } else {
                                 MaterialTheme.colorScheme.onSurfaceVariant
                             }
                         )
                     },
-                    isError = htmlContent.toByteArray().size > 16384
+                    isError = htmlContent.toByteArray(Charsets.UTF_8).size > 16384
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -945,7 +948,7 @@ private fun PortalUploadDialog(
             TextButton(
                 onClick = { onUpload(htmlContent) },
                 enabled = htmlContent.isNotBlank() &&
-                         htmlContent.toByteArray().size <= 16384
+                         htmlContent.toByteArray(Charsets.UTF_8).size <= 16384
             ) {
                 Text("Upload")
             }
@@ -965,7 +968,8 @@ private fun readHtmlFileFromUri(context: android.content.Context, uri: Uri): Str
     return try {
         val inputStream = context.contentResolver.openInputStream(uri)
         inputStream?.bufferedReader()?.use { reader ->
-            reader.readText()
+            val content = reader.readText()
+            if (content.toByteArray(Charsets.UTF_8).size > 16384) null else content
         }
     } catch (e: Exception) {
         e.printStackTrace()
@@ -1051,7 +1055,13 @@ private fun formatBytes(bytes: Int): String {
  */
 private fun formatUptime(uptimeMs: Long): String {
     val seconds = uptimeMs / 1000
-    val minutes = seconds / 60
+    val days = seconds / 86400
+    val hours = (seconds % 86400) / 3600
+    val minutes = (seconds % 3600) / 60
     val remainingSeconds = seconds % 60
-    return "${minutes}m ${remainingSeconds}s"
+    return when {
+        days > 0 -> "${days}d ${hours}h ${minutes}m"
+        hours > 0 -> "${hours}h ${minutes}m ${remainingSeconds}s"
+        else -> "${minutes}m ${remainingSeconds}s"
+    }
 }

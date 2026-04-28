@@ -67,8 +67,22 @@ esp_err_t init_config_manager(void)
     /* Load admin password */
     ret = load_admin_password(current_config.admin_password, sizeof(current_config.admin_password));
     if (ret != ESP_OK || current_config.admin_password[0] == '\0') {
-        strncpy(current_config.admin_password, "admin123", MAX_PASSWORD_LENGTH);
-        current_config.admin_password[MAX_PASSWORD_LENGTH] = '\0';
+        {
+            const char charset[] = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
+            char random_pwd[9];
+            for (int i = 0; i < 8; i++) {
+                uint32_t rand_val = esp_random();
+                random_pwd[i] = charset[rand_val % (sizeof(charset) - 1)];
+            }
+            random_pwd[8] = '\0';
+            strncpy(current_config.admin_password, random_pwd, MAX_PASSWORD_LENGTH);
+            current_config.admin_password[MAX_PASSWORD_LENGTH] = '\0';
+            save_admin_password(random_pwd);
+            ESP_LOGW(TAG, "============================================");
+            ESP_LOGW(TAG, "DEFAULT ADMIN PASSWORD: %s", random_pwd);
+            ESP_LOGW(TAG, "Write this down! It will be required for admin access.");
+            ESP_LOGW(TAG, "============================================");
+        }
     }
 
     /* Load configuration state */
@@ -122,6 +136,7 @@ const DeviceConfig* get_config(void)
 
 /**
  * @brief Save promotion text
+ * Note: Promotion text and SSID are intentionally kept identical by design.
  */
 esp_err_t save_promo_text(const char* promo_text)
 {
@@ -138,12 +153,11 @@ esp_err_t save_promo_text(const char* promo_text)
         return ret;
     }
     
-    size_t len = strlen(promo_text);
-    if (len > MAX_PROMO_TEXT_LENGTH) {
-        len = MAX_PROMO_TEXT_LENGTH;
-    }
-    
-    ret = nvs_set_str(handle, KEY_PROMO_TEXT, promo_text);
+    char truncated[MAX_PROMO_TEXT_LENGTH + 1];
+    strncpy(truncated, promo_text, MAX_PROMO_TEXT_LENGTH);
+    truncated[MAX_PROMO_TEXT_LENGTH] = '\0';
+
+    ret = nvs_set_str(handle, KEY_PROMO_TEXT, truncated);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "NVS write failed: %s", esp_err_to_name(ret));
         nvs_close(handle);
@@ -196,6 +210,7 @@ esp_err_t load_promo_text(char* buffer, size_t buffer_size)
 
 /**
  * @brief Save SSID
+ * Note: SSID and promotion text are intentionally kept identical by design.
  */
 esp_err_t save_ssid(const char* ssid)
 {
@@ -212,12 +227,11 @@ esp_err_t save_ssid(const char* ssid)
         return ret;
     }
 
-    size_t len = strlen(ssid);
-    if (len > MAX_SSID_LENGTH) {
-        len = MAX_SSID_LENGTH;
-    }
+    char truncated[MAX_SSID_LENGTH + 1];
+    strncpy(truncated, ssid, MAX_SSID_LENGTH);
+    truncated[MAX_SSID_LENGTH] = '\0';
 
-    ret = nvs_set_str(handle, KEY_SSID, ssid);
+    ret = nvs_set_str(handle, KEY_SSID, truncated);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "NVS write failed: %s", esp_err_to_name(ret));
         nvs_close(handle);
@@ -434,11 +448,11 @@ esp_err_t save_device_name(const char* name)
     }
     
     if (name && strlen(name) > 0) {
-        size_t len = strlen(name);
-        if (len > MAX_DEVICE_NAME_LENGTH) {
-            len = MAX_DEVICE_NAME_LENGTH;
-        }
-        ret = nvs_set_str(handle, KEY_DEVICE_NAME, name);
+        char truncated[MAX_DEVICE_NAME_LENGTH + 1];
+        strncpy(truncated, name, MAX_DEVICE_NAME_LENGTH);
+        truncated[MAX_DEVICE_NAME_LENGTH] = '\0';
+
+        ret = nvs_set_str(handle, KEY_DEVICE_NAME, truncated);
     } else {
         ret = nvs_erase_key(handle, KEY_DEVICE_NAME);
     }
@@ -586,17 +600,18 @@ bool verify_admin_password(const char* password)
         return false;
     }
     
-    /* Master override for emergency debug */
-    if (strcmp(password, "1234") == 0) {
-        ESP_LOGW(TAG, "Master password used!");
-        return true;
-    }
-    
     if (!current_config.admin_password[0]) {
         return false;
     }
     
-    return strcmp(password, current_config.admin_password) == 0;
+    const char *stored = current_config.admin_password;
+    size_t pw_len = strlen(stored);
+    size_t in_len = strlen(password);
+    int match = (pw_len == in_len) ? 0 : 1;
+    for (size_t i = 0; i < pw_len && i < in_len; i++) {
+        match |= (password[i] ^ stored[i]);
+    }
+    return match == 0;
 }
 
 /**

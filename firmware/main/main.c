@@ -185,10 +185,17 @@ void app_main(void)
         return;
     }
 
-    esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID,
-                               &global_event_handler, NULL);
-    esp_event_handler_register(IP_EVENT, ESP_EVENT_ANY_ID,
-                               &global_event_handler, NULL);
+    ret = esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID,
+                                      &global_event_handler, NULL);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "WIFI event handler registration failed: %s", esp_err_to_name(ret));
+    }
+
+    ret = esp_event_handler_register(IP_EVENT, ESP_EVENT_ANY_ID,
+                                      &global_event_handler, NULL);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "IP event handler registration failed: %s", esp_err_to_name(ret));
+    }
     /* Note: Bluetooth events are handled via native callbacks in ble_manager.c */
 
     /* Initialize battery ADC */

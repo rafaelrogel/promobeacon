@@ -95,7 +95,7 @@ static bool validate_state(tracker_state_t* state)
  */
 static int find_active_client(const uint8_t* mac_addr)
 {
-    for (int i = 0; i < g_active.active_count; i++) {
+    for (int i = 0; i < MAX_ACTIVE_CLIENTS; i++) {
         if (memcmp(g_active.active[i].mac_addr, mac_addr, 6) == 0) {
             return i;
         }
@@ -478,7 +478,9 @@ void tracker_on_connect(const uint8_t* mac_addr)
     memset(session, 0, sizeof(client_session_t));
     
     memcpy(session->mac_addr, mac_addr, 6);
-    session->connect_timestamp = (uint32_t)(esp_timer_get_time() / 1000000);
+    uint32_t current_time = (uint32_t)(esp_timer_get_time() / 1000000);
+    session->connect_timestamp = current_time;
+    session->last_activity_timestamp = current_time;
     session->is_still_connected = true;
     session->request_count = 0;
     session->paths_bitmask = PATH_NONE;
@@ -590,7 +592,9 @@ void tracker_on_request(const uint8_t* mac_addr, const char* path, bool is_incom
     }
     
     /* Update last activity time */
-    g_active.last_activity_time = (uint32_t)(esp_timer_get_time() / 1000000);
+    uint32_t current_time = (uint32_t)(esp_timer_get_time() / 1000000);
+    g_active.last_activity_time = current_time;
+    session->last_activity_timestamp = current_time;
     
     g_dirty = true;
 }
@@ -615,7 +619,7 @@ uint8_t tracker_check_timeouts(uint32_t timeout_seconds)
     
     for (int i = 0; i < MAX_ACTIVE_CLIENTS; i++) {
         if (g_active.active[i].is_still_connected) {
-            uint32_t idle_time = now - g_active.active[i].connect_timestamp;
+            uint32_t idle_time = now - g_active.active[i].last_activity_timestamp;
             
             if (idle_time > timeout_seconds) {
                 ESP_LOGI(TAG, "Client timed out after %" PRIu32 " seconds: " MACSTR,
@@ -663,7 +667,7 @@ esp_err_t tracker_get_session(uint16_t index, client_session_t* session)
     }
     
     /* Handle ring buffer wrap-around for logical indexing */
-    uint16_t actual_index = (g_state.history.head_index + index) % MAX_HISTORY_ENTRIES;
+    uint16_t actual_index = (g_state.history.head_index + MAX_HISTORY_ENTRIES - g_state.history.count + index) % MAX_HISTORY_ENTRIES;
     *session = g_state.history.sessions[actual_index];
     
     return ESP_OK;
@@ -962,7 +966,7 @@ uint16_t tracker_serialize_for_ble(uint8_t* buffer, size_t buffer_size, uint16_t
     }
     
     for (uint8_t i = 0; i < entries && written < buffer_size; i++) {
-        uint16_t src_index = (g_state.history.head_index + start_index + i) % MAX_HISTORY_ENTRIES;
+        uint16_t src_index = (g_state.history.head_index + MAX_HISTORY_ENTRIES - g_state.history.count + start_index + i) % MAX_HISTORY_ENTRIES;
         session = g_state.history.sessions[src_index];
         
         /* Calculate remaining space */
@@ -1129,7 +1133,7 @@ uint32_t tracker_generate_csv(char* buffer, size_t buffer_size)
     /* Write each session as a row */
     for (int i = 0; i < g_state.history.count && pos < buffer_size - 200; i++) {
         /* Handle ring buffer wrap-around for chronological order */
-        uint16_t src_idx = (g_state.history.head_index + i) % MAX_HISTORY_ENTRIES;
+        uint16_t src_idx = (g_state.history.head_index + MAX_HISTORY_ENTRIES - g_state.history.count + i) % MAX_HISTORY_ENTRIES;
         client_session_t* session = &g_state.history.sessions[src_idx];
         
         if (session->mac_addr[0] == 0 && session->mac_addr[1] == 0) {

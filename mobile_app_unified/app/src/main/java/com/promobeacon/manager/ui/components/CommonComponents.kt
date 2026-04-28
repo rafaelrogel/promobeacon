@@ -132,7 +132,7 @@ fun SignalStrengthIndicator(
                     .size(width = 3.dp, height = ((index + 1) * 4).dp)
                     .padding(1.dp)
                     .background(
-                        color = if (index <= level.ordinal) color else color.copy(alpha = 0.3f),
+                        color = if (index >= (3 - level.ordinal)) color else color.copy(alpha = 0.3f),
                         shape = RoundedCornerShape(1.dp)
                     )
             )
@@ -161,7 +161,7 @@ fun ModeSwitchCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "當前模式",
+                text = "Current Mode",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -175,7 +175,7 @@ fun ModeSwitchCard(
             ) {
                 // G模式按鈕
                 ModeButton(
-                    text = "G 模式",
+                    text = "G Mode",
                     icon = Icons.Default.Wifi,
                     isSelected = currentMode == DeviceMode.MODE_G,
                     color = ModeG,
@@ -184,7 +184,7 @@ fun ModeSwitchCard(
 
                 // E模式按鈕
                 ModeButton(
-                    text = "E 模式",
+                    text = "E Mode",
                     icon = Icons.Default.Bluetooth,
                     isSelected = currentMode == DeviceMode.MODE_E,
                     color = ModeE,
@@ -205,7 +205,7 @@ fun ModeSwitchCard(
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("切換模式")
+                Text("Switch Mode")
             }
         }
     }
@@ -374,7 +374,7 @@ fun ConnectionStatusIndicator(
  */
 @Composable
 fun LoadingIndicator(
-    text: String = "載入中...",
+    text: String = "Loading...",
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -405,7 +405,7 @@ fun ErrorMessage(
         modifier = modifier.padding(16.dp),
         action = {
             TextButton(onClick = onDismiss) {
-                Text("確定")
+                Text("OK")
             }
         },
         containerColor = Error,
@@ -429,7 +429,7 @@ fun SuccessMessage(
         modifier = modifier.padding(16.dp),
         action = {
             TextButton(onClick = onDismiss) {
-                Text("確定")
+                Text("OK")
             }
         },
         containerColor = Success,

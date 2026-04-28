@@ -10,11 +10,13 @@
 #include "client_tracker.h"
 #include "portal_content.h"
 #include "config_manager.h"
+#include "status_collector.h"
 #include "esp_log.h"
 #include "esp_err.h"
 #include "esp_http_server.h"
 #include "esp_wifi.h"
 #include "esp_system.h"
+#include "esp_timer.h"
 #include <string.h>
 #include <inttypes.h>
 #include "esp_mac.h"
@@ -37,22 +39,54 @@ static size_t local_content_len = 0;
 
 /* Client authentication tracking (IP-based) */
 #define MAX_AUTH_CLIENTS 32
-static uint32_t auth_clients[MAX_AUTH_CLIENTS] = {0};
+#define AUTH_CLIENT_TIMEOUT_SEC 3600
+
+typedef struct {
+    uint32_t ip;
+    int64_t timestamp;
+} auth_client_entry_t;
+
+static auth_client_entry_t auth_clients[MAX_AUTH_CLIENTS];
 static int auth_client_count = 0;
 
-static void authenticate_client(uint32_t ip) {
+static void authenticate_client(uint32_t ip)
+{
+    int64_t now = (int64_t)esp_timer_get_time() / 1000000;
+    
     for (int i = 0; i < auth_client_count; i++) {
-        if (auth_clients[i] == ip) return;
+        if (auth_clients[i].ip == ip) {
+            auth_clients[i].timestamp = now;
+            return;
+        }
     }
+    
     if (auth_client_count < MAX_AUTH_CLIENTS) {
-        auth_clients[auth_client_count++] = ip;
-        ESP_LOGI(TAG, "Client authenticated: %u", (unsigned int)ip);
+        auth_clients[auth_client_count].ip = ip;
+        auth_clients[auth_client_count].timestamp = now;
+        auth_client_count++;
+    } else {
+        int oldest_idx = 0;
+        for (int i = 1; i < MAX_AUTH_CLIENTS; i++) {
+            if (auth_clients[i].timestamp < auth_clients[oldest_idx].timestamp) {
+                oldest_idx = i;
+            }
+        }
+        auth_clients[oldest_idx].ip = ip;
+        auth_clients[oldest_idx].timestamp = now;
     }
 }
 
-static bool is_client_authenticated(uint32_t ip) {
+static bool is_client_authenticated(uint32_t ip)
+{
+    int64_t now = (int64_t)esp_timer_get_time() / 1000000;
+    
     for (int i = 0; i < auth_client_count; i++) {
-        if (auth_clients[i] == ip) return true;
+        if (auth_clients[i].ip == ip) {
+            if ((now - auth_clients[i].timestamp) < AUTH_CLIENT_TIMEOUT_SEC) {
+                return true;
+            }
+            return false;
+        }
     }
     return false;
 }
@@ -134,6 +168,10 @@ static esp_err_t connect_get_handler(httpd_req_t *req)
 {
     struct sockaddr_in client_addr;
     int sockfd = httpd_req_to_sockfd(req);
+    if (sockfd < 0) {
+        httpd_resp_send_500(req);
+        return ESP_FAIL;
+    }
     socklen_t addr_len = sizeof(client_addr);
     getpeername(sockfd, (struct sockaddr*)&client_addr, &addr_len);
     
@@ -154,16 +192,27 @@ static void urldecode_in_place(char *str) {
     while (*pstr) {
         if (*pstr == '%') {
             if (pstr[1] && pstr[2]) {
-                pstr++;
-                char c = 0;
-                for (int i = 0; i < 2; i++) {
-                    c <<= 4;
-                    if (*pstr >= '0' && *pstr <= '9') c |= (*pstr - '0');
-                    else if (*pstr >= 'A' && *pstr <= 'F') c |= (*pstr - 'A' + 10);
-                    else if (*pstr >= 'a' && *pstr <= 'f') c |= (*pstr - 'a' + 10);
+                char d1 = pstr[1];
+                char d2 = pstr[2];
+                bool valid_hex = ((d1 >= '0' && d1 <= '9') || (d1 >= 'A' && d1 <= 'F') || (d1 >= 'a' && d1 <= 'f')) &&
+                                 ((d2 >= '0' && d2 <= '9') || (d2 >= 'A' && d2 <= 'F') || (d2 >= 'a' && d2 <= 'f'));
+                if (valid_hex) {
+                    pstr++;
+                    char c = 0;
+                    for (int i = 0; i < 2; i++) {
+                        c <<= 4;
+                        if (*pstr >= '0' && *pstr <= '9') c |= (*pstr - '0');
+                        else if (*pstr >= 'A' && *pstr <= 'F') c |= (*pstr - 'A' + 10);
+                        else if (*pstr >= 'a' && *pstr <= 'f') c |= (*pstr - 'a' + 10);
+                        pstr++;
+                    }
+                    *buf++ = c;
+                } else {
+                    *buf++ = '%';
                     pstr++;
                 }
-                *buf++ = c;
+            } else {
+                *buf++ = *pstr++;
             }
         } else if (*pstr == '+') {
             *buf++ = ' ';
@@ -180,10 +229,15 @@ static void urldecode_in_place(char *str) {
  */
 static esp_err_t setup_post_handler(httpd_req_t *req)
 {
-    char buf[256];
-    int ret = httpd_req_recv(req, buf, sizeof(buf) - 1);
-    if (ret <= 0) return ESP_FAIL;
-    buf[ret] = '\0';
+    char buf[512];
+    int total = 0;
+    int ret;
+    while ((ret = httpd_req_recv(req, buf + total, sizeof(buf) - 1 - total)) > 0) {
+        total += ret;
+        if (total >= (int)sizeof(buf) - 1) break;
+    }
+    if (total <= 0) return ESP_FAIL;
+    buf[total] = '\0';
 
     char promo[64] = {0}, wifi_pwd[64] = {0}, admin_pwd[64] = {0};
     
@@ -297,9 +351,11 @@ static esp_err_t update_post_handler(httpd_req_t *req)
     }
 
     char buf[1024];
-    int remaining = req->content_len;
+    size_t remaining = req->content_len;
     
     ESP_LOGI(TAG, "Starting binary OTA streaming (Size: %d bytes)", remaining);
+    
+    ota_set_image_size(remaining);
     
     if (ota_begin() != ESP_OK) {
         httpd_resp_send_500(req);
@@ -350,7 +406,81 @@ static esp_err_t favicon_get_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+/**
+ * @brief GET /stats.csv - Return device statistics in CSV format
+ */
+esp_err_t stats_csv_get_handler(httpd_req_t *req)
+{
+    ESP_LOGI(TAG, "HTTP GET /stats.csv");
+    
+    /* 1. Set response headers */
+    httpd_resp_set_type(req, "text/csv");
+    httpd_resp_set_hdr(req, "Content-Disposition", "attachment; filename=stats.csv");
+    
+    /* 2. Get device status and ID */
+    const StatusPacket* status = get_status();
+    char device_id[32];
+    get_device_id(device_id, sizeof(device_id));
+    
+    /* 3. Allocate buffer for CSV (Estimated size ~12KB) */
+    char* csv_buf = malloc(12288);
+    if (!csv_buf) {
+        httpd_resp_send_500(req);
+        return ESP_FAIL;
+    }
+    
+    int pos = 0;
+    
+    /* First row: device info */
+    pos += snprintf(csv_buf + pos, 12288 - pos, 
+                   "device_id,mode,client_count,uptime_sec,battery_pct\n");
+    
+    /* Second row: actual values */
+    pos += snprintf(csv_buf + pos, 12288 - pos, 
+                   "%s,G,%d,%d,%d\n", 
+                   device_id, 
+                   status->client_count, 
+                   (int)status->session_duration_sec, 
+                   status->battery_percent);
+    
+    /* Third row: session header */
+    pos += snprintf(csv_buf + pos, 12288 - pos, 
+                   "mac,connect_count,session_duration_sec,portal_time_avg_sec,path_flags\n");
+    
+    /* Subsequent rows: session history */
+    tracker_history_t* history = tracker_get_history();
+    for (int i = 0; i < history->count; i++) {
+        client_session_t session;
+        if (tracker_get_session(i, &session) == ESP_OK) {
+            char mac_str[18];
+            tracker_mac_to_str(session.mac_addr, mac_str);
+            
+            /* Get connection count for this MAC */
+            uint32_t conn_count = tracker_mac_get_count(session.mac_addr);
+            
+            pos += snprintf(csv_buf + pos, 12288 - pos, 
+                           "%s,%d,%d,%d,0x%04X\n", 
+                           mac_str, 
+                           (int)conn_count, 
+                           (int)session.duration_seconds, 
+                           status->portal_time_avg_sec, /* Using current avg as per prompt instructions */
+                           (int)session.paths_bitmask);
+        }
+        
+        if (pos > 12000) break; /* Safety check */
+    }
+    
+    /* 4. Send response */
+    httpd_resp_send(req, csv_buf, pos);
+    
+    /* 5. Cleanup */
+    free(csv_buf);
+    
+    return ESP_OK;
+}
+
 /* URI definitions */
+static const httpd_uri_t stats_csv = { .uri = "/stats.csv", .method = HTTP_GET, .handler = stats_csv_get_handler };
 static const httpd_uri_t root = { .uri = "/", .method = HTTP_GET, .handler = root_get_handler };
 static const httpd_uri_t setup = { .uri = "/setup", .method = HTTP_POST, .handler = setup_post_handler };
 static const httpd_uri_t update_get = { .uri = "/update", .method = HTTP_GET, .handler = update_get_handler };
@@ -365,6 +495,10 @@ static esp_err_t connectivity_check_handler(httpd_req_t *req)
 {
     struct sockaddr_in client_addr;
     int sockfd = httpd_req_to_sockfd(req);
+    if (sockfd < 0) {
+        httpd_resp_send_500(req);
+        return ESP_FAIL;
+    }
     socklen_t addr_len = sizeof(client_addr);
     getpeername(sockfd, (struct sockaddr*)&client_addr, &addr_len);
     
@@ -436,6 +570,7 @@ esp_err_t init_http_server(void)
         httpd_register_uri_handler(server, &update_post);
         httpd_register_uri_handler(server, &favicon);
         httpd_register_uri_handler(server, &connect_uri);
+        httpd_register_uri_handler(server, &stats_csv);
         
         /* Register connectivity check probes */
         httpd_register_uri_handler(server, &probe_android);

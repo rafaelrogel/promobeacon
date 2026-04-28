@@ -17,7 +17,8 @@ static const char* TAG = "WIFI_MGR";
 
 /* WiFi AP state */
 static bool wifi_ap_active = false;
-static bool dns_server_active = false;
+static TaskHandle_t dns_task_handle = NULL;
+static volatile bool dns_server_active = false;
 static char ap_ssid[MAX_SSID_LENGTH + 1] = {0};
 static char ap_password[MAX_PASSWORD_LENGTH + 1] = {0};
 static bool encryption_enabled = false;
@@ -28,44 +29,7 @@ static int dns_socket = -1;
 static struct sockaddr_in dns_server_addr;
 static esp_ip4_addr_t ap_ip_addr;
 
-/* Client tracking */
-static uint8_t client_count = 0;
-
 /* Forward declarations removed - using compact implementation */
-
-/**
- * @brief WiFi event handler
- */
-static void wifi_event_handler(void* arg, esp_event_base_t event_base,
-                               int32_t event_id, void* event_data)
-{
-    if (event_base == WIFI_EVENT) {
-        switch (event_id) {
-            case WIFI_EVENT_AP_STACONNECTED: {
-                wifi_event_ap_staconnected_t* conn = 
-                    (wifi_event_ap_staconnected_t*)event_data;
-                client_count++;
-                ESP_LOGI(TAG, "Station connected: AID=%" PRIu16 ", MAC=" MACSTR,
-                         conn->aid, MAC2STR(conn->mac));
-                break;
-            }
-                
-            case WIFI_EVENT_AP_STADISCONNECTED: {
-                wifi_event_ap_stadisconnected_t* disconn = 
-                    (wifi_event_ap_stadisconnected_t*)event_data;
-                
-                ESP_LOGI(TAG, "Station disconnected: AID=%" PRIu16 ", MAC=" MACSTR,
-                         disconn->aid, MAC2STR(disconn->mac));
-                
-                if (client_count > 0) client_count--;
-                break;
-            }
-                
-            default:
-                break;
-        }
-    }
-}
 
 esp_err_t init_wifi_ap(const char* ssid, const char* password)
 {
@@ -83,12 +47,7 @@ esp_err_t init_wifi_ap(const char* ssid, const char* password)
     
     ESP_LOGI(TAG, "Initializing WiFi AP: %s", ssid);
     
-    /* Initialize Netif */
-    ret = esp_netif_init();
-    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
-        ESP_LOGE(TAG, "Netif init failed: %s", esp_err_to_name(ret));
-        return ret;
-    }
+    /* Netif initialization is handled by main.c */
     
     /* Create Netif default AP */
     ap_netif = esp_netif_create_default_wifi_ap();
@@ -100,9 +59,9 @@ esp_err_t init_wifi_ap(const char* ssid, const char* password)
     /* Configure IP address */
     esp_netif_ip_info_t ip_info;
     memset(&ip_info, 0, sizeof(esp_netif_ip_info_t));
-    IP4_ADDR(&ip_info.ip, 192, 168, 4, 1);
-    IP4_ADDR(&ip_info.gw, 192, 168, 4, 1);
-    IP4_ADDR(&ip_info.netmask, 255, 255, 255, 0);
+    IP4_ADDR(&ip_info.ip, AP_IP_ADDR);
+    IP4_ADDR(&ip_info.gw, AP_IP_ADDR);
+    IP4_ADDR(&ip_info.netmask, AP_NETMASK);
     
     esp_netif_dhcps_stop(ap_netif);
     ret = esp_netif_set_ip_info(ap_netif, &ip_info);
@@ -110,6 +69,14 @@ esp_err_t init_wifi_ap(const char* ssid, const char* password)
         ESP_LOGE(TAG, "IP info set failed: %s", esp_err_to_name(ret));
         return ret;
     }
+
+    /* Set DHCP range to accommodate all clients */
+    dhcps_lease_t lease;
+    lease.enable = true;
+    IP4_ADDR(&lease.start_ip, DHCP_START_ADDR);
+    IP4_ADDR(&lease.end_ip, DHCP_END_ADDR);
+    esp_netif_dhcps_option(ap_netif, ESP_NETIF_OP_SET, ESP_NETIF_IP_LEASE, &lease, sizeof(lease));
+
     esp_netif_dhcps_start(ap_netif);
     
     /* Store AP IP address for DNS server */
@@ -136,13 +103,7 @@ esp_err_t init_wifi_ap(const char* ssid, const char* password)
         return ret;
     }
     
-    /* Register event handler */
-    ret = esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, 
-                                     &wifi_event_handler, NULL);
-    if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "Event handler registration failed: %s", esp_err_to_name(ret));
-        return ret;
-    }
+    /* Event handler registration removed - handled by main.c */
     
     /* Configure WiFi */
     wifi_config_t wifi_config = {
@@ -185,7 +146,6 @@ esp_err_t init_wifi_ap(const char* ssid, const char* password)
     }
     
     wifi_ap_active = true;
-    client_count = 0;
     
     ESP_LOGI(TAG, "WiFi AP started: %s (%s)", ap_ssid, 
              encryption_enabled ? "WPA2" : "OPEN");
@@ -211,12 +171,9 @@ void stop_wifi_ap(void)
         ap_netif = NULL;
     }
 
-    /* Unregister event handler */
-    esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, 
-                                 &wifi_event_handler);
+    /* Unregister event handler removed */
     
     wifi_ap_active = false;
-    client_count = 0;
     
     ESP_LOGI(TAG, "WiFi AP stopped");
 }
@@ -235,12 +192,16 @@ esp_err_t update_ap_ssid(const char* new_ssid)
     ap_ssid[MAX_SSID_LENGTH] = '\0';
     
     wifi_config_t wifi_config = {0};
-    esp_wifi_get_config(WIFI_IF_AP, &wifi_config);
+    esp_err_t ret = esp_wifi_get_config(WIFI_IF_AP, &wifi_config);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to get WiFi config: %s", esp_err_to_name(ret));
+        return ret;
+    }
     
     memcpy(wifi_config.ap.ssid, ap_ssid, strlen(ap_ssid));
     wifi_config.ap.ssid_len = strlen(ap_ssid);
     
-    esp_err_t ret = esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
+    ret = esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "SSID update failed: %s", esp_err_to_name(ret));
         return ret;
@@ -258,7 +219,11 @@ esp_err_t update_ap_password(const char* new_password)
     }
     
     wifi_config_t wifi_config = {0};
-    esp_wifi_get_config(WIFI_IF_AP, &wifi_config);
+    esp_err_t ret = esp_wifi_get_config(WIFI_IF_AP, &wifi_config);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to get WiFi config: %s", esp_err_to_name(ret));
+        return ret;
+    }
     
     if (new_password && strlen(new_password) >= 8) {
         strncpy(ap_password, new_password, MAX_PASSWORD_LENGTH);
@@ -273,7 +238,7 @@ esp_err_t update_ap_password(const char* new_password)
         wifi_config.ap.password[0] = '\0';
     }
     
-    esp_err_t ret = esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
+    ret = esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "Password update failed: %s", esp_err_to_name(ret));
         return ret;
@@ -285,10 +250,7 @@ esp_err_t update_ap_password(const char* new_password)
     return ESP_OK;
 }
 
-uint8_t get_wifi_client_count(void)
-{
-    return wifi_ap_active ? client_count : 0;
-}
+/* get_wifi_client_count removed - use get_current_wifi_client_count from status_collector.c */
 
 bool is_wifi_ap_active(void)
 {
@@ -304,7 +266,7 @@ esp_err_t disconnect_all_clients(void)
     /* In ESP-IDF 5.x, we reliably clear clients by restarting AP */
     esp_wifi_stop();
     esp_wifi_start();
-    client_count = 0;
+
     
     return ESP_OK;
 }
@@ -361,7 +323,7 @@ esp_err_t init_dns_server(void)
     dns_server_active = true;
     
     /* Start DNS task */
-    if (xTaskCreate(dns_server_task, "dns_server_task", 4096, NULL, 5, NULL) != pdPASS) {
+    if (xTaskCreate(dns_server_task, "dns_server_task", 4096, NULL, 5, &dns_task_handle) != pdPASS) {
         ESP_LOGE(TAG, "Failed to create DNS task");
         close(dns_socket);
         dns_socket = -1;
@@ -376,20 +338,21 @@ esp_err_t init_dns_server(void)
 
 void stop_dns_server(void)
 {
-    if (!dns_server_active) {
-        return;
-    }
+    if (!dns_server_active) { return; }
     
-    ESP_LOGI(TAG, "Stopping DNS server");
+    dns_server_active = false;
+    
+    vTaskDelay(pdMS_TO_TICKS(100));
     
     if (dns_socket >= 0) {
         close(dns_socket);
         dns_socket = -1;
     }
     
-    dns_server_active = false;
-    
-    ESP_LOGI(TAG, "DNS server stopped");
+    if (dns_task_handle != NULL) {
+        vTaskDelete(dns_task_handle);
+        dns_task_handle = NULL;
+    }
 }
 
 void handle_dns_requests(void)
@@ -442,8 +405,9 @@ void handle_dns_requests(void)
     *ptr++ = 0x00; *ptr++ = 0x00; *ptr++ = 0x00; *ptr++ = 0x3C;
     /* Data Length (4 bytes for IP) */
     *ptr++ = 0x00; *ptr++ = 0x04;
-    /* IP: 192.168.4.1 */
-    *ptr++ = 192; *ptr++ = 168; *ptr++ = 4; *ptr++ = 1;
+    /* IP from macro */
+    uint8_t ip_bytes[] = { AP_IP_ADDR };
+    *ptr++ = ip_bytes[0]; *ptr++ = ip_bytes[1]; *ptr++ = ip_bytes[2]; *ptr++ = ip_bytes[3];
 
     size_t response_len = ptr - buffer;
     sendto(dns_socket, buffer, response_len, 0,

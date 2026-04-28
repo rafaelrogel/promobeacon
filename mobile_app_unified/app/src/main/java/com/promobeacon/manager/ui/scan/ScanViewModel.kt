@@ -6,6 +6,7 @@ import com.promobeacon.manager.domain.model.ConnectionState
 import com.promobeacon.manager.domain.repository.ScannedDevice
 import com.promobeacon.manager.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,11 +33,13 @@ class ScanViewModel @Inject constructor(
     private val getDeviceStatusUseCase: GetDeviceStatusUseCase
 ) : ViewModel() {
 
+    private var scanJob: Job? = null
+
     private val _uiState = MutableStateFlow(ScanUiState())
     val uiState: StateFlow<ScanUiState> = _uiState.asStateFlow()
 
     // Navigation state
-    private val _navigationEvent = MutableSharedFlow<NavigationEvent>()
+    private val _navigationEvent = MutableSharedFlow<NavigationEvent>(replay = 1)
     val navigationEvent: SharedFlow<NavigationEvent> = _navigationEvent.asSharedFlow()
 
     init {
@@ -57,7 +60,8 @@ class ScanViewModel @Inject constructor(
      * Start scanning
      */
     fun startScan() {
-        viewModelScope.launch {
+        scanJob?.cancel()
+        scanJob = viewModelScope.launch {
             _uiState.update { it.copy(isScanning = true, error = null) }
 
             scanDevicesUseCase(timeoutMs = 15000).collect { devices ->
@@ -93,6 +97,8 @@ class ScanViewModel @Inject constructor(
                         error = result.exceptionOrNull()?.message ?: "Connection failed"
                     )
                 }
+            } else {
+                _uiState.update { it.copy(connectingDevice = null) }
             }
             // On success, navigation will happen via connection state Flow
         }

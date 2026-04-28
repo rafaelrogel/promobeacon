@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://unpkg.com;">
     <title>PromoBeacon Web Flasher</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
         :root {
             --primary: #6366f1;
             --primary-hover: #4f46e5;
@@ -165,6 +168,16 @@
         select:focus, input[type="text"]:focus {
             outline: none;
             border-color: var(--primary);
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
         }
 
         /* Buttons */
@@ -663,7 +676,7 @@
     <div class="unsupported" id="unsupportedOverlay">
         <div class="unsupported-content">
             <div class="unsupported-icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
             </div>
             <h2>Browser Not Supported</h2>
             <p style="margin: 16px 0; color: var(--text-muted);">Web Serial API requires Chrome, Edge, or Opera. Please use a supported browser to flash your device.</p>
@@ -671,6 +684,9 @@
     </div>
 
     <div class="container">
+    <div style="background: #ef4444; color: white; text-align: center; padding: 16px; font-size: 1.1rem; font-weight: 700; border-radius: 8px; margin-bottom: 24px;">
+        DEMO MODE - This flasher does NOT write data to devices. Do NOT use for production flashing.
+    </div>
         <!-- Header -->
         <header class="header">
             <div class="logo">
@@ -750,7 +766,7 @@
                         <div class="file-name">Bootloader</div>
                         <div class="file-details" id="bootloaderDetails">Loading from server...</div>
                     </div>
-                    <div class="file-offset">0x1000</div>
+                    <div class="file-offset">0x0</div>
                 </div>
 
                 <div class="file-row" id="partitionsRow">
@@ -794,6 +810,10 @@
                     </svg>
                     Flash Firmware
                 </button>
+                <label class="btn btn-secondary" style="cursor: pointer;">
+                    Load Local Firmware
+                    <input type="file" id="firmwareFileInput" accept=".bin" multiple style="display: none;" onchange="loadLocalFirmware(event)">
+                </label>
             </div>
         </div>
 
@@ -835,7 +855,7 @@
                     <button class="terminal-btn monitor" id="monitorBtn" onclick="toggleMonitor()" disabled>Monitor</button>
                 </div>
             </div>
-            <div class="terminal" id="terminal">
+            <div class="terminal" id="terminal" role="log" aria-live="polite">
                 <div class="terminal-line info">PromoBeacon Web Flasher Ready</div>
                 <div class="terminal-line">Connect your ESP32 device to begin.</div>
             </div>
@@ -862,15 +882,15 @@
         const FIRMWARE_FILES = {
             bootloader: {
                 url: FIRMWARE_BASE_URL + 'bootloader.bin',
-                offset: '0x1000'
+                offset: 0x0
             },
             partitions: {
                 url: FIRMWARE_BASE_URL + 'partitions.bin',
-                offset: '0x8000'
+                offset: 0x8000
             },
             firmware: {
                 url: FIRMWARE_BASE_URL + 'firmware.bin',
-                offset: '0x10000'
+                offset: 0x10000
             }
         };
 
@@ -883,7 +903,6 @@
         let filesLoaded = { bootloader: false, partitions: false, firmware: false };
         let reader = null;
         let decoder = null;
-        let readableStream = null;
 
         // Check browser support
         if (!('serial' in navigator)) {
@@ -918,6 +937,12 @@
                     }
                     
                     const blob = await response.arrayBuffer();
+                    
+                    const MAX_FIRMWARE_SIZE = 0x400000; // 4MB
+                    if (blob.byteLength > MAX_FIRMWARE_SIZE) {
+                        throw new Error(`File too large (${(blob.byteLength / 1024).toFixed(1)} KB exceeds flash capacity)`);
+                    }
+
                     fileBuffers[type] = new Uint8Array(blob);
                     filesLoaded[type] = true;
                     
@@ -940,6 +965,36 @@
                 }
             }
 
+            updateFlashButton();
+        }
+
+        // Load local firmware files
+        async function loadLocalFirmware(event) {
+            const files = event.target.files;
+            
+            for (const file of files) {
+                const name = file.name.toLowerCase();
+                let type = null;
+                if (name.includes('bootloader')) type = 'bootloader';
+                else if (name.includes('partition')) type = 'partitions';
+                else if (name.includes('firmware')) type = 'firmware';
+                
+                if (type) {
+                    const buffer = await file.arrayBuffer();
+                    fileBuffers[type] = new Uint8Array(buffer);
+                    filesLoaded[type] = true;
+                    
+                    const statusEl = document.getElementById(`${type}Status`);
+                    const detailsEl = document.getElementById(`${type}Details`);
+                    statusEl.classList.remove('loading');
+                    statusEl.classList.add('loaded');
+                    statusEl.classList.remove('error');
+                    statusEl.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+                    const sizeKB = (buffer.byteLength / 1024).toFixed(1);
+                    detailsEl.textContent = `${sizeKB} KB loaded (local)`;
+                    log(`${type} loaded from local file (${sizeKB} KB)`, 'success');
+                }
+            }
             updateFlashButton();
         }
 
@@ -977,31 +1032,38 @@
                 await readDeviceInfo();
 
                 // Enable controls
-                document.getElementById('flashBtn').disabled = false;
+                loadFirmwareFiles();
+                updateFlashButton();
                 document.getElementById('monitorBtn').disabled = false;
 
             } catch (error) {
+                serialPort = null;
                 log(`Connection failed: ${error.message}`, 'error');
             }
         }
 
         // Disconnect from device
         async function disconnect() {
-            if (reader) {
-                await reader.cancel();
-                reader = null;
-            }
-            if (serialPort) {
-                await serialPort.close();
+            try {
+                if (reader) {
+                    await reader.cancel();
+                    reader.releaseLock();
+                    reader = null;
+                }
+                if (serialPort) {
+                    await serialPort.close();
+                }
+            } catch(e) {
+                // Port already gone or already closed
+                console.log('Disconnect cleanup:', e.message);
+            } finally {
                 serialPort = null;
+                isConnected = false;
+                isMonitoring = false;
+                decoder = null;
+                updateUIForConnection();
+                document.getElementById('deviceInfo').classList.remove('visible');
             }
-
-            isConnected = false;
-            isMonitoring = false;
-            updateUIForConnection();
-            log('Disconnected', 'warning');
-
-            document.getElementById('deviceInfo').classList.remove('visible');
         }
 
         // Update UI for connection state
@@ -1123,9 +1185,9 @@
         // Toggle serial monitor
         async function toggleMonitor() {
             if (isMonitoring) {
-                stopMonitor();
+                await stopMonitor();
             } else {
-                startMonitor();
+                await startMonitor();
             }
         }
 
@@ -1133,12 +1195,16 @@
         async function startMonitor() {
             if (!serialPort || isMonitoring) return;
 
+            isMonitoring = true;
             try {
-                readableStream = serialPort.readable;
+                if (!serialPort || !serialPort.readable) {
+                    log('Port is not readable', 'error');
+                    isMonitoring = false;
+                    return;
+                }
                 decoder = new TextDecoder();
-                reader = readableStream.getReader();
+                reader = serialPort.readable.getReader();
 
-                isMonitoring = true;
                 document.getElementById('monitorBtn').textContent = 'Stop';
                 document.getElementById('monitorBtn').classList.remove('monitor');
                 document.getElementById('monitorBtn').style.background = '#ef4444';
@@ -1170,8 +1236,10 @@
             isMonitoring = false;
             if (reader) {
                 await reader.cancel();
+                reader.releaseLock();
                 reader = null;
             }
+            decoder = null;
 
             document.getElementById('monitorBtn').textContent = 'Monitor';
             document.getElementById('monitorBtn').classList.add('monitor');
@@ -1181,7 +1249,7 @@
 
         // Clear terminal
         function clearTerminal() {
-            document.getElementById('terminal').innerHTML = '';
+            document.getElementById('terminal').replaceChildren();
             log('Terminal cleared', 'info');
         }
 
@@ -1198,7 +1266,7 @@
         // Append to terminal (for serial data)
         function appendToTerminal(text) {
             const terminal = document.getElementById('terminal');
-            const lines = text.split('\n');
+            const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
 
             for (const line of lines) {
                 if (line.trim()) {
@@ -1224,10 +1292,13 @@
             }
         });
 
-        // Initialize: Load firmware files on page load
-        window.addEventListener('load', () => {
-            loadFirmwareFiles();
+        // Handle Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeFlashModal();
         });
+
+        // Initialize
+        log('PromoBeacon Flasher ready. Connect a device to begin.', 'info');
     </script>
 </body>
 </html>

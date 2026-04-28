@@ -13,12 +13,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.unit.dp
-import androidx.compose.material3.Text
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import com.promobeacon.manager.ui.theme.PromoBeaconManagerTheme
 import com.promobeacon.manager.ui.navigation.Screen
 import com.promobeacon.manager.ui.scan.ScanScreen
@@ -38,18 +32,9 @@ class MainActivity : ComponentActivity() {
             PromoBeaconManagerTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color.White // Force white for diagnostic
+                    color = MaterialTheme.colorScheme.background
                 ) {
-                    Column {
-                        // Diagnostic marker
-                        Text(
-                            text = "APP OK - V2.0.3",
-                            color = Color.Blue,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                        MainNavigation()
-                    }
+                    MainNavigation()
                 }
             }
         }

@@ -51,14 +51,22 @@ void init_status_collector(void)
         .unit_id = ADC_UNIT_1,
         .ulp_mode = ADC_ULP_MODE_DISABLE,
     };
-    ESP_ERROR_CHECK(adc_oneshot_new_unit(&init_config, &adc_handle));
+    esp_err_t ret = adc_oneshot_new_unit(&init_config, &adc_handle);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "ADC unit init failed: %s", esp_err_to_name(ret));
+        return;
+    }
 
     /* 2. Configure Channel */
     adc_oneshot_chan_cfg_t config = {
         .bitwidth = ADC_BITWIDTH_DEFAULT,
         .atten = ADC_ATTEN_DB_12, /* C3 successor to 11dB */
     };
-    ESP_ERROR_CHECK(adc_oneshot_config_channel(adc_handle, ADC_CHANNEL_BATTERY, &config));
+    ret = adc_oneshot_config_channel(adc_handle, ADC_CHANNEL_BATTERY, &config);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "ADC channel config failed: %s", esp_err_to_name(ret));
+        return;
+    }
 
     /* 3. Initialize Calibration */
 #if ADC_CALI_SCHEME_CURVE_FITTING_SUPPORTED
@@ -68,7 +76,7 @@ void init_status_collector(void)
         .atten = ADC_ATTEN_DB_12,
         .bitwidth = ADC_BITWIDTH_DEFAULT,
     };
-    esp_err_t ret = adc_cali_create_scheme_curve_fitting(&cali_config, &cali_handle);
+    ret = adc_cali_create_scheme_curve_fitting(&cali_config, &cali_handle);
     if (ret == ESP_OK) {
         cali_enabled = true;
         ESP_LOGI(TAG, "ADC calibration initialized (Curve Fitting)");
@@ -79,7 +87,7 @@ void init_status_collector(void)
         .atten = ADC_ATTEN_DB_12,
         .bitwidth = ADC_BITWIDTH_DEFAULT,
     };
-    esp_err_t ret = adc_cali_create_scheme_line_fitting(&cali_config, &cali_handle);
+    ret = adc_cali_create_scheme_line_fitting(&cali_config, &cali_handle);
     if (ret == ESP_OK) {
         cali_enabled = true;
         ESP_LOGI(TAG, "ADC calibration initialized (Line Fitting)");
@@ -99,7 +107,12 @@ void init_status_collector(void)
 void update_status(void)
 {
     uint32_t current_time = xTaskGetTickCount() * portTICK_PERIOD_MS / 1000;
-    uint32_t session_seconds = current_time - session_start_time;
+    uint32_t session_seconds;
+    if (current_time >= session_start_time) {
+        session_seconds = current_time - session_start_time;
+    } else {
+        session_seconds = (UINT32_MAX - session_start_time) + current_time + 1;
+    }
     
     /* Update flags */
     current_status.flags = 0x03;  /* Both AP and BLE active */
@@ -109,8 +122,8 @@ void update_status(void)
     esp_wifi_ap_get_sta_list(&sta_list);
     current_status.client_count = sta_list.num;
     
-    /* Update session duration */
-    current_status.session_duration_sec = (uint16_t)(session_seconds & 0xFFFF);
+    /* Update session duration (32-bit seconds since boot/mode start) */
+    current_status.session_duration_sec = session_seconds;
     
     /* Calculate average portal time */
     if (portal_session_count > 0) {
@@ -140,8 +153,10 @@ void serialize_status(uint8_t* buffer)
     buffer[1] = current_status.client_count;
     buffer[2] = (uint8_t)(current_status.session_duration_sec & 0xFF);
     buffer[3] = (uint8_t)((current_status.session_duration_sec >> 8) & 0xFF);
-    buffer[4] = current_status.portal_time_avg_sec;
-    buffer[5] = current_status.battery_percent;
+    buffer[4] = (uint8_t)((current_status.session_duration_sec >> 16) & 0xFF);
+    buffer[5] = (uint8_t)((current_status.session_duration_sec >> 24) & 0xFF);
+    buffer[6] = current_status.portal_time_avg_sec;
+    buffer[7] = current_status.battery_percent;
 }
 
 /**
@@ -235,6 +250,16 @@ uint8_t get_connected_client_count(void)
     return current_status.client_count;
 }
 
+int get_current_wifi_client_count(void)
+{
+    wifi_sta_list_t sta_list;
+    esp_err_t ret = esp_wifi_ap_get_sta_list(&sta_list);
+    if (ret != ESP_OK) {
+        return 0;
+    }
+    return sta_list.num;
+}
+
 /**
  * @brief Update and return battery percentage
  */
@@ -248,7 +273,11 @@ uint8_t update_battery_percent(void)
     int adc_raw;
     uint32_t adc_sum = 0;
     for (int i = 0; i < 8; i++) {
-        ESP_ERROR_CHECK(adc_oneshot_read(adc_handle, ADC_CHANNEL_BATTERY, &adc_raw));
+        esp_err_t err = adc_oneshot_read(adc_handle, ADC_CHANNEL_BATTERY, &adc_raw);
+        if (err != ESP_OK) {
+            ESP_LOGW(TAG, "ADC read failed: %s", esp_err_to_name(err));
+            return last_battery_percent;
+        }
         adc_sum += adc_raw;
     }
     uint32_t adc_reading = adc_sum / 8;
@@ -256,7 +285,11 @@ uint8_t update_battery_percent(void)
     /* Convert to voltage (mV) */
     int voltage_mv = 0;
     if (cali_enabled) {
-        ESP_ERROR_CHECK(adc_cali_raw_to_voltage(cali_handle, adc_reading, &voltage_mv));
+        esp_err_t err = adc_cali_raw_to_voltage(cali_handle, adc_reading, &voltage_mv);
+        if (err != ESP_OK) {
+            ESP_LOGW(TAG, "ADC calibration failed: %s", esp_err_to_name(err));
+            return last_battery_percent;
+        }
     } else {
         /* Simple linear fallback if calibration fails */
         voltage_mv = (adc_reading * DEFAULT_VREF) / 4095;

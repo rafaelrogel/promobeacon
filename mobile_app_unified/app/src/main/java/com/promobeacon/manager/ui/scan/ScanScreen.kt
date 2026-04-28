@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,7 @@ fun ScanScreen(
     viewModel: ScanViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     // Permission request
     val permissions = rememberMultiplePermissionsState(
@@ -93,9 +95,27 @@ fun ScanScreen(
             when {
                 // Permissions not granted
                 !permissions.allPermissionsGranted -> {
-                    PermissionRequest(
-                        onRequestPermission = { permissions.launchMultiplePermissionRequest() }
-                    )
+                    if (!permissions.shouldShowRationale && permissions.allPermissionsRequested) {
+                        Column(
+                            modifier = Modifier.fillMaxSize().padding(32.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text("Permissions permanently denied.", style = MaterialTheme.typography.headlineSmall)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text("Please enable Bluetooth permissions in Settings.", style = MaterialTheme.typography.bodyMedium)
+                            Spacer(modifier = Modifier.height(24.dp))
+                            Button(onClick = {
+                                val intent = android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                intent.data = android.net.Uri.fromParts("package", context.packageName, null)
+                                context.startActivity(intent)
+                            }) { Text("Open Settings") }
+                        }
+                    } else {
+                        PermissionRequest(
+                            onRequestPermission = { permissions.launchMultiplePermissionRequest() }
+                        )
+                    }
                 }
 
                 // Scanning with no devices
@@ -275,18 +295,11 @@ private fun EmptyDeviceList(
 }
 
 /**
- * Multiple Permission Request
+ * Extension property to check if all permissions have been requested at least once.
+ * Note: This is a heuristic as Accompanist doesn't track this directly.
+ * If all permissions are denied and none show rationale, we assume they were permanently denied.
  */
 @OptIn(com.google.accompanist.permissions.ExperimentalPermissionsApi::class)
-@Composable
-fun rememberMultiplePermissions(): MultiplePermissionsState {
-    return rememberMultiplePermissionsState(
-        permissions = buildList {
-            add(Manifest.permission.BLUETOOTH_SCAN)
-            add(Manifest.permission.BLUETOOTH_CONNECT)
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
-                add(Manifest.permission.ACCESS_FINE_LOCATION)
-            }
-        }
-    )
-}
+val com.google.accompanist.permissions.MultiplePermissionsState.allPermissionsRequested: Boolean
+    get() = permissions.any { it.status != com.google.accompanist.permissions.PermissionStatus.Granted }
+

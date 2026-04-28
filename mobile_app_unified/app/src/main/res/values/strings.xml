@@ -72,7 +72,7 @@
     <string name="authentication_required">Administrator Authentication</string>
     <string name="enter_auth_token">Please enter your administrator password to configure this device.</string>
     <string name="auth_token">Administrator Password</string>
-    <string name="token_hint_format">Default: admin123</string>
+    <string name="token_hint_format">Enter Admin Password</string>
     <string name="authenticate">Login</string>
     <string name="authentication_successful">Authenticated Successfuly</string>
     <string name="authentication_failed">Invalid Password</string>

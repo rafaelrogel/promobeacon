@@ -85,6 +85,7 @@ typedef struct {
 typedef struct {
     uint8_t mac_addr[6];          /* Client MAC address */
     uint32_t connect_timestamp;   /* Connection time (system uptime seconds) */
+    uint32_t last_activity_timestamp; /* Time of last activity */
     uint32_t disconnect_timestamp;/* Disconnection time (0 if still connected) */
     uint32_t duration_seconds;    /* Session duration in seconds */
     uint32_t bytes_received;      /* Data sent to client */

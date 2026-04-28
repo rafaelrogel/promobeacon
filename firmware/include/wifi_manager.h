@@ -34,7 +34,7 @@ extern "C" {
 #define AP_IP_ADDR                192, 168, 4, 1
 #define AP_NETMASK                255, 255, 255, 0
 #define DHCP_START_ADDR           192, 168, 4, 2
-#define DHCP_END_ADDR             192, 168, 4, 6
+#define DHCP_END_ADDR             192, 168, 4, 7
 
 /**
  * @brief WiFi AP configuration structure
@@ -92,7 +92,7 @@ esp_err_t update_ap_password(const char* new_password);
  * 
  * @return Number of currently connected WiFi clients
  */
-uint8_t get_wifi_client_count(void);
+/* get_wifi_client_count removed */
 
 /**
  * @brief Check if WiFi AP is active

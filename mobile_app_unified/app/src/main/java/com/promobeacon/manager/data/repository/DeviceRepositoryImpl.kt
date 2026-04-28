@@ -32,10 +32,12 @@ class DeviceRepositoryImpl @Inject constructor(
     private val gson = Gson()
 
     // Cached configuration
+    @Volatile
     private var cachedGModeConfig: GModeConfig? = null
 
     override fun scanDevices(timeoutMs: Int): Flow<List<ScannedDevice>> = flow {
         bleClient.startScan()
+        delay(200)
 
         val startTime = System.currentTimeMillis()
         while (System.currentTimeMillis() - startTime < timeoutMs) {
@@ -98,10 +100,26 @@ class DeviceRepositoryImpl @Inject constructor(
 
     override suspend fun updateGModeConfig(config: GModeConfig): Result<Unit> = withContext(Dispatchers.IO) {
         try {
-            // Write promotion text
+            // Write promotion text (this also updates AP SSID on firmware side)
             val promoSuccess = bleClient.writePromoText(config.promoText)
             if (!promoSuccess) {
                 return@withContext Result.failure(Exception("Failed to write promotion text"))
+            }
+
+            // Write SSID if it differs from promo text
+            if (config.ssid != config.promoText) {
+                val ssidSuccess = bleClient.writeSsid(config.ssid)
+                if (!ssidSuccess) {
+                    return@withContext Result.failure(Exception("Failed to write SSID"))
+                }
+            }
+
+            // Write WiFi password if provided
+            if (config.password.isNotEmpty()) {
+                val passwordSuccess = bleClient.writeWifiPassword(config.password)
+                if (!passwordSuccess) {
+                    return@withContext Result.failure(Exception("Failed to write WiFi password"))
+                }
             }
 
             // Update cache
@@ -155,7 +173,7 @@ class DeviceRepositoryImpl @Inject constructor(
     /**
      * Parse device status data
      *
-     * Status data format:
+     * Status data format (DeviceStatus):
      * - Byte 0: Current mode (0=G, 1=E)
      * - Byte 1: Advertising status (0=not advertising, 1=advertising)
      * - Byte 2: Connection status (0=disconnected, 1=connected)
@@ -164,6 +182,9 @@ class DeviceRepositoryImpl @Inject constructor(
      * - Byte 8: Client count
      * - Byte 9-28: Message (20 bytes)
      * - Byte 29-60: Promotion text (32 bytes)
+     *
+     * Note: The packed StatusPacket (CHAR_STATS) now uses 8 bytes:
+     * [flags(1) | clients(1) | session_duration_sec(4) | portal_avg(1) | battery(1)]
      */
     private fun parseStatus(data: ByteArray?): DeviceStatus {
         if (data == null || data.size < 30) {
@@ -279,21 +300,21 @@ class DeviceRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override suspend fun exportStatsToCsv(deviceIp: String): Result<String> = withContext(Dispatchers.IO) {
+        val url = URL("http://$deviceIp/stats.csv")
+        val connection = url.openConnection() as HttpURLConnection
         try {
-            val url = URL("http://$deviceIp/stats.csv")
-            val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             connection.connectTimeout = 10000
             connection.readTimeout = 30000
 
             val responseCode = connection.responseCode
             if (responseCode != HttpURLConnection.HTTP_OK) {
-                return@withContext Result.failure(Exception("HTTP error: $responseCode"))
+                val errorBody = connection.errorStream?.bufferedReader()?.use { it.readText() }
+                return@withContext Result.failure(Exception("HTTP error: $responseCode - $errorBody"))
             }
 
             val inputStream = connection.inputStream
             val csvContent = inputStream.bufferedReader().use { it.readText() }
-            inputStream.close()
 
             if (csvContent.isEmpty()) {
                 return@withContext Result.failure(Exception("No data received"))
@@ -313,6 +334,8 @@ class DeviceRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Log.e(tag, "CSV export failed", e)
             Result.failure(e)
+        } finally {
+            connection.disconnect()
         }
     }
 

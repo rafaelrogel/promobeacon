@@ -149,6 +149,8 @@ esp_err_t ota_begin(void);
  * @param length Length of data in bytes
  * @return ESP_OK on success, error code otherwise
  */
+void ota_set_image_size(size_t size);
+
 esp_err_t ota_write(const void* data, size_t length);
 
 /**

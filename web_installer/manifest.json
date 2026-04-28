@@ -1,24 +1,24 @@
 {
   "name": "PromoBeacon",
-  "version": "2.0.0",
+  "version": "2.1.3",
   "new_install_prompt_erase": true,
   "builds": [
     {
       "chipFamily": "ESP32-C3",
       "parts": [
-        { "path": "firmware_c3_merged.bin", "offset": 0 }
-      ]
-    },
-    {
-      "chipFamily": "ESP32-S3",
-      "parts": [
-        { "path": "firmware_s3_merged.bin", "offset": 0 }
+        { "path": "bootloader_c3.bin", "offset": 0 },
+        { "path": "partitions_c3.bin", "offset": 32768 },
+        { "path": "ota_data_initial_c3.bin", "offset": 69632 },
+        { "path": "firmware_c3.bin", "offset": 131072 }
       ]
     },
     {
       "chipFamily": "ESP32",
       "parts": [
-        { "path": "firmware_classic_merged.bin", "offset": 0 }
+        { "path": "bootloader_classic.bin", "offset": 4096 },
+        { "path": "partitions_classic.bin", "offset": 32768 },
+        { "path": "ota_data_initial_classic.bin", "offset": 69632 },
+        { "path": "firmware_classic.bin", "offset": 131072 }
       ]
     }
   ]

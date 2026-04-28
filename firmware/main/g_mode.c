@@ -191,12 +191,17 @@ esp_err_t g_mode_update_promotion_text(const char* promotion_text)
     current_promo_text[len] = '\0';
 
     /* Save to persistent storage */
+    /* Note: SSID and promo_text are kept identical by design in this system */
     esp_err_t ret = save_promo_text(current_promo_text);
     if (ret != ESP_OK) {
         ESP_LOGW(TAG, "Failed to save promo text: %s", esp_err_to_name(ret));
     }
+    save_ssid(current_promo_text);
 
-    ESP_LOGI(TAG, "Promotion text updated: %s", current_promo_text);
+    update_ap_ssid(current_promo_text);
+    update_ble_advertising_name(current_promo_text);
+
+    ESP_LOGI(TAG, "Promo text updated, AP SSID and BLE name updated to: %s", current_promo_text);
 
     return ESP_OK;
 }
@@ -224,10 +229,12 @@ esp_err_t g_mode_update_ssid(const char* new_ssid)
     }
 
     /* Save to persistent storage */
+    /* Note: SSID and promo_text are kept identical by design in this system */
     ret = save_ssid(new_ssid);
     if (ret != ESP_OK) {
         ESP_LOGW(TAG, "Failed to save SSID: %s", esp_err_to_name(ret));
     }
+    save_promo_text(new_ssid);
 
     /* Update BLE advertising name to match new SSID */
     ret = update_ble_advertising_name(new_ssid);

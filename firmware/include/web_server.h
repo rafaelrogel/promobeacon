@@ -169,6 +169,17 @@ bool is_in_setup_mode(void);
  */
 esp_err_t complete_setup(void);
 
+/**
+ * @brief GET /stats.csv - Return device statistics in CSV format
+ * 
+ * Generates a CSV file containing device info and session history.
+ * Used by mobile app for data export.
+ * 
+ * @param req HTTP request handle
+ * @return ESP_OK on success
+ */
+esp_err_t stats_csv_get_handler(void *req);
+
 #ifdef __cplusplus
 }
 #endif

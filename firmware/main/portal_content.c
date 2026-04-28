@@ -190,10 +190,14 @@ esp_err_t portal_load_from_nvs(void)
                      stored_crc, calculated_crc);
             nvs_close(nvs_handle);
             /* Try to recover by clearing invalid content */
-            nvs_open(PORTAL_NVS_NAMESPACE, NVS_READWRITE, &nvs_handle);
-            nvs_erase_key(nvs_handle, PORTAL_NVS_CONTENT_KEY);
-            nvs_commit(nvs_handle);
-            nvs_close(nvs_handle);
+            esp_err_t open_ret = nvs_open(PORTAL_NVS_NAMESPACE, NVS_READWRITE, &nvs_handle);
+            if (open_ret == ESP_OK) {
+                nvs_erase_key(nvs_handle, PORTAL_NVS_CONTENT_KEY);
+                nvs_commit(nvs_handle);
+                nvs_close(nvs_handle);
+            } else {
+                ESP_LOGE(TAG, "Recovery failed: cannot open NVS: %s", esp_err_to_name(open_ret));
+            }
             g_is_custom = false;
             return ESP_ERR_INVALID_CRC;
         }
@@ -276,7 +280,7 @@ esp_err_t portal_transfer_start(uint32_t total_size, uint32_t crc32)
 
     memset(g_content_buffer, 0, total_size + 1);
     g_allocated_size = total_size + 1;
-    g_content_size = 0;
+    g_content_size = total_size;
 
     /* Initialize transfer state */
     g_transfer.status = PORTAL_STATUS_RECEIVING;
@@ -346,10 +350,10 @@ esp_err_t portal_transfer_complete(void)
     }
 
     /* Verify we received all bytes */
-    if (g_transfer.bytes_received != g_transfer.total_size) {
-        ESP_LOGE(TAG, "Incomplete transfer: %" PRIu32 " / %" PRIu32,
+    if (g_transfer.bytes_received != g_content_size) {
+        ESP_LOGE(TAG, "Transfer size mismatch: received=%" PRIu32 ", expected=%" PRIu32,
                  (uint32_t)g_transfer.bytes_received,
-                 (uint32_t)g_transfer.total_size);
+                 (uint32_t)g_content_size);
         portal_transfer_abort();
         return ESP_ERR_INVALID_SIZE;
     }
@@ -375,8 +379,11 @@ esp_err_t portal_transfer_complete(void)
     }
 
     g_transfer.status = PORTAL_STATUS_COMPLETE;
+    g_content_buffer = NULL;
+    g_content_size = 0;
+    g_transfer.buffer = NULL;
 
-    ESP_LOGI(TAG, "Transfer complete: %" PRIu32 " bytes saved to NVS", g_content_size);
+    ESP_LOGI(TAG, "Transfer complete: bytes saved to NVS");
 
     return ESP_OK;
 }
@@ -390,11 +397,13 @@ void portal_transfer_abort(void)
         free(g_transfer.buffer);
         g_transfer.buffer = NULL;
     }
+    
+    g_content_buffer = NULL;
+    g_content_size = 0;
 
     memset(&g_transfer, 0, sizeof(portal_transfer_state_t));
     g_transfer.status = PORTAL_STATUS_IDLE;
 
-    /* Don't free main content buffer - keep it for fallback */
     ESP_LOGI(TAG, "Transfer aborted");
 }
 
@@ -474,6 +483,9 @@ void portal_content_deinit(void)
         /* Buffer was from NVS load, should keep it */
     }
 
+    if (g_content_buffer != NULL) {
+        free(g_content_buffer);
+    }
     g_content_buffer = NULL;
     g_content_size = 0;
     g_allocated_size = 0;
@@ -489,7 +501,7 @@ void portal_content_deinit(void)
  */
 const char* portal_content_get(void)
 {
-    if (g_content_buffer && g_content_size > 0) {
+    if (g_content_buffer != NULL && g_content_size > 0) {
         return (const char*)g_content_buffer;
     }
 
