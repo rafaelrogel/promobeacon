@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800">
+  <!-- Background -->
+  <rect width="400" height="800" fill="#FAFAFA"/>
+  
+  <!-- Status Bar -->
+  <rect width="400" height="40" fill="#1976D2"/>
+  <text x="20" y="27" font-family="Arial, sans-serif" font-size="16" fill="white" font-weight="bold">9:41</text>
+  <text x="320" y="27" font-family="Arial, sans-serif" font-size="12" fill="white">📶 🔋</text>
+  
+  <!-- App Bar -->
+  <rect y="40" width="400" height="60" fill="white" filter="url(#shadow)"/>
+  <text x="20" y="78" font-family="Arial, sans-serif" font-size="20" fill="#333" font-weight="bold">Device Console</text>
+  <!-- Back Button -->
+  <circle cx="40" cy="70" r="20" fill="#E3F2FD"/>
+  <path d="M32 70 L46 70" stroke="#1976D2" stroke-width="3" stroke-linecap="round"/>
+  <!-- Disconnect Button -->
+  <rect x="270" y="55" width="110" height="30" rx="15" fill="#FFEBEE"/>
+  <text x="290" y="75" font-family="Arial, sans-serif" font-size="12" fill="#D32F2F">Disconnect</text>
+  
+  <!-- Connection Status Card -->
+  <rect x="16" y="115" width="368" height="180" rx="12" fill="white" filter="url(#shadow)"/>
+  <text x="32" y="145" font-family="Arial, sans-serif" font-size="16" fill="#333" font-weight="bold">Connection Status</text>
+  
+  <!-- Status Indicators -->
+  <circle cx="60" cy="175" r="25" fill="#4CAF50"/>
+  <circle cx="60" cy="175" r="8" fill="white"/>
+  <text x="95" y="170" font-family="Arial, sans-serif" font-size="14" fill="#333">Connected</text>
+  <text x="95" y="190" font-family="Arial, sans-serif" font-size="11" fill="#666">Advertising</text>
+  
+  <!-- Stats Row -->
+  <rect x="32" y="215" width="105" height="50" rx="8" fill="#F5F5F5"/>
+  <text x="85" y="235" font-family="Arial, sans-serif" font-size="12" fill="#666">Uptime</text>
+  <text x="85" y="255" font-family="Arial, sans-serif" font-size="14" fill="#333" font-weight="bold">2h 15m</text>
+  
+  <rect x="147" y="215" width="105" height="50" rx="8" fill="#F5F5F5"/>
+  <text x="200" y="235" font-family="Arial, sans-serif" font-size="12" fill="#666">Clients</text>
+  <text x="200" y="255" font-family="Arial, sans-serif" font-size="14" fill="#333" font-weight="bold">5</text>
+  
+  <rect x="262" y="215" width="105" height="50" rx="8" fill="#F5F5F5"/>
+  <text x="315" y="235" font-family="Arial, sans-serif" font-size="12" fill="#666">Signal</text>
+  <text x="315" y="255" font-family="Arial, sans-serif" font-size="14" fill="#333" font-weight="bold">-45 dBm</text>
+  
+  <!-- Device Configuration Card -->
+  <rect x="16" y="310" width="368" height="260" rx="12" fill="white" filter="url(#shadow)"/>
+  <text x="32" y="340" font-family="Arial, sans-serif" font-size="16" fill="#333" font-weight="bold">Device Configuration</text>
+  
+  <!-- SSID Field -->
+  <text x="32" y="375" font-family="Arial, sans-serif" font-size="12" fill="#666">Network Name (SSID)</text>
+  <rect x="32" y="385" width="336" height="40" rx="6" fill="#F5F5F5" stroke="#E0E0E0"/>
+  <text x="48" y="412" font-family="Arial, sans-serif" font-size="14" fill="#333">PromoBeacon</text>
+  
+  <!-- Password Toggle -->
+  <rect x="32" y="440" width="336" height="40" rx="6" fill="#F5F5F5" stroke="#E0E0E0"/>
+  <rect x="48" y="452" width="36" height="20" rx="10" fill="#1976D2"/>
+  <circle cx="72" cy="462" r="8" fill="white"/>
+  <text x="100" y="465" font-family="Arial, sans-serif" font-size="14" fill="#333">Set Password</text>
+  
+  <!-- Promo Text Field -->
+  <text x="32" y="500" font-family="Arial, sans-serif" font-size="12" fill="#666">Promotion Text</text>
+  <rect x="32" y="510" width="336" height="40" rx="6" fill="#F5F5F5" stroke="#E0E0E0"/>
+  <text x="48" y="537" font-family="Arial, sans-serif" font-size="14" fill="#333">VISITE-NOS</text>
+  <text x="320" y="537" font-family="Arial, sans-serif" font-size="12" fill="#666">10/32</text>
+  
+  <!-- Save Button -->
+  <rect x="32" y="565" width="336" height="44" rx="8" fill="#1976D2"/>
+  <text x="185" y="594" font-family="Arial, sans-serif" font-size="14" fill="white" font-weight="bold">Save Config</text>
+  
+  <!-- Device Actions Card -->
+  <rect x="16" y="585" width="368" height="180" rx="12" fill="white" filter="url(#shadow)"/>
+  <text x="32" y="615" font-family="Arial, sans-serif" font-size="16" fill="#333" font-weight="bold">Device Actions</text>
+  
+  <!-- Reboot & Reset Buttons -->
+  <rect x="32" y="635" width="172" height="40" rx="8" fill="#FFEBEE" stroke="#FFCDD2"/>
+  <text x="75" y="662" font-family="Arial, sans-serif" font-size="14" fill="#D32F2F">Reboot</text>
+  
+  <rect x="196" y="635" width="172" height="40" rx="8" fill="#FFEBEE" stroke="#FFCDD2"/>
+  <text x="245" y="662" font-family="Arial, sans-serif" font-size="14" fill="#D32F2F">Reset</text>
+  
+  <!-- Export Stats Button -->
+  <rect x="32" y="690" width="336" height="40" rx="8" fill="#E3F2FD" stroke="#BBDEFB"/>
+  <text x="120" y="717" font-family="Arial, sans-serif" font-size="14" fill="#1976D2">Export Stats (CSV)</text>
+  
+  <!-- Upload Portal Button -->
+  <rect x="32" y="725" width="336" height="40" rx="8" fill="#E8F5E9" stroke="#C8E6C9"/>
+  <text x="135" y="752" font-family="Arial, sans-serif" font-size="14" fill="#388E3C">Upload Portal (HTML)</text>
+  
+  <!-- Shadow Filter -->
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+</svg>

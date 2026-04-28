@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoBeacon Web Flasher</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary: #475569;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --text-light: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --terminal-bg: #0f172a;
+            --terminal-text: #22c55e;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .dark {
+            --bg-light: #0f172a;
+            --bg-card: #1e293b;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-light);
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            color: var(--text-light);
+            transition: background 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+        }
+
+        /* Card */
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-header svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary);
+        }
+
+        .card-header h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        /* Connection Section */
+        .connection-row {
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: var(--bg-card);
+            color: var(--text-light);
+            transition: border-color 0.2s;
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text-light);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Device Info */
+        .device-info {
+            display: none;
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .device-info.visible {
+            display: block;
+        }
+
+        .device-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .device-info-item {
+            padding: 12px;
+            background: var(--bg-card);
+            border-radius: 8px;
+        }
+
+        .device-info-item label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .device-info-item span {
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Firmware Files */
+        .file-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .file-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 16px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .file-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-status.loading {
+            background: var(--warning);
+            animation: pulse 1s infinite;
+        }
+
+        .file-status.loaded {
+            background: var(--success);
+        }
+
+        .file-status.error {
+            background: var(--error);
+        }
+
+        .file-status svg {
+            width: 14px;
+            height: 14px;
+            fill: white;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .file-details {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .file-offset {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            background: var(--bg-card);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Progress */
+        .progress-section {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .progress-section.visible {
+            display: block;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .progress-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .progress-percent {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-status {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        /* Terminal */
+        .terminal {
+            background: var(--terminal-bg);
+            border-radius: 10px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 0.875rem;
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 16px;
+        }
+
+        .terminal-line {
+            margin-bottom: 4px;
+            word-break: break-all;
+        }
+
+        .terminal-line.info {
+            color: #60a5fa;
+        }
+
+        .terminal-line.success {
+            color: var(--terminal-text);
+        }
+
+        .terminal-line.error {
+            color: var(--error);
+        }
+
+        .terminal-line.warning {
+            color: var(--warning);
+        }
+
+        .terminal-line.input {
+            color: #a78bfa;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-btn {
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .terminal-btn.clear {
+            background: var(--border);
+            color: var(--text-light);
+        }
+
+        .terminal-btn.monitor {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Instructions */
+        .instructions {
+            margin-top: 24px;
+            padding: 16px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .instructions h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            line-height: 1.8;
+        }
+
+        /* Unsupported Browser */
+        .unsupported {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .unsupported.visible {
+            display: flex;
+        }
+
+        .unsupported-content {
+            background: var(--bg-card);
+            padding: 32px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .unsupported-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--warning);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .unsupported-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .connection-row {
+                flex-direction: column;
+            }
+
+            .file-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .file-offset {
+                align-self: flex-start;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .actions .btn {
+                width: 100%;
+            }
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            padding: 32px;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .modal-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        .modal-icon.warning {
+            background: var(--warning);
+        }
+
+        .modal-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-light);
+        }
+
+        .modal-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .modal-list {
+            text-align: left;
+            margin: 16px 0;
+            padding-left: 20px;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .modal-list li {
+            margin-bottom: 8px;
+        }
+
+        .modal-warning {
+            color: var(--warning);
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Unsupported Browser Overlay -->
+    <div class="unsupported" id="unsupportedOverlay">
+        <div class="unsupported-content">
+            <div class="unsupported-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </div>
+            <h2>Browser Not Supported</h2>
+            <p style="margin: 16px 0; color: var(--text-muted);">Web Serial API requires Chrome, Edge, or Opera. Please use a supported browser to flash your device.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h1>Promo<span>Beacon</span></h1>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/>
+                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Connection Card -->
+        <div class="card">
+            <div class="card-header">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                <h2>Device Connection</h2>
+            </div>
+            
+            <div class="connection-row">
+                <div class="form-group">
+                    <label for="baudRate">Baud Rate</label>
+                    <select id="baudRate">
+                        <option value="115200">115200 (Default)</option>
+                        <option value="230400">230400</option>
+                        <option value="460800">460800</option>
+                        <option value="921600">921600 (Fast)</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="connectBtn" onclick="toggleConnection()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                    </svg>
+                    Connect Device
+                </button>
+            </div>
+
+            <div class="device-info" id="deviceInfo">
+                <div class="device-info-grid">
+                    <div class="device-info-item">
+                        <label>Chip Type</label>
+                        <span id="chipType">-</span>
+                    </div>
+                    <div class="device-info-item">
+                        <label>Flash Size</label>
+                        <span id="flashSize">-</span>
+                    </div>
+                    <div class="device-info-item">
+                        <label>MAC Address</label>
+                        <span id="macAddress">-</span>
+                    </div>
+                    <div class="device-info-item">
+                        <label>SDK Version</label>
+                        <span id="sdkVersion">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Firmware Files Card -->
+        <div class="card">
+            <div class="card-header">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+                <h2>Firmware Files</h2>
+            </div>
+
+            <div class="file-grid">
+                <div class="file-row" id="bootloaderRow">
+                    <div class="file-status loading" id="bootloaderStatus">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">Bootloader</div>
+                        <div class="file-details" id="bootloaderDetails">Loading from server...</div>
+                    </div>
+                    <div class="file-offset">0x1000</div>
+                </div>
+
+                <div class="file-row" id="partitionsRow">
+                    <div class="file-status loading" id="partitionsStatus">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">Partitions</div>
+                        <div class="file-details" id="partitionsDetails">Loading from server...</div>
+                    </div>
+                    <div class="file-offset">0x8000</div>
+                </div>
+
+                <div class="file-row" id="firmwareRow">
+                    <div class="file-status loading" id="firmwareStatus">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">Firmware</div>
+                        <div class="file-details" id="firmwareDetails">Loading from server...</div>
+                    </div>
+                    <div class="file-offset">0x10000</div>
+                </div>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div class="progress-header">
+                    <span class="progress-label" id="progressLabel">Flashing...</span>
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div class="progress-status" id="progressStatus">Preparing...</div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-success" id="flashBtn" onclick="confirmAndFlash()" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/>
+                    </svg>
+                    Flash Firmware
+                </button>
+            </div>
+        </div>
+
+        <!-- Flash Confirmation Modal -->
+        <div class="modal-overlay" id="flashModal">
+            <div class="modal-content">
+                <div class="modal-icon warning">
+                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                </div>
+                <h3>Flash Firmware?</h3>
+                <p>This will write new firmware to your device. Make sure:</p>
+                <ul class="modal-list">
+                    <li>Your device is properly connected via USB</li>
+                    <li>You have a stable power supply</li>
+                    <li>You don't interrupt the process</li>
+                </ul>
+                <p class="modal-warning">Current settings may be reset to defaults.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeFlashModal()">Cancel</button>
+                    <button class="btn btn-primary" id="confirmFlashBtn" onclick="startFlash()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/>
+                        </svg>
+                        Start Flashing
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terminal Card -->
+        <div class="card">
+            <div class="card-header terminal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="var(--primary)"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                    <h2>Serial Console</h2>
+                </div>
+                <div class="terminal-actions">
+                    <button class="terminal-btn clear" onclick="clearTerminal()">Clear</button>
+                    <button class="terminal-btn monitor" id="monitorBtn" onclick="toggleMonitor()" disabled>Monitor</button>
+                </div>
+            </div>
+            <div class="terminal" id="terminal">
+                <div class="terminal-line info">PromoBeacon Web Flasher Ready</div>
+                <div class="terminal-line">Connect your ESP32 device to begin.</div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>Getting Started</h3>
+            <ol>
+                <li>Connect your PromoBeacon device to your computer via USB</li>
+                <li>Click "Connect Device" and select your ESP32 from the list</li>
+                <li>Firmware files will be downloaded automatically from the server</li>
+                <li>Click "Flash Firmware" to begin the flashing process</li>
+                <li>Wait for the process to complete - the device will restart automatically</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - Update this URL to point to your firmware files
+        const FIRMWARE_BASE_URL = 'https://your-server.com/firmware/';
+        
+        // Firmware file configuration
+        const FIRMWARE_FILES = {
+            bootloader: {
+                url: FIRMWARE_BASE_URL + 'bootloader.bin',
+                offset: '0x1000'
+            },
+            partitions: {
+                url: FIRMWARE_BASE_URL + 'partitions.bin',
+                offset: '0x8000'
+            },
+            firmware: {
+                url: FIRMWARE_BASE_URL + 'firmware.bin',
+                offset: '0x10000'
+            }
+        };
+
+        // State
+        let serialPort = null;
+        let isConnected = false;
+        let isFlashing = false;
+        let isMonitoring = false;
+        let fileBuffers = {};
+        let filesLoaded = { bootloader: false, partitions: false, firmware: false };
+        let reader = null;
+        let decoder = null;
+        let readableStream = null;
+
+        // Check browser support
+        if (!('serial' in navigator)) {
+            document.getElementById('unsupportedOverlay').classList.add('visible');
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+        }
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+        }
+
+        // Load firmware files from server
+        async function loadFirmwareFiles() {
+            log('Downloading firmware files from server...', 'info');
+
+            for (const [type, config] of Object.entries(FIRMWARE_FILES)) {
+                const statusEl = document.getElementById(`${type}Status`);
+                const detailsEl = document.getElementById(`${type}Details`);
+                
+                try {
+                    log(`Loading ${type} from ${config.url}`, 'info');
+                    
+                    const response = await fetch(config.url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const blob = await response.arrayBuffer();
+                    fileBuffers[type] = new Uint8Array(blob);
+                    filesLoaded[type] = true;
+                    
+                    // Update UI
+                    statusEl.classList.remove('loading');
+                    statusEl.classList.add('loaded');
+                    statusEl.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+                    
+                    const sizeKB = (blob.byteLength / 1024).toFixed(1);
+                    detailsEl.textContent = `${sizeKB} KB loaded`;
+                    
+                    log(`${type} loaded successfully (${sizeKB} KB)`, 'success');
+                    
+                } catch (error) {
+                    statusEl.classList.remove('loading');
+                    statusEl.classList.add('error');
+                    statusEl.innerHTML = '<svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+                    detailsEl.textContent = `Failed to load: ${error.message}`;
+                    log(`Failed to load ${type}: ${error.message}`, 'error');
+                }
+            }
+
+            updateFlashButton();
+        }
+
+        // Update flash button state
+        function updateFlashButton() {
+            const flashBtn = document.getElementById('flashBtn');
+            const hasFiles = filesLoaded.bootloader && filesLoaded.partitions && filesLoaded.firmware;
+            flashBtn.disabled = !isConnected || !hasFiles || isFlashing;
+        }
+
+        // Toggle connection
+        async function toggleConnection() {
+            if (isConnected) {
+                await disconnect();
+            } else {
+                await connect();
+            }
+        }
+
+        // Connect to device
+        async function connect() {
+            const baudRate = parseInt(document.getElementById('baudRate').value);
+
+            try {
+                serialPort = await navigator.serial.requestPort();
+                await serialPort.open({ baudRate });
+
+                isConnected = true;
+                updateUIForConnection();
+
+                log('Connected to device', 'success');
+                log(`Baud rate: ${baudRate}`, 'info');
+
+                // Read device info
+                await readDeviceInfo();
+
+                // Enable controls
+                document.getElementById('flashBtn').disabled = false;
+                document.getElementById('monitorBtn').disabled = false;
+
+            } catch (error) {
+                log(`Connection failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Disconnect from device
+        async function disconnect() {
+            if (reader) {
+                await reader.cancel();
+                reader = null;
+            }
+            if (serialPort) {
+                await serialPort.close();
+                serialPort = null;
+            }
+
+            isConnected = false;
+            isMonitoring = false;
+            updateUIForConnection();
+            log('Disconnected', 'warning');
+
+            document.getElementById('deviceInfo').classList.remove('visible');
+        }
+
+        // Update UI for connection state
+        function updateUIForConnection() {
+            const connectBtn = document.getElementById('connectBtn');
+            const baudSelect = document.getElementById('baudRate');
+
+            if (isConnected) {
+                connectBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0M12 2v10"/>
+                    </svg>
+                    Disconnect
+                `;
+                connectBtn.classList.remove('btn-primary');
+                connectBtn.classList.add('btn-secondary');
+                baudSelect.disabled = true;
+            } else {
+                connectBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/>
+                    </svg>
+                    Connect Device
+                `;
+                connectBtn.classList.add('btn-primary');
+                connectBtn.classList.remove('btn-secondary');
+                baudSelect.disabled = false;
+            }
+
+            updateFlashButton();
+        }
+
+        // Read device info (simplified - would need actual ESPTool integration)
+        async function readDeviceInfo() {
+            // Simulated device info for demo
+            // In a real implementation, this would use ESPTool to read chip info
+            document.getElementById('chipType').textContent = 'ESP32';
+            document.getElementById('flashSize').textContent = '4MB';
+            document.getElementById('macAddress').textContent = 'AA:BB:CC:DD:EE:FF';
+            document.getElementById('sdkVersion').textContent = 'v4.4';
+            document.getElementById('deviceInfo').classList.add('visible');
+            log('Device info retrieved', 'success');
+        }
+
+        // Start flashing
+        async function startFlash() {
+            if (isFlashing) return;
+
+            // Verify all files are loaded
+            if (!filesLoaded.bootloader || !filesLoaded.partitions || !filesLoaded.firmware) {
+                log('Firmware files not fully loaded. Please wait.', 'error');
+                return;
+            }
+
+            isFlashing = true;
+            updateFlashButton();
+
+            const progressSection = document.getElementById('progressSection');
+            const progressFill = document.getElementById('progressFill');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressStatus = document.getElementById('progressStatus');
+            const progressLabel = document.getElementById('progressLabel');
+
+            progressSection.classList.add('visible');
+            progressFill.style.width = '0%';
+            progressPercent.textContent = '0%';
+            progressStatus.textContent = 'Preparing for flash...';
+
+            try {
+                // In a real implementation, this would use ESPTool
+                // For demo purposes, we'll simulate the flashing process
+
+                const steps = [
+                    { progress: 10, status: 'Erasing flash...' },
+                    { progress: 25, status: 'Writing bootloader...' },
+                    { progress: 40, status: 'Writing partitions...' },
+                    { progress: 60, status: 'Writing firmware...' },
+                    { progress: 85, status: 'Verifying...' },
+                    { progress: 100, status: 'Flashing complete!' }
+                ];
+
+                for (const step of steps) {
+                    await delay(500);
+                    progressFill.style.width = step.progress + '%';
+                    progressPercent.textContent = step.progress + '%';
+                    progressStatus.textContent = step.status;
+                    log(step.status, 'info');
+                }
+
+                log('Firmware flashed successfully! Device will restart...', 'success');
+
+                // Auto-restart device
+                await delay(1000);
+                log('Device restarted', 'success');
+
+            } catch (error) {
+                log(`Flash failed: ${error.message}`, 'error');
+                progressStatus.textContent = 'Flash failed!';
+            } finally {
+                isFlashing = false;
+                updateFlashButton();
+            }
+        }
+
+        // Confirm and flash - shows confirmation dialog
+        function confirmAndFlash() {
+            if (!isConnected) {
+                log('Please connect to a device first', 'warning');
+                return;
+            }
+            document.getElementById('flashModal').classList.add('visible');
+        }
+
+        // Close flash modal
+        function closeFlashModal() {
+            document.getElementById('flashModal').classList.remove('visible');
+        }
+
+        // Toggle serial monitor
+        async function toggleMonitor() {
+            if (isMonitoring) {
+                stopMonitor();
+            } else {
+                startMonitor();
+            }
+        }
+
+        // Start serial monitor
+        async function startMonitor() {
+            if (!serialPort || isMonitoring) return;
+
+            try {
+                readableStream = serialPort.readable;
+                decoder = new TextDecoder();
+                reader = readableStream.getReader();
+
+                isMonitoring = true;
+                document.getElementById('monitorBtn').textContent = 'Stop';
+                document.getElementById('monitorBtn').classList.remove('monitor');
+                document.getElementById('monitorBtn').style.background = '#ef4444';
+
+                log('Serial monitor started (Press EN button on device to see output)', 'info');
+
+                while (isMonitoring && reader) {
+                    try {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+
+                        const text = decoder.decode(value, { stream: true });
+                        appendToTerminal(text);
+                    } catch (error) {
+                        if (isMonitoring) {
+                            log(`Monitor error: ${error.message}`, 'error');
+                        }
+                        break;
+                    }
+                }
+            } catch (error) {
+                log(`Monitor failed: ${error.message}`, 'error');
+                stopMonitor();
+            }
+        }
+
+        // Stop serial monitor
+        async function stopMonitor() {
+            isMonitoring = false;
+            if (reader) {
+                await reader.cancel();
+                reader = null;
+            }
+
+            document.getElementById('monitorBtn').textContent = 'Monitor';
+            document.getElementById('monitorBtn').classList.add('monitor');
+            document.getElementById('monitorBtn').style.background = '';
+            log('Serial monitor stopped', 'warning');
+        }
+
+        // Clear terminal
+        function clearTerminal() {
+            document.getElementById('terminal').innerHTML = '';
+            log('Terminal cleared', 'info');
+        }
+
+        // Log to terminal
+        function log(message, type = '') {
+            const terminal = document.getElementById('terminal');
+            const line = document.createElement('div');
+            line.className = `terminal-line ${type}`;
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Append to terminal (for serial data)
+        function appendToTerminal(text) {
+            const terminal = document.getElementById('terminal');
+            const lines = text.split('\n');
+
+            for (const line of lines) {
+                if (line.trim()) {
+                    const div = document.createElement('div');
+                    div.className = 'terminal-line';
+                    div.textContent = line;
+                    terminal.appendChild(div);
+                }
+            }
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Utility: delay
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Handle device disconnect
+        navigator.serial.addEventListener('disconnect', (event) => {
+            if (event.port === serialPort) {
+                log('Device disconnected!', 'error');
+                disconnect();
+            }
+        });
+
+        // Initialize: Load firmware files on page load
+        window.addEventListener('load', () => {
+            loadFirmwareFiles();
+        });
+    </script>
+</body>
+</html>

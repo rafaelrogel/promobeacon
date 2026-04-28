@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoBeacon Web Installer</title>
+    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #818cf8;
+            --secondary: #c084fc;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(67, 56, 186, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(30, 27, 75, 0.5) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 32px;
+            padding: 48px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            color: #fff;
+        }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .installer-box {
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        esp-web-install-button {
+            --esp-tools-button-color: var(--primary);
+            --esp-tools-button-text-color: #fff;
+            --esp-tools-button-border-radius: 12px;
+            display: block;
+        }
+
+        .steps {
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 24px;
+        }
+
+        .steps b {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="container">
+        <div class="logo">PromoBeacon</div>
+        <h1>Firmware Installer</h1>
+        <p>Connect your PromoBeacon device to your computer via USB to install or update to the latest version.</p>
+
+        <div class="installer-box">
+            <esp-web-install-button manifest="manifest.json">
+                <button slot="activate" style="
+                    padding: 14px 40px;
+                    background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 14px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+                    transition: all 0.2s;
+                ">Start Installation</button>
+            </esp-web-install-button>
+
+            <div class="steps">
+                <b>Ready to go?</b>
+                <ul>
+                    <li>Use <b>Google Chrome</b> or <b>Microsoft Edge</b>.</li>
+                    <li>Connect your chip via USB.</li>
+                    <li>Select the correct COM port when prompted.</li>
+                    <li>Choose "Erase Data" if you want a clean install.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">Version 2.0.0 • Supports ESP32, S3, and C3 Variants</div>
+    </div>
+</body>
+</html>

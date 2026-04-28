@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PromoBeacon Manager</string>
+    <string name="app_description">PromoBeacon Unified Control App</string>
+
+    <!-- Scanner Screen -->
+    <string name="scan_title">Scan Devices</string>
+    <string name="scan_subtitle">Select a PromoBeacon device to connect</string>
+    <string name="scanning">Scanning...</string>
+    <string name="no_devices">No devices found</string>
+    <string name="refresh">Refresh</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="connecting">Connecting...</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+
+    <!-- Dashboard Screen -->
+    <string name="dashboard_title">Device Console</string>
+    <string name="mode_g_title">G Mode</string>
+    <string name="mode_e_title">E Mode</string>
+    <string name="switch_mode">Switch Mode</string>
+    <string name="current_mode">Current Mode</string>
+    <string name="advertising">Advertising</string>
+    <string name="not_advertising">Not Advertising</string>
+    <string name="connected_clients">Connected Clients</string>
+    <string name="uptime">Uptime</string>
+    <string name="battery">Battery Level</string>
+
+    <!-- G Mode Settings -->
+    <string name="g_mode_settings">G Mode Settings</string>
+    <string name="ssid">Network Name (SSID)</string>
+    <string name="wifi_password">WiFi Password</string>
+    <string name="promo_text">Promotion Text</string>
+    <string name="portal_html">Portal HTML</string>
+    <string name="save">Save</string>
+    <string name="saved">Saved</string>
+    <string name="save_failed">Save Failed</string>
+    <string name="open_network">Open Network</string>
+    <string name="encrypted_network">Encrypted Network</string>
+
+    <!-- E Mode Settings -->
+    <string name="e_mode_settings">E Mode Settings</string>
+    <string name="broadcast_message">Broadcast Message</string>
+    <string name="beacon_major">Major Version</string>
+    <string name="beacon_minor">Minor Version</string>
+    <string name="tx_power">Tx Power</string>
+    <string name="tx_power_value">%1$d dBm</string>
+
+    <!-- Errors -->
+    <string name="error_bluetooth_disabled">Bluetooth is disabled</string>
+    <string name="error_location_disabled">Location services are disabled</string>
+    <string name="error_connection_failed">Connection failed</string>
+    <string name="error_write_failed">Write failed</string>
+    <string name="error_read_failed">Read failed</string>
+    <string name="error_timeout">Operation timed out</string>
+
+    <!-- Commands -->
+    <string name="reboot">Reboot Device</string>
+    <string name="reset_defaults">Factory Reset</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Permissions -->
+    <string name="permission_bluetooth_title">Bluetooth Permission Required</string>
+    <string name="permission_bluetooth_message">This app requires Bluetooth permission to connect to PromoBeacon devices</string>
+    <string name="permission_location_title">Location Permission Required</string>
+    <string name="permission_location_message">This app requires Location permission to scan Bluetooth devices</string>
+    <string name="grant_permission">Grant Permission</string>
+
+    <!-- Authentication Dialog -->
+    <string name="authentication_required">Administrator Authentication</string>
+    <string name="enter_auth_token">Please enter your administrator password to configure this device.</string>
+    <string name="auth_token">Administrator Password</string>
+    <string name="token_hint_format">Default: admin123</string>
+    <string name="authenticate">Login</string>
+    <string name="authentication_successful">Authenticated Successfuly</string>
+    <string name="authentication_failed">Invalid Password</string>
+    <string name="device_locked">Security Lock - Multiple failed attempts</string>
+    <string name="invalid_token_length">Password is too short</string>
+    <string name="enter_auth_token_for">Login to %1$s</string>
+</resources>

@@ -1,0 +1,73 @@
+﻿Processing esp32dev (platform: espressif32; board: esp32dev; framework: espidf)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32dev.html
+PLATFORM: Espressif 32 (6.6.0) > Espressif ESP32 Dev Module
+HARDWARE: ESP32 240MHz, 320KB RAM, 4MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-prog, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - framework-espidf @ 3.50201.240515 (5.2.1) 
+ - tool-cmake @ 3.16.4 
+ - tool-esptoolpy @ 1.40501.0 (4.5.1) 
+ - tool-idf @ 1.0.1 
+ - tool-mconf @ 1.4060000.20190628 (406.0.0) 
+ - tool-ninja @ 1.9.0 
+ - tool-riscv32-esp-elf-gdb @ 11.2.0+20220823 
+ - tool-xtensa-esp-elf-gdb @ 11.2.0+20230208 
+ - toolchain-esp32ulp @ 1.23500.220830 (2.35.0) 
+ - toolchain-xtensa-esp32 @ 12.2.0+20230208
+Reading CMake configuration...
+Warning! Flash memory size mismatch detected. Expected 4MB, found 2MB!
+Please select a proper value in your `sdkconfig.defaults` or via the `menuconfig` target!
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 0 compatible libraries
+Scanning dependencies...
+No dependencies
+Building in release mode
+Compiling .pio\build\esp32dev\main\main.o
+Compiling .pio\build\esp32dev\main\ble_manager.o
+Compiling .pio\build\esp32dev\main\web_server.o
+Compiling .pio\build\esp32dev\main\wifi_manager.o
+Generating LD script .pio\build\esp32dev\memory.ld
+pio : main/ble_manager.c:19:10: fatal error: esp_bt.h: No such file or directory
+At line:1 char:1
++ pio run -e esp32dev > build_errors.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (main/ble_manage...le or directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+****************************************************************
+* Looking for esp_bt.h dependency? Check our library registry!
+*
+* CLI  > platformio lib search "header:esp_bt.h"
+* Web  > https://registry.platformio.org/search?q=header:esp_bt.h
+*
+****************************************************************
+
+   19 | #include "esp_bt.h"
+      |          ^~~~~~~~~~
+compilation terminated.
+main/main.c:27:10: fatal error: esp_bt.h: No such file or directory
+
+****************************************************************
+* Looking for esp_bt.h dependency? Check our library registry!
+*
+* CLI  > platformio lib search "header:esp_bt.h"
+* Web  > https://registry.platformio.org/search?q=header:esp_bt.h
+*
+****************************************************************
+
+   27 | #include "esp_bt.h"
+      |          ^~~~~~~~~~
+compilation terminated.
+Compiling .pio\build\esp32dev\app_trace\app_trace.o
+*** [.pio\build\esp32dev\main\main.o] Error 1
+*** [.pio\build\esp32dev\main\ble_manager.o] Error 1
+========================== [FAILED] Took 4.19 seconds ==========================
+
+Environment    Status    Duration
+-------------  --------  ------------
+esp32dev       FAILED    00:00:04.194
+==================== 1 failed, 0 succeeded in 00:00:04.194 ====================

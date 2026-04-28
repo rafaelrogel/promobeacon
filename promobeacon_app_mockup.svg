@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 412 870">
+  <defs>
+    <!-- Shadow filter -->
+    <filter id="shadow1" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+    <!-- Clip path for rounded corners -->
+    <clipPath id="screenClip">
+      <rect x="0" y="0" width="412" height="870" rx="24"/>
+    </clipPath>
+  </defs>
+
+  <!-- Screen Background -->
+  <rect x="0" y="0" width="412" height="870" fill="#FDFBFF" clip-path="url(#screenClip)"/>
+
+  <!-- Status Bar -->
+  <rect x="0" y="0" width="412" height="42" fill="#FDFBFF"/>
+  <text x="20" y="28" font-family="SF Pro, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#1A1C1E">12:30</text>
+  <!-- Wifi icon -->
+  <path d="M332 22c3.5 0 6.5-1.2 8.8-3.2l-2.3-2.8c-2.2 1.8-5 2.8-8 2.8-3 0-5.8-1-8-2.8l-2.3 2.8c2.3 2 5.3 3.2 8.8 3.2" fill="#1A1C1E"/>
+  <path d="M346 24c2-2 3.5-4.5 3.5-7.5h-4c0 2-0.5 4-1.5 5.5-1-1.5-1.5-3.5-1.5-5.5h-4c0 3 1.5 5.5 3.5 7.5" fill="#1A1C1E"/>
+  <!-- Battery icon -->
+  <rect x="355" y="18" width="28" height="14" rx="3" stroke="#1A1C1E" stroke-width="1.5" fill="none"/>
+  <rect x="358" y="20" width="20" height="10" rx="2" fill="#366E40"/>
+  <rect x="385" y="21" width="2" height="8" rx="1" fill="#1A1C1E"/>
+
+  <!-- Top App Bar -->
+  <rect x="0" y="42" width="412" height="64" fill="#FDFBFF"/>
+  <text x="20" y="82" font-family="SF Pro, -apple-system, sans-serif" font-size="20" font-weight="600" fill="#1A1C1E">Device Console</text>
+  <!-- Disconnect button -->
+  <g transform="translate(285, 58)">
+    <rect x="0" y="0" width="95" height="36" rx="18" fill="#FFEBEE"/>
+    <text x="50" y="23" font-family="SF Pro, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#BA1A1A">Disconnect</text>
+  </g>
+
+  <!-- Scrollable Content -->
+  <g transform="translate(0, 126)">
+    
+    <!-- Card 1: Connection Status -->
+    <rect x="16" y="0" width="380" height="180" rx="16" fill="#F0F4FA" filter="url(#shadow1)"/>
+    <text x="32" y="32" font-family="SF Pro, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#1A1C1E">Connection Status</text>
+    
+    <!-- Connected badge -->
+    <g transform="translate(280, 18)">
+      <rect x="0" y="0" width="84" height="28" rx="14" fill="#E8F5E9"/>
+      <circle cx="18" cy="14" r="5" fill="#366E40"/>
+      <text x="32" y="19" font-family="SF Pro, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#366E40">Connected</text>
+    </g>
+    
+    <!-- Mode Switch -->
+    <g transform="translate(32, 48)">
+      <rect x="0" y="0" width="160" height="44" rx="12" fill="#FFFFFF"/>
+      <text x="18" y="27" font-family="SF Pro, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#005AC1">G Mode</text>
+      <rect x="82" y="10" width="60" height="24" rx="12" fill="#E0E0E0"/>
+      <text x="102" y="27" font-family="SF Pro, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#43474E">E Mode</text>
+    </g>
+    
+    <!-- Stats Row -->
+    <g transform="translate(32, 108)">
+      <!-- Uptime -->
+      <rect x="0" y="0" width="110" height="56" rx="12" fill="#FFFFFF"/>
+      <text x="16" y="22" font-family="SF Pro, -apple-system, sans-serif" font-size="11" fill="#43474E">Uptime</text>
+      <text x="16" y="42" font-family="SF Pro, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#1A1C1E">14h 22m</text>
+      
+      <!-- Connected Clients -->
+      <rect x="126" y="0" width="110" height="56" rx="12" fill="#FFFFFF"/>
+      <text x="142" y="22" font-family="SF Pro, -apple-system, sans-serif" font-size="11" fill="#43474E">Connected Clients</text>
+      <text x="142" y="42" font-family="SF Pro, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#1A1C1E">8</text>
+      
+      <!-- Signal Strength -->
+      <rect x="252" y="0" width="110" height="56" rx="12" fill="#FFFFFF"/>
+      <text x="268" y="22" font-family="SF Pro, -apple-system, sans-serif" font-size="11" fill="#43474E">Signal</text>
+      <g transform="translate(268, 32)">
+        <rect x="0" y="6" width="4" height="8" rx="1" fill="#366E40"/>
+        <rect x="6" y="3" width="4" height="11" rx="1" fill="#366E40"/>
+        <rect x="12" y="0" width="4" height="14" rx="1" fill="#366E40"/>
+        <rect x="18" y="0" width="4" height="14" rx="1" fill="#366E40"/>
+      </g>
+      <text x="290" y="42" font-family="SF Pro, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#1A1C1E">-45 dBm</text>
+    </g>
+
+    <!-- Card 2: G Mode Settings -->
+    <rect x="16" y="196" width="380" height="280" rx="16" fill="#F0F4FA" filter="url(#shadow1)"/>
+    <text x="32" y="228" font-family="SF Pro, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#1A1C1E">G Mode Settings</text>
+    
+    <!-- SSID Input -->
+    <g transform="translate(32, 252)">
+      <text x="0" y="0" font-family="SF Pro, -apple-system, sans-serif" font-size="12" fill="#43474E">Network Name (SSID)</text>
+      <rect x="0" y="8" width="348" height="48" rx="8" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+      <text x="16" y="42" font-family="SF Pro, -apple-system, sans-serif" font-size="15" fill="#1A1C1E">Promo_Free_Wifi</text>
+      <path d="M356 32l4 4-4 4" stroke="#43474E" stroke-width="2" fill="none"/>
+    </g>
+    
+    <!-- Password Toggle -->
+    <g transform="translate(32, 320)">
+      <rect x="0" y="0" width="348" height="48" rx="8" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+      <text x="16" y="29" font-family="SF Pro, -apple-system, sans-serif" font-size="15" fill="#1A1C1E">WiFi Password</text>
+      <rect x="298" y="14" width="36" height="20" rx="10" fill="#005AC1"/>
+      <circle cx="320" cy="24" r="8" fill="#FFFFFF"/>
+    </g>
+    
+    <!-- Promo Text Input -->
+    <g transform="translate(32, 388)">
+      <text x="0" y="0" font-family="SF Pro, -apple-system, sans-serif" font-size="12" fill="#43474E">Promotion Text</text>
+      <text x="298" y="0" font-family="SF Pro, -apple-system, sans-serif" font-size="12" fill="#43474E">18/32</text>
+      <rect x="0" y="8" width="348" height="48" rx="8" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+      <text x="16" y="42" font-family="SF Pro, -apple-system, sans-serif" font-size="15" fill="#1A1C1E">Welcome! Click here for free WiFi</text>
+    </g>
+    
+    <!-- Save Button -->
+    <rect x="32" y="448" width="348" height="48" rx="24" fill="#005AC1" filter="url(#shadow1)"/>
+    <text x="206" y="474" font-family="SF Pro, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#FFFFFF" text-anchor="middle">Save Configuration</text>
+
+    <!-- Card 3: Device Actions -->
+    <rect x="16" y="492" width="380" height="200" rx="16" fill="#F0F4FA" filter="url(#shadow1)"/>
+    <text x="32" y="524" font-family="SF Pro, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#1A1C1E">Device Actions</text>
+    
+    <!-- Action Buttons Row 1 -->
+    <g transform="translate(32, 548)">
+      <!-- Reboot Button -->
+      <rect x="0" y="0" width="164" height="56" rx="12" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+      <path d="M20 32l-4 4 4 4M20 40V24M32 24h-8" stroke="#BA1A1A" stroke-width="2" fill="none"/>
+      <text x="52" y="36" font-family="SF Pro, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#BA1A1A">Reboot</text>
+      
+      <!-- Reset Button -->
+      <rect x="184" y="0" width="164" height="56" rx="12" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+      <path d="M204 24h8M208 20v12M212 24l4 4M212 24l-4 4" stroke="#BA1A1A" stroke-width="2" fill="none"/>
+      <text x="236" y="36" font-family="SF Pro, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#BA1A1A">Reset</text>
+    </g>
+    
+    <!-- Action Buttons Row 2 -->
+    <g transform="translate(32, 620)">
+      <!-- Export Stats Button -->
+      <rect x="0" y="0" width="164" height="56" rx="12" fill="#FFFFFF" stroke="#005AC1" stroke-width="1"/>
+      <path d="M20 24h12M16 32h20M16 38l4-4h12l4 4" stroke="#005AC1" stroke-width="2" fill="none"/>
+      <text x="52" y="36" font-family="SF Pro, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#005AC1">Export Stats</text>
+      
+      <!-- Upload Portal Button -->
+      <rect x="184" y="0" width="164" height="56" rx="12" fill="#005AC1"/>
+      <path d="M212 24l-8 8M212 24h8M212 24v16" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      <text x="236" y="36" font-family="SF Pro, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#FFFFFF">Upload Portal</text>
+    </g>
+    
+    <!-- Upload Portal Dialog Preview -->
+    <g transform="translate(16, 708)">
+      <rect x="0" y="0" width="380" height="140" rx="16" fill="#FFFFFF" filter="url(#shadow2)"/>
+      <rect x="16" y="12" width="32" height="32" rx="16" fill="#E3F2FD"/>
+      <path d="M32 24l-8 8M32 24h8M32 24v12" stroke="#005AC1" stroke-width="2" fill="none"/>
+      <text x="60" y="36" font-family="SF Pro, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#1A1C1E">Upload Portal Page</text>
+      
+      <!-- File picker button -->
+      <rect x="16" y="52" width="348" height="40" rx="8" fill="#F5F5F5"/>
+      <path d="M28 72h16M28 68v8M28 76l8-8 8 8" stroke="#43474E" stroke-width="2" fill="none"/>
+      <text x="52" y="80" font-family="SF Pro, -apple-system, sans-serif" font-size="14" fill="#43474E">Select HTML File</text>
+      
+      <!-- HTML textarea hint -->
+      <text x="16" y="112" font-family="SF Pro, -apple-system, sans-serif" font-size="11" fill="#74777F">Or enter HTML content directly (max 16KB)</text>
+      
+      <!-- Confirm button -->
+      <rect x="282" y="100" width="82" height="32" rx="16" fill="#005AC1"/>
+      <text x="323" y="121" font-family="SF Pro, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#FFFFFF" text-anchor="middle">Upload</text>
+    </g>
+
+  </g>
+
+  <!-- Bottom Navigation Indicator -->
+  <rect x="0" y="830" width="412" height="40" fill="#FDFBFF"/>
+  <rect x="178" y="842" width="56" height="4" rx="2" fill="#005AC1"/>
+
+</svg>

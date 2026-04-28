@@ -1,0 +1,25 @@
+{
+  "name": "PromoBeacon",
+  "version": "2.0.0",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-C3",
+      "parts": [
+        { "path": "firmware_c3_merged.bin", "offset": 0 }
+      ]
+    },
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        { "path": "firmware_s3_merged.bin", "offset": 0 }
+      ]
+    },
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "firmware_classic_merged.bin", "offset": 0 }
+      ]
+    }
+  ]
+}

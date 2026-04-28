@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="primary">#0061A4</color>
+    <color name="primary_dark">#004C82</color>
+    <color name="primary_light">#4D8DC4</color>
+    <color name="on_primary">#FFFFFF</color>
+
+    <!-- Secondary Colors -->
+    <color name="secondary">#535F70</color>
+    <color name="secondary_dark">#37474F</color>
+    <color name="on_secondary">#FFFFFF</color>
+
+    <!-- Background Colors -->
+    <color name="background">#FAFAFA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="on_background">#1C1B1F</color>
+    <color name="on_surface">#1C1B1F</color>
+
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="error">#BA1A1A</color>
+    <color name="info">#2196F3</color>
+
+    <!-- Mode Colors -->
+    <color name="mode_g">#4CAF50</color>
+    <color name="mode_e">#FF9800</color>
+
+    <!-- BLE Connection Colors -->
+    <color name="connected">#4CAF50</color>
+    <color name="disconnected">#9E9E9E</color>
+    <color name="advertising">#2196F3</color>
+
+    <!-- Signal Strength Colors -->
+    <color name="signal_excellent">#4CAF50</color>
+    <color name="signal_good">#8BC34A</color>
+    <color name="signal_fair">#FFEB3B</color>
+    <color name="signal_poor">#FF9800</color>
+
+    <!-- Launcher Icon Background -->
+    <color name="ic_launcher_background">#0061A4</color>
+</resources>
