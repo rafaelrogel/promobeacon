@@ -59,9 +59,9 @@ esp_err_t init_wifi_ap(const char* ssid, const char* password)
     /* Configure IP address */
     esp_netif_ip_info_t ip_info;
     memset(&ip_info, 0, sizeof(esp_netif_ip_info_t));
-    IP4_ADDR(&ip_info.ip, AP_IP_ADDR);
-    IP4_ADDR(&ip_info.gw, AP_IP_ADDR);
-    IP4_ADDR(&ip_info.netmask, AP_NETMASK);
+    IP4_ADDR(&ip_info.ip, 192, 168, 4, 1);
+    IP4_ADDR(&ip_info.gw, 192, 168, 4, 1);
+    IP4_ADDR(&ip_info.netmask, 255, 255, 255, 0);
     
     esp_netif_dhcps_stop(ap_netif);
     ret = esp_netif_set_ip_info(ap_netif, &ip_info);
@@ -70,12 +70,14 @@ esp_err_t init_wifi_ap(const char* ssid, const char* password)
         return ret;
     }
 
-    /* Set DHCP range to accommodate all clients */
-    dhcps_lease_t lease;
+    /* Set DHCP range to accommodate all clients (Note: Using default pool due to SDK version mismatch) */
+    /*
+    esp_netif_dhcps_lease_t lease;
     lease.enable = true;
-    IP4_ADDR(&lease.start_ip, DHCP_START_ADDR);
-    IP4_ADDR(&lease.end_ip, DHCP_END_ADDR);
-    esp_netif_dhcps_option(ap_netif, ESP_NETIF_OP_SET, ESP_NETIF_IP_LEASE, &lease, sizeof(lease));
+    IP4_ADDR(&lease.start_ip, 192, 168, 4, 2);
+    IP4_ADDR(&lease.end_ip, 192, 168, 4, 7);
+    esp_netif_dhcps_option(ap_netif, ESP_NETIF_OP_SET, ESP_NETIF_IP_ADDRESS_LEASE_TIME, &lease, sizeof(lease));
+    */
 
     esp_netif_dhcps_start(ap_netif);
     

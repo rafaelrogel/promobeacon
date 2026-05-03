@@ -25,6 +25,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include "lwip/sockets.h"
+#include "freertos/semphr.h"
 
 static const char* TAG = "WEB_SVR";
 
@@ -48,14 +49,19 @@ typedef struct {
 
 static auth_client_entry_t auth_clients[MAX_AUTH_CLIENTS];
 static int auth_client_count = 0;
+static SemaphoreHandle_t auth_clients_mutex = NULL;
 
 static void authenticate_client(uint32_t ip)
 {
+    if (!auth_clients_mutex) return;
+    if (xSemaphoreTake(auth_clients_mutex, pdMS_TO_TICKS(100)) != pdTRUE) return;
+    
     int64_t now = (int64_t)esp_timer_get_time() / 1000000;
     
     for (int i = 0; i < auth_client_count; i++) {
         if (auth_clients[i].ip == ip) {
             auth_clients[i].timestamp = now;
+            xSemaphoreGive(auth_clients_mutex);
             return;
         }
     }
@@ -74,21 +80,29 @@ static void authenticate_client(uint32_t ip)
         auth_clients[oldest_idx].ip = ip;
         auth_clients[oldest_idx].timestamp = now;
     }
+    
+    xSemaphoreGive(auth_clients_mutex);
 }
 
 static bool is_client_authenticated(uint32_t ip)
 {
+    if (!auth_clients_mutex) return false;
+    if (xSemaphoreTake(auth_clients_mutex, pdMS_TO_TICKS(100)) != pdTRUE) return false;
+    
     int64_t now = (int64_t)esp_timer_get_time() / 1000000;
+    bool result = false;
     
     for (int i = 0; i < auth_client_count; i++) {
         if (auth_clients[i].ip == ip) {
             if ((now - auth_clients[i].timestamp) < AUTH_CLIENT_TIMEOUT_SEC) {
-                return true;
+                result = true;
             }
-            return false;
+            break;
         }
     }
-    return false;
+    
+    xSemaphoreGive(auth_clients_mutex);
+    return result;
 }
 
 /**
@@ -229,14 +243,29 @@ static void urldecode_in_place(char *str) {
  */
 static esp_err_t setup_post_handler(httpd_req_t *req)
 {
-    char buf[512];
+    size_t content_len = req->content_len;
+    if (content_len > 2048) {
+        httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Request too large");
+        return ESP_FAIL;
+    }
+    char *buf = malloc(content_len + 1);
+    if (!buf) {
+        httpd_resp_send_500(req);
+        return ESP_FAIL;
+    }
     int total = 0;
     int ret;
-    while ((ret = httpd_req_recv(req, buf + total, sizeof(buf) - 1 - total)) > 0) {
+    while (total < content_len) {
+        ret = httpd_req_recv(req, buf + total, content_len - total);
+        if (ret <= 0) {
+            if (ret == HTTPD_SOCK_ERR_TIMEOUT) {
+                continue;
+            }
+            free(buf);
+            return ESP_FAIL;
+        }
         total += ret;
-        if (total >= (int)sizeof(buf) - 1) break;
     }
-    if (total <= 0) return ESP_FAIL;
     buf[total] = '\0';
 
     char promo[64] = {0}, wifi_pwd[64] = {0}, admin_pwd[64] = {0};
@@ -269,6 +298,7 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
     vTaskDelay(pdMS_TO_TICKS(1000));
     esp_restart();
     
+    free(buf);
     return ESP_OK;
 }
 
@@ -418,7 +448,7 @@ esp_err_t stats_csv_get_handler(httpd_req_t *req)
     httpd_resp_set_hdr(req, "Content-Disposition", "attachment; filename=stats.csv");
     
     /* 2. Get device status and ID */
-    const StatusPacket* status = get_status();
+    const StatusPacket* status = (const StatusPacket*)get_status();
     char device_id[32];
     get_device_id(device_id, sizeof(device_id));
     
@@ -552,6 +582,9 @@ static const httpd_uri_t probe_win = { .uri = "/ncsi.txt", .method = HTTP_GET, .
 
 esp_err_t init_http_server(void)
 {
+    if (!auth_clients_mutex) {
+        auth_clients_mutex = xSemaphoreCreateMutex();
+    }
     if (http_server_active) return ESP_OK;
 
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();

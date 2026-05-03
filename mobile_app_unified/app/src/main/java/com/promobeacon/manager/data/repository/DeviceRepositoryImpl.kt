@@ -41,6 +41,11 @@ class DeviceRepositoryImpl @Inject constructor(
 
         val startTime = System.currentTimeMillis()
         while (System.currentTimeMillis() - startTime < timeoutMs) {
+            val error = bleClient.scanError.value
+            if (error != null) {
+                bleClient.stopScan()
+                throw Exception("BLE scan failed with error code: $error")
+            }
             emit(bleClient.scanResults.value)
             delay(500)
         }
@@ -56,17 +61,12 @@ class DeviceRepositoryImpl @Inject constructor(
     override suspend fun connect(device: ScannedDevice): Result<Unit> = withContext(Dispatchers.IO) {
         try {
             bleClient.connect(device).collect { state ->
-                if (state == BleConnectionState.CONNECTED) {
-                    // Delay briefly to ensure service discovery is complete
-                    delay(500)
-                    return@collect
-                } else if (state == BleConnectionState.DISCONNECTED) {
+                if (state == BleConnectionState.CONNECTED || state == BleConnectionState.DISCONNECTED) {
                     return@collect
                 }
             }
 
             if (bleClient.connectionState.value == BleConnectionState.CONNECTED) {
-                // Read initial status
                 bleClient.readStatus()
                 Result.success(Unit)
             } else {
@@ -86,7 +86,7 @@ class DeviceRepositoryImpl @Inject constructor(
             when (state) {
                 BleConnectionState.CONNECTED -> com.promobeacon.manager.domain.model.ConnectionState.CONNECTED
                 BleConnectionState.CONNECTING -> com.promobeacon.manager.domain.model.ConnectionState.CONNECTING
-                BleConnectionState.DISCONNECTING -> com.promobeacon.manager.domain.model.ConnectionState.DISCONNECTED
+                BleConnectionState.DISCONNECTING -> com.promobeacon.manager.domain.model.ConnectionState.DISCONNECTING
                 BleConnectionState.DISCONNECTED -> com.promobeacon.manager.domain.model.ConnectionState.DISCONNECTED
             }
         }
@@ -135,13 +135,21 @@ class DeviceRepositoryImpl @Inject constructor(
         cachedGModeConfig?.let {
             return@withContext Result.success(it)
         }
-
-        // Try to read from device
-        // Note: Reading logic needs to be implemented based on actual GATT characteristics
-        // Currently returns cached value or default
-        val config = cachedGModeConfig ?: GModeConfig()
-        cachedGModeConfig = config
-        Result.success(config)
+        try {
+            val promoText = bleClient.readPromoText() ?: ""
+            val deviceName = bleClient.readDeviceName() ?: promoText
+            val config = GModeConfig(
+                ssid = deviceName,
+                promoText = promoText,
+                password = "",
+                newAdminPassword = ""
+            )
+            cachedGModeConfig = config
+            Result.success(config)
+        } catch (e: Exception) {
+            val config = cachedGModeConfig ?: GModeConfig()
+            Result.success(config)
+        }
     }
 
     override suspend fun reboot(): Result<Unit> = withContext(Dispatchers.IO) {
@@ -190,25 +198,34 @@ class DeviceRepositoryImpl @Inject constructor(
         if (data == null || data.size < 30) {
             return DeviceStatus()
         }
+        
+        Log.d(tag, "Received status packet: size=${data.size}, auth_byte=${data.getOrNull(97)}")
 
         return try {
             val modeValue = data.getOrNull(0) ?: 0.toByte()
             val isAdvertising = data.getOrNull(1) == 1.toByte()
             val isConnected = data.getOrNull(2) == 1.toByte()
+            
             val uptimeMs = ((data.getOrNull(3)?.toInt() ?: 0) and 0xFF) or
                     (((data.getOrNull(4)?.toInt() ?: 0) and 0xFF) shl 8) or
                     (((data.getOrNull(5)?.toInt() ?: 0) and 0xFF) shl 16) or
                     (((data.getOrNull(6)?.toInt() ?: 0) and 0xFF) shl 24)
+            
             val rssi = data.getOrNull(7)?.toInt() ?: 0
             val clientCount = data.getOrNull(8)?.toInt() ?: 0
 
-            val promoTextBytes = data.copyOfRange(29, minOf(61, data.size))
+            // Promo text starts at index 31 (after mode(1), adv(1), conn(1), uptime(4), rssi(1), clients(1), wifi(1), message(21))
+            val promoTextBytes = data.copyOfRange(31, minOf(64, data.size))
             val promoText = String(promoTextBytes, Charsets.UTF_8).trimEnd { it.code == 0 }
+            
+            // Authentication bit added at the absolute end of the status packet (index 97)
+            val isAuthenticated = data.getOrNull(97) == 1.toByte()
 
             DeviceStatus(
                 mode = DeviceMode.fromValue(modeValue),
                 isAdvertising = isAdvertising,
                 isConnected = isConnected,
+                isAuthenticated = isAuthenticated,
                 uptimeMs = uptimeMs.toLong() and 0xFFFFFFFFL,
                 rssi = rssi,
                 clientCount = clientCount,
@@ -230,8 +247,8 @@ class DeviceRepositoryImpl @Inject constructor(
             val contentBytes = htmlContent.toByteArray(Charsets.UTF_8)
             val totalSize = contentBytes.size
 
-            // Check size limit (16KB)
-            val maxSize = 16 * 1024
+            // Check size limit (32KB)
+            val maxSize = 32 * 1024
             if (totalSize > maxSize) {
                 emit(UploadProgress.Error("HTML content too large, max ${maxSize / 1024}KB supported"))
                 return@flow
@@ -251,7 +268,7 @@ class DeviceRepositoryImpl @Inject constructor(
             }
 
             // Chunked transfer
-            val chunkSize = 200 // Max 200 bytes per BLE write
+            val chunkSize = BleConstants.PORTAL_CHUNK_SIZE
             val totalChunks = (totalSize + chunkSize - 1) / chunkSize
             var sentChunks = 0
 
@@ -273,7 +290,7 @@ class DeviceRepositoryImpl @Inject constructor(
                 emit(UploadProgress.InProgress(progress, sentChunks, totalChunks))
 
                 // Delay to avoid BLE buffer overflow
-                delay(20)
+                delay(30)
             }
 
             // Complete upload

@@ -160,7 +160,7 @@ class UploadPortalUseCase @Inject constructor(
         }
 
         val contentBytes = htmlContent.toByteArray(StandardCharsets.UTF_8)
-        val maxSize = 16 * 1024 // 16KB
+        val maxSize = 32 * 1024 // 32KB
 
         if (contentBytes.size > maxSize) {
             return flowOf(UploadProgress.Error("HTML content too large, max ${maxSize / 1024}KB supported"))

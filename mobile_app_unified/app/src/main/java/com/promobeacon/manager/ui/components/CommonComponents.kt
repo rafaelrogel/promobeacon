@@ -132,7 +132,7 @@ fun SignalStrengthIndicator(
                     .size(width = 3.dp, height = ((index + 1) * 4).dp)
                     .padding(1.dp)
                     .background(
-                        color = if (index >= (3 - level.ordinal)) color else color.copy(alpha = 0.3f),
+                        color = if (index <= (3 - level.ordinal)) color else color.copy(alpha = 0.3f),
                         shape = RoundedCornerShape(1.dp)
                     )
             )

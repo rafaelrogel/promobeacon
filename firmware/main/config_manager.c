@@ -596,20 +596,20 @@ bool is_admin_password_set(void)
  */
 bool verify_admin_password(const char* password)
 {
-    if (!password) {
-        return false;
-    }
-    
-    if (!current_config.admin_password[0]) {
-        return false;
-    }
+    if (!password) return false;
     
     const char *stored = current_config.admin_password;
     size_t pw_len = strlen(stored);
     size_t in_len = strlen(password);
-    int match = (pw_len == in_len) ? 0 : 1;
-    for (size_t i = 0; i < pw_len && i < in_len; i++) {
-        match |= (password[i] ^ stored[i]);
+    
+    volatile int match = (pw_len != in_len);
+    volatile const char *s = stored;
+    volatile const char *p = password;
+    size_t max_len = MAX_PASSWORD_LENGTH;
+    for (size_t i = 0; i < max_len; i++) {
+        char sc = (i < pw_len) ? s[i] : 0;
+        char pc = (i < in_len) ? p[i] : 0;
+        match |= (sc ^ pc);
     }
     return match == 0;
 }

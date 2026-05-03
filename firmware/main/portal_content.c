@@ -76,6 +76,7 @@ static bool g_is_custom = false;                /* Using custom content */
  */
 static uint32_t calculate_crc32(const uint8_t* buffer, size_t length)
 {
+    /* Standard IEEE 802.3 CRC32 - esp_rom_crc32_le handles seed/XOR internally when called with 0 */
     return esp_rom_crc32_le(0, buffer, length);
 }
 
@@ -272,6 +273,7 @@ esp_err_t portal_transfer_start(uint32_t total_size, uint32_t crc32)
     portal_transfer_abort();
 
     /* Allocate buffer */
+    if (g_content_buffer) free(g_content_buffer);
     g_content_buffer = (uint8_t*)malloc(total_size + 1);
     if (g_content_buffer == NULL) {
         ESP_LOGE(TAG, "Failed to allocate transfer buffer: %" PRIu32 " bytes", total_size);
@@ -378,12 +380,12 @@ esp_err_t portal_transfer_complete(void)
         return ret;
     }
 
+    /* Keep the buffer in memory for immediate serving */
+    g_is_custom = true;
     g_transfer.status = PORTAL_STATUS_COMPLETE;
-    g_content_buffer = NULL;
-    g_content_size = 0;
-    g_transfer.buffer = NULL;
+    g_transfer.buffer = NULL; /* Just clear the transfer pointer, keep g_content_buffer */
 
-    ESP_LOGI(TAG, "Transfer complete: bytes saved to NVS");
+    ESP_LOGI(TAG, "Transfer complete: %" PRIu32 " bytes saved and active", g_content_size);
 
     return ESP_OK;
 }

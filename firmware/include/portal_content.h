@@ -36,17 +36,17 @@ extern "C" {
 #define PORTAL_NVS_CRC_KEY           "content_crc"
 
 /* Size limits */
-#define PORTAL_MAX_SIZE              16384       /* 16KB max HTML size */
+#define PORTAL_MAX_SIZE              32768       /* 32KB max HTML size */
 #define PORTAL_DEFAULT_SIZE          1024        /* Default buffer size */
 #define PORTAL_CHUNK_SIZE            200         /* Max bytes per BLE chunk */
 
-/* Transfer protocol commands */
-#define PORTAL_CMD_START             0x01        /* Start transfer */
-#define PORTAL_CMD_DATA              0x02        /* Data chunk */
-#define PORTAL_CMD_END               0x03        /* End transfer */
-#define PORTAL_CMD_ABORT             0x04        /* Abort transfer */
-#define PORTAL_CMD_STATUS            0x05        /* Request status */
-#define PORTAL_CMD_RESET             0x06        /* Reset to default */
+/* Transfer protocol commands (Synced with App) */
+#define PORTAL_CMD_START             0x10        /* Start transfer */
+#define PORTAL_CMD_DATA              0x11        /* Data chunk */
+#define PORTAL_CMD_END               0x12        /* End transfer */
+#define PORTAL_CMD_ABORT             0x13        /* Abort transfer */
+#define PORTAL_CMD_STATUS            0x14        /* Request status */
+#define PORTAL_CMD_RESET             0x15        /* Reset to default */
 
 /* Transfer status codes */
 #define PORTAL_STATUS_IDLE           0x00

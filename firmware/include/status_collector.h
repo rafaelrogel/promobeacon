@@ -119,6 +119,7 @@ void serialize_status(uint8_t* buffer);
  * @return Pointer to current DeviceStatus structure
  */
 const StatusPacket* get_status(void);
+int get_current_wifi_client_count(void);
 
 /**
  * @brief Notify client connected

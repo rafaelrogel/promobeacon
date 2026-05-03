@@ -134,10 +134,10 @@ typedef enum {
 /**
  * @brief Device status structure
  */
-typedef struct {
-    DeviceMode mode;              /* Current mode (G or E) */
-    bool is_advertising;          /* Advertising status */
-    bool is_connected;            /* BLE connection status */
+typedef struct __attribute__((packed)) {
+    uint8_t mode;                 /* Current mode (0=G) */
+    uint8_t is_advertising;       /* Advertising status */
+    uint8_t is_connected;         /* BLE connection status */
     uint32_t uptime_ms;           /* Uptime in milliseconds */
     int8_t rssi;                  /* Last RSSI in dBm */
     uint8_t client_count;         /* Number of connected clients */
@@ -147,6 +147,7 @@ typedef struct {
     uint8_t ota_progress;         /* OTA update progress (0-100) */
     char firmware_version[16];    /* Firmware version string */
     char device_id[MAX_DEVICE_ID_LENGTH];      /* Unique device identifier */
+    uint8_t is_authenticated;     /* Authentication status (0/1) */
 } DeviceStatus;
 
 /**

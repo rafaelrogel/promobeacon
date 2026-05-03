@@ -27,10 +27,10 @@ extern "C" {
 #endif
 
 /* Firmware Version - Update this when releasing new versions */
-#define FIRMWARE_VERSION             "2.0.0"
+#define FIRMWARE_VERSION             "2.1.4"
 #define FIRMWARE_VERSION_MAJOR       2
-#define FIRMWARE_VERSION_MINOR       0
-#define FIRMWARE_VERSION_PATCH       0
+#define FIRMWARE_VERSION_MINOR       1
+#define FIRMWARE_VERSION_PATCH       4
 
 /* OTA Status Codes */
 typedef enum {

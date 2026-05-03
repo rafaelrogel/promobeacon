@@ -40,6 +40,7 @@ data class DeviceStatus(
     val mode: DeviceMode = DeviceMode.UNKNOWN,
     val isAdvertising: Boolean = false,
     val isConnected: Boolean = false,
+    val isAuthenticated: Boolean = false,
     val uptimeMs: Long = 0,
     val rssi: Int = 0,
     val clientCount: Int = 0,

@@ -29,15 +29,16 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.CompletableDeferred
 
 /**
- * BLE GATT服務UUID常量
+ * BLE GATT service UUID constants
  */
 object BleConstants {
-    // 統一服務UUID
+    // Unified service UUID
     const val PROMO_SERVICE_UUID = "12345678-1234-1234-1234-123456789ABC"
 
-    // 特徵UUID
+    // Characteristic UUIDs
     const val CHAR_MODE_CONTROL = "12345679-1234-1234-1234-123456789ABC"
     const val CHAR_MESSAGE = "1234567A-1234-1234-1234-123456789ABC"
     const val CHAR_CONFIG = "1234567B-1234-1234-1234-123456789ABC"
@@ -52,7 +53,7 @@ object BleConstants {
     const val CHAR_SESSIONS = "1234567F-1234-1234-1234-123456789ABC"      // Session history
     const val CHAR_SESSION_CTRL = "12345680-1234-1234-1234-123456789ABC"  // Session control commands
 
-    // 命令常量
+    // Command constants
     const val CMD_MODE_G = 0x00
     const val CMD_MODE_E = 0x01
     const val CMD_REBOOT = 0x02
@@ -80,13 +81,13 @@ object BleConstants {
     const val AUTH_STATUS_LOCKED = 0x04
 
     // Transfer parameters
-    const val PORTAL_CHUNK_SIZE = 200  // Max bytes per BLE write
-    const val PORTAL_MAX_SIZE = 16384  // 16KB max HTML size
+    const val PORTAL_CHUNK_SIZE = 128  // Reduced for better compatibility with standard MTU
+    const val PORTAL_MAX_SIZE = 32768  // 32KB max HTML size
 }
 
 /**
- * BLE客戶端類
- * 封裝藍牙GATT操作
+ * BLE client class
+ * Encapsulates Bluetooth GATT operations
  */
 @Singleton
 class BleClient @Inject constructor(
@@ -105,7 +106,7 @@ class BleClient @Inject constructor(
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    // 狀態Flow
+    // Status flows
     private val _connectionState = MutableStateFlow(ConnectionState.DISCONNECTED)
     val connectionState: StateFlow<ConnectionState> = _connectionState.asStateFlow()
 
@@ -113,19 +114,20 @@ class BleClient @Inject constructor(
     val deviceStatus: StateFlow<ByteArray?> = _deviceStatus.asStateFlow()
 
     private val writeMutex = Mutex()
-    private var lastWriteTime = 0L
-    private val MIN_WRITE_INTERVAL = 50L
+
 
     internal var adminPasswordChar: BluetoothGattCharacteristic? = null
     internal var deviceNameChar: BluetoothGattCharacteristic? = null
 
-    // 掃描結果
     private val _scanResults = MutableStateFlow<List<ScannedDevice>>(emptyList())
     val scanResults: StateFlow<List<ScannedDevice>> = _scanResults.asStateFlow()
 
+    private val _scanError = MutableStateFlow<Int?>(null)
+    val scanError: StateFlow<Int?> = _scanError.asStateFlow()
+
     private var isScanning = false
 
-    // 特徵引用
+    // Characteristic references
     private var modeControlChar: BluetoothGattCharacteristic? = null
     private var messageChar: BluetoothGattCharacteristic? = null
     private var configChar: BluetoothGattCharacteristic? = null
@@ -139,6 +141,10 @@ class BleClient @Inject constructor(
     private var sessionsChar: BluetoothGattCharacteristic? = null
     private var sessionCtrlChar: BluetoothGattCharacteristic? = null
 
+    private val pendingReads = mutableMapOf<String, CompletableDeferred<String?>>()
+    private var pendingWrite: CompletableDeferred<Boolean>? = null
+    private var pendingDescriptorWrite: CompletableDeferred<Boolean>? = null
+
     // Authentication state
     private val _authenticationState = MutableStateFlow(AuthenticationState.NOT_AUTHENTICATED)
     val authenticationState: StateFlow<AuthenticationState> = _authenticationState.asStateFlow()
@@ -147,17 +153,19 @@ class BleClient @Inject constructor(
     private var portalUploadInProgress = false
     private var portalUploadProgress = MutableStateFlow(0f)
 
-    // GATT回調
+    // GATT callback
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             Log.d(tag, "onConnectionStateChange: status=$status, newState=$newState")
 
+            if (gatt != bluetoothGatt && newState == BluetoothProfile.STATE_DISCONNECTED) {
+                Log.d(tag, "Ignoring stale disconnect from old GATT")
+                return
+            }
+
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
-                    _connectionState.value = ConnectionState.CONNECTED
-                    Log.d(tag, "Connected to GATT server")
-                    // 發現服務
-                    discoverServices()
+                    Log.d(tag, "Connected to GATT server, requesting MTU...")
                     bluetoothGatt?.requestMtu(512)
                 } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                     _connectionState.value = ConnectionState.DISCONNECTED
@@ -171,19 +179,41 @@ class BleClient @Inject constructor(
             }
         }
 
+        override fun onMtuChanged(gatt: BluetoothGatt, mtu: Int, status: Int) {
+            Log.d(tag, "onMtuChanged: mtu=$mtu, status=$status")
+            discoverServices()
+        }
+
         override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
             Log.d(tag, "onServicesDiscovered: status=$status")
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 Log.d(tag, "Services discovered")
-                findCharacteristics(gatt)
+                scope.launch(Dispatchers.IO) {
+                    findCharacteristics(gatt)
+                    _connectionState.value = ConnectionState.CONNECTED
+                }
             } else {
-                Log.w(tag, "onServicesDiscovered received: $status")
+                Log.w(tag, "onServicesDiscovered failed: $status")
+                _connectionState.value = ConnectionState.DISCONNECTED
+                close()
             }
         }
 
         override fun onCharacteristicRead(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
             Log.d(tag, "onCharacteristicRead: ${characteristic.uuid}, status=$status")
+
+            val uuid = characteristic.uuid.toString()
+            val deferred = pendingReads.remove(uuid)
+            if (deferred != null) {
+                if (status == BluetoothGatt.GATT_SUCCESS) {
+                    val value = characteristic.getStringValue(0)
+                    deferred.complete(value)
+                } else {
+                    deferred.complete(null)
+                }
+                return
+            }
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 when (characteristic.uuid.toString()) {
@@ -222,11 +252,19 @@ class BleClient @Inject constructor(
 
         override fun onCharacteristicWrite(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
             Log.d(tag, "onCharacteristicWrite: ${characteristic.uuid}, status=$status")
+            pendingWrite?.complete(status == BluetoothGatt.GATT_SUCCESS)
+            pendingWrite = null
+        }
+
+        override fun onDescriptorWrite(gatt: BluetoothGatt, descriptor: BluetoothGattDescriptor, status: Int) {
+            Log.d(tag, "onDescriptorWrite: ${descriptor.uuid}, status=$status")
+            pendingDescriptorWrite?.complete(status == BluetoothGatt.GATT_SUCCESS)
+            pendingDescriptorWrite = null
         }
     }
 
     /**
-     * 初始化BLE客戶端
+     * Initialize BLE client
      */
     fun initialize(): Boolean {
         bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as? BluetoothManager
@@ -247,21 +285,19 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 檢查BLE權限
+     * Check BLE permissions
      */
     fun hasRequiredPermissions(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.BLUETOOTH_CONNECT
-        ) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED &&
+               ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
     }
 
     /**
-     * 開始掃描設備
+     * Start scanning for devices
      */
     fun startScan() {
         if (!hasRequiredPermissions()) {
-            Log.w(tag, "Missing BLUETOOTH_CONNECT permission")
+            Log.w(tag, "Missing required BLE permissions (SCAN and CONNECT)")
             return
         }
 
@@ -270,6 +306,7 @@ class BleClient @Inject constructor(
             return
         }
 
+        _scanError.value = null
         _scanResults.value = emptyList()
         isScanning = true
         isScanFallbackActive = false
@@ -287,19 +324,17 @@ class BleClient @Inject constructor(
             .build()
 
         try {
-            Log.d(tag, "Starting scan with UUID filter: $PROMOBEACON_SERVICE_UUID")
-            bluetoothScanner?.startScan(listOf(scanFilter), scanSettings, scanCallback)
-            
-            // Start fallback timer
+            Log.d(tag, "Starting scan (unfiltered for maximum compatibility)")
+            // Start unfiltered immediately - the scanCallback filters by UUID/name
+            bluetoothScanner?.startScan(null, scanSettings, scanCallback)
+
+            // Start fallback timer: if nothing found after 8s, show ALL BLE devices
             scanFallbackJob = scope.launch {
-                delay(5000)
+                delay(8000)
                 if (_scanResults.value.isEmpty() && isScanning && !isScanFallbackActive) {
-                    Log.w(tag, "No devices found with UUID filter, switching to fallback name-based scan")
-                    stopScan()
-                    delay(200) // Brief pause to ensure scanner resets
-                    isScanning = true
+                    Log.w(tag, "No PromoBeacon found, switching to show-all mode for debugging")
                     isScanFallbackActive = true
-                    bluetoothScanner?.startScan(null, scanSettings, scanCallback)
+                    // Continue scanning - callback will now show all devices
                 }
             }
         } catch (e: SecurityException) {
@@ -309,7 +344,7 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 停止掃描設備
+     * Stop scanning for devices
      */
     fun stopScan() {
         if (!isScanning) return
@@ -327,17 +362,21 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 連接到設備
+     * Connect to device
      */
     fun connect(device: ScannedDevice): Flow<ConnectionState> = flow {
         emit(ConnectionState.CONNECTING)
 
         try {
-            // 停止掃描
+            // Stop scanning
             stopScan()
 
-            // 斷開現有連接
-            disconnect()
+            // Disconnect existing connection safely
+            val oldGatt = bluetoothGatt
+            bluetoothGatt = null
+            oldGatt?.disconnect()
+            oldGatt?.close()
+            delay(200)
 
             val bluetoothDevice = bluetoothAdapter?.getRemoteDevice(device.address)
             if (bluetoothDevice == null) {
@@ -345,7 +384,7 @@ class BleClient @Inject constructor(
                 return@flow
             }
 
-            // 連接
+            // Connect
             _connectionState.value = ConnectionState.CONNECTING
 
             bluetoothGatt = bluetoothDevice.connectGatt(
@@ -355,7 +394,7 @@ class BleClient @Inject constructor(
                 BluetoothDevice.TRANSPORT_LE
             )
 
-            // 等待連接狀態變化
+            // Wait for connection state change
             val finalState = kotlinx.coroutines.withTimeoutOrNull(30_000L) {
                 _connectionState.first { it != ConnectionState.CONNECTING }
             } ?: ConnectionState.DISCONNECTED
@@ -369,7 +408,7 @@ class BleClient @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     /**
-     * 斷開連接
+     * Disconnect
      */
     fun disconnect() {
         try {
@@ -381,7 +420,7 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 關閉GATT連接
+     * Close GATT connection
      */
     private fun close() {
         try {
@@ -407,7 +446,7 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 發現服務
+     * Discover services
      */
     private fun discoverServices() {
         try {
@@ -418,9 +457,9 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 查找特徵
+     * Find characteristics
      */
-    private fun findCharacteristics(gatt: BluetoothGatt) {
+    private suspend fun findCharacteristics(gatt: BluetoothGatt) {
         val service = gatt.getService(java.util.UUID.fromString(BleConstants.PROMO_SERVICE_UUID))
         if (service == null) {
             Log.w(tag, "Service not found")
@@ -450,16 +489,16 @@ class BleClient @Inject constructor(
         // Authentication characteristics
         findAuthCharacteristics(gatt)
 
-        // 啟用狀態通知
+        // Enable status notifications (serialized - one at a time)
         enableNotifications(statusChar)
-        // 啟用portal控制通知
+        delay(50)
         enableNotifications(portalCtrlChar)
     }
 
     /**
-     * 啟用通知
+     * Enable notifications
      */
-    private fun enableNotifications(characteristic: BluetoothGattCharacteristic?) {
+    private suspend fun enableNotifications(characteristic: BluetoothGattCharacteristic?) {
         if (characteristic == null) return
 
         try {
@@ -468,15 +507,20 @@ class BleClient @Inject constructor(
             val descriptor = characteristic.getDescriptor(
                 java.util.UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
             )
-            descriptor?.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
-            bluetoothGatt?.writeDescriptor(descriptor)
+            if (descriptor != null) {
+                val deferred = CompletableDeferred<Boolean>()
+                pendingDescriptorWrite = deferred
+                descriptor.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                bluetoothGatt?.writeDescriptor(descriptor)
+                withTimeoutOrNull(2000L) { deferred.await() }
+            }
         } catch (e: SecurityException) {
             Log.e(tag, "Security exception during enableNotifications", e)
         }
     }
 
     /**
-     * 寫入模式控制
+     * Write mode control
      */
     suspend fun writeMode(mode: DeviceMode): Boolean {
         val value = when (mode) {
@@ -489,7 +533,7 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 寫入訊息
+     * Write message
      */
     suspend fun writeMessage(message: String): Boolean {
         val bytes = message.toByteArray(Charsets.UTF_8)
@@ -497,15 +541,45 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 寫入宣傳文字
+     * Write promotion text
      */
     suspend fun writePromoText(text: String): Boolean {
         val bytes = text.toByteArray(Charsets.UTF_8)
         return writeCharacteristic(promoTextChar, bytes)
     }
 
+    suspend fun readPromoText(): String? {
+        return try {
+            val char = promoTextChar ?: return null
+            val gatt = bluetoothGatt ?: return null
+            withTimeoutOrNull(3000L) {
+                val deferred = CompletableDeferred<String?>()
+                pendingReads[char.uuid.toString()] = deferred
+                gatt.readCharacteristic(char)
+                deferred.await()
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    suspend fun readDeviceName(): String? {
+        return try {
+            val char = deviceNameChar ?: return null
+            val gatt = bluetoothGatt ?: return null
+            withTimeoutOrNull(3000L) {
+                val deferred = CompletableDeferred<String?>()
+                pendingReads[char.uuid.toString()] = deferred
+                gatt.readCharacteristic(char)
+                deferred.await()
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     /**
-     * 寫入配置命令
+     * Write configuration command
      */
     suspend fun writeConfig(command: Byte, param1: Short = 0, param2: Short = 0, param3: Byte = 0): Boolean {
         val data = byteArrayOf(command, (param1.toInt() and 0xFF).toByte(), (param1.toInt() shr 8 and 0xFF).toByte(),
@@ -515,7 +589,8 @@ class BleClient @Inject constructor(
 
     suspend fun writeSsid(ssid: String): Boolean {
         val data = ssid.toByteArray(Charsets.UTF_8)
-        return writeCharacteristic(configChar, data)
+        // Link SSID to Promo Text characteristic for consistency
+        return writeCharacteristic(promoTextChar, data)
     }
 
     suspend fun writeWifiPassword(password: String): Boolean {
@@ -524,26 +599,25 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 寫入特徵值
+     * Write characteristic value
      */
     suspend fun writeCharacteristic(characteristic: BluetoothGattCharacteristic?, data: ByteArray): Boolean {
         if (characteristic == null) { return false }
         if (data.isEmpty()) { return false }
         return writeMutex.withLock {
-            val now = System.currentTimeMillis()
-            val elapsed = now - lastWriteTime
-            if (elapsed < MIN_WRITE_INTERVAL) {
-                kotlinx.coroutines.delay(MIN_WRITE_INTERVAL - elapsed)
-            }
             try {
+                val deferred = CompletableDeferred<Boolean>()
+                pendingWrite = deferred
                 characteristic.value = data
                 characteristic.writeType = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
-                val result = bluetoothGatt?.writeCharacteristic(characteristic) ?: false
-                if (result) {
-                    lastWriteTime = System.currentTimeMillis()
-                    kotlinx.coroutines.delay(30)
+                val initiated = bluetoothGatt?.writeCharacteristic(characteristic) ?: false
+                if (!initiated) {
+                    pendingWrite = null
+                    return@withLock false
                 }
-                result
+                withTimeoutOrNull(2000L) {
+                    deferred.await()
+                } ?: false
             } catch (e: SecurityException) { false }
         }
     }
@@ -561,7 +635,7 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 讀取狀態
+     * Read status
      */
     fun readStatus(): Boolean {
         return try {
@@ -576,7 +650,7 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * 掃描回調
+     * Scan callback
      */
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
@@ -585,12 +659,19 @@ class BleClient @Inject constructor(
                 val name = device.name ?: "Unknown"
                 val rssi = result.rssi
 
-                // If in fallback mode, apply name filter. 
-                // If in UUID mode, all results are already filtered by OS.
+                // Filter logic:
+                // - Normal mode: filter by UUID or PromoBeacon name
+                // - Fallback/debug mode: show ALL devices so user can see if ESP32 is visible
                 val isMatch = if (isScanFallbackActive) {
-                    name.contains("PROMO", ignoreCase = true) || name.contains("Beacon", ignoreCase = true)
-                } else {
+                    // Show everything in debug mode
                     true
+                } else {
+                    val scanRecord = result.scanRecord
+                    val hasServiceUuid = scanRecord?.serviceUuids?.any {
+                        it.toString().equals(PROMOBEACON_SERVICE_UUID, ignoreCase = true)
+                    } == true
+                    hasServiceUuid || name.contains("PROMO", ignoreCase = true) || 
+                        name.contains("Beacon", ignoreCase = true) || name.contains("ESP", ignoreCase = true)
                 }
 
                 if (isMatch) {
@@ -620,6 +701,7 @@ class BleClient @Inject constructor(
 
         override fun onScanFailed(errorCode: Int) {
             Log.e(tag, "Scan failed: $errorCode")
+            _scanError.value = errorCode
             isScanning = false
         }
     }
@@ -683,12 +765,14 @@ class BleClient @Inject constructor(
             return false
         }
 
-        // Data format: [Seq Num: 2 bytes] [Data: up to 200 bytes]
+        // Data format: [Seq Num: 2 bytes] [Data: up to 128 bytes]
         val chunkData = ByteArray(2 + data.size)
-        chunkData[0] = ((sequenceNumber shr 8) and 0xFF).toByte()
-        chunkData[1] = (sequenceNumber and 0xFF).toByte()
+        chunkData[0] = (sequenceNumber and 0xFF).toByte()
+        chunkData[1] = ((sequenceNumber shr 8) and 0xFF).toByte()
         System.arraycopy(data, 0, chunkData, 2, data.size)
 
+        // Use NO_RESPONSE for faster throughput on data chunks
+        portalDataChar?.writeType = BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
         val result = writeCharacteristic(portalDataChar, chunkData)
         if (result) {
             Log.d(tag, "Portal chunk $sequenceNumber sent: ${data.size} bytes")
@@ -783,7 +867,7 @@ class BleClient @Inject constructor(
         val device = bluetoothGatt?.device ?: return false
         
         Log.i(tag, "Writing new admin password to ${device.address}")
-        return writeCharacteristic(characteristic, newPassword.toByteArray())
+        return writeCharacteristic(characteristic, newPassword.toByteArray(Charsets.UTF_8))
     }
 
     /**
@@ -818,7 +902,7 @@ class BleClient @Inject constructor(
     /**
      * Find authentication characteristics
      */
-    private fun findAuthCharacteristics(gatt: BluetoothGatt) {
+    private suspend fun findAuthCharacteristics(gatt: BluetoothGatt) {
         val service = gatt.getService(java.util.UUID.fromString(BleConstants.PROMO_SERVICE_UUID))
         if (service == null) {
             Log.w(tag, "Service not found for auth characteristics")
@@ -936,7 +1020,7 @@ class BleClient @Inject constructor(
 }
 
 /**
- * 連接狀態枚舉
+ * Connection state enumeration
  */
 enum class ConnectionState {
     DISCONNECTED,

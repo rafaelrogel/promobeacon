@@ -938,7 +938,7 @@ private fun PortalUploadDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    "Tip: Supports standard HTML, max 16KB. The page will automatically display when users connect to the device WiFi.",
+                    "Tip: Supports standard HTML, max 32KB. The page will automatically display when users connect to the device WiFi.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

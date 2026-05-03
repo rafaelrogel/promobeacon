@@ -178,7 +178,8 @@ esp_err_t complete_setup(void);
  * @param req HTTP request handle
  * @return ESP_OK on success
  */
-esp_err_t stats_csv_get_handler(void *req);
+#include "esp_http_server.h"
+esp_err_t stats_csv_get_handler(httpd_req_t *req);
 
 #ifdef __cplusplus
 }

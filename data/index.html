@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONECTADO - SQN</title>
+    <style>
+        :root {
+            --primary: #ff4444;
+            --bg: #0a0a0a;
+            --card: #1a1a1a;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg);
+            color: #ffffff;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .container {
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            background: var(--card);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 68, 68, 0.2);
+            animation: shake 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes shake {
+            from { transform: rotate(-1deg); }
+            to { transform: rotate(1deg); }
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        pre {
+            font-family: monospace;
+            font-size: 10px;
+            line-height: 10px;
+            color: #ffffff;
+            background: #000;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: left;
+            margin-bottom: 1.5rem;
+            white-space: pre;
+        }
+
+        .footer {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            display: block;
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            filter: brightness(1.2);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FREE WI-FI O CRL,<br>PAGA O QUE DEVES!</h1>
+        
+        <pre>
+     ______
+    /      \
+   /  O  O  \
+   |    ^   |
+   \   --   /
+    \______/
+      |  |
+  ____|  |____
+ /    |  |    \
+|  |\_|  |_/|  |
+|  |  |  |  |  |
+|  |  |  |  |  |
+|  |  |  |  |  |
+ \_|  |  |  |_/
+   |  |__|  |
+   |        |
+   |   ||   |
+   |   ||   |
+   \___||___/
+        </pre>
+
+        <p>A paciência esgotou.</p>
+        <a href="#" class="btn" onclick="alert('PAGA A CONTA PRIMEIRO!')">PAGAR AGORA</a>
+        
+        <div class="footer">PromoBeacon - Security Shield v2.1.6</div>
+    </div>
+</body>
+</html>

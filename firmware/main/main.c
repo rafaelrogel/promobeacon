@@ -147,10 +147,14 @@ void app_main(void)
 {
     esp_err_t ret;
 
-    /* Initialize Status LED */
+    /* Initialize Status LED
+     * NOTE: On ESP32-C3 DevKitM-1, GPIO8 is a boot strapping pin.
+     * Setting it as OUTPUT can interfere with boot. Skip on C3. */
+#ifndef CONFIG_IDF_TARGET_ESP32C3
     gpio_reset_pin(STATUS_LED_PIN);
     gpio_set_direction(STATUS_LED_PIN, GPIO_MODE_OUTPUT);
     gpio_set_level(STATUS_LED_PIN, 0);
+#endif
 
     ESP_LOGI(TAG, "==================================================");
     ESP_LOGI(TAG, "PromoBeacon firmware starting on %s", DEVICE_CHIP_NAME);
@@ -216,11 +220,10 @@ void app_main(void)
     /* Initialize status collector */
     init_status_collector();
 
-    /* Initialize G-Mode modules and START services automatically */
-    /* This ensures promotion starts immediately on boot */
-    ret = init_g_mode();
+    /* Initialize BLE manager FIRST so NimBLE stack is ready */
+    ret = init_ble_manager();
     if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "G-Mode auto-start failed: %s", esp_err_to_name(ret));
+        ESP_LOGE(TAG, "BLE manager init failed: %s", esp_err_to_name(ret));
         return;
     }
 
@@ -228,10 +231,11 @@ void app_main(void)
     ble_register_mode_change_callback(on_mode_change);
     ble_register_status_callback(on_status_update);
 
-    /* Initialize BLE manager (must be after mode modules) */
-    ret = init_ble_manager();
+    /* Initialize G-Mode modules and START services automatically */
+    /* BLE must be up first so g_mode can update advertising name */
+    ret = init_g_mode();
     if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "BLE manager init failed: %s", esp_err_to_name(ret));
+        ESP_LOGE(TAG, "G-Mode auto-start failed: %s", esp_err_to_name(ret));
         return;
     }
 
