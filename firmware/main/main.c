@@ -220,6 +220,16 @@ void app_main(void)
     /* Initialize status collector */
     init_status_collector();
 
+#ifdef PROMOBEACON_QEMU
+    /* QEMU does not emulate the BLE radio or WiFi RF. NimBLE controller init
+     * and WiFi PHY init both busy-wait on hardware interrupts that never fire
+     * under emulation, so skip them. Config/portal/tracker/status logic and
+     * the main loop remain fully testable. */
+    ESP_LOGW(TAG, "QEMU mode: BLE + WiFi disabled (no emulated radio)");
+    ESP_LOGI(TAG, "PromoBeacon ESP32 started successfully (QEMU)");
+    ESP_LOGI(TAG, "Free heap size: %" PRIu32 " bytes", (uint32_t)esp_get_free_heap_size());
+    ESP_LOGI(TAG, "Current mode: G (simulated)");
+#else
     /* Initialize BLE manager FIRST so NimBLE stack is ready */
     ret = init_ble_manager();
     if (ret != ESP_OK) {
@@ -238,6 +248,7 @@ void app_main(void)
         ESP_LOGE(TAG, "G-Mode auto-start failed: %s", esp_err_to_name(ret));
         return;
     }
+#endif /* PROMOBEACON_QEMU */
 
     /* BLE manager handles configuration */
     /* Default mode is G mode */
@@ -245,9 +256,11 @@ void app_main(void)
     /* Mark firmware as valid to prevent rollback (must be after all init) */
     ota_mark_valid();
 
+#ifndef PROMOBEACON_QEMU
     ESP_LOGI(TAG, "PromoBeacon ESP32 started successfully");
     ESP_LOGI(TAG, "Free heap size: %" PRIu32 " bytes", (uint32_t)esp_get_free_heap_size());
     ESP_LOGI(TAG, "Current mode: %s", is_g_mode_active() ? "G" : "E");
+#endif
 
     /* Main event loop */
     TickType_t last_wake_time = xTaskGetTickCount();
@@ -270,6 +283,21 @@ void app_main(void)
         /* Update status every second (100 * 10ms) */
         if (++loop_counter >= 100) {
             update_status();
+
+#ifdef PROMOBEACON_QEMU
+            /* QEMU test aid: log status once per minute so boot/liveness is
+             * observable in the emulator (production builds stay silent). */
+            static uint32_t qemu_status_log = 0;
+            if (++qemu_status_log >= 60) {
+                const StatusPacket* st = get_status();
+                ESP_LOGI(TAG, "QEMU status: uptime=%us clients=%u flags=0x%02x battery=%u%%",
+                         (unsigned)(st->session_duration_sec),
+                         (unsigned)st->client_count,
+                         (unsigned)st->flags,
+                         (unsigned)st->battery_percent);
+                qemu_status_log = 0;
+            }
+#endif
             
             /* Check for timed out clients (10 minute timeout) */
             tracker_check_timeouts(600);

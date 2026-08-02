@@ -45,7 +45,18 @@ void init_status_collector(void)
     session_start_time = xTaskGetTickCount() * portTICK_PERIOD_MS / 1000;
     total_portal_time = 0;
     portal_session_count = 0;
-    
+
+#ifdef PROMOBEACON_QEMU
+    /* QEMU does not emulate the ADC peripheral (no SAR ADC hardware event
+     * ever fires), so adc_oneshot_read() busy-waits forever and triggers an
+     * interrupt watchdog panic. Skip hardware init and report 100% battery. */
+    ESP_LOGW(TAG, "QEMU mode: ADC disabled (no emulated ADC), battery fixed at 100%%");
+    cali_enabled = false;
+    last_battery_percent = 100;
+    ESP_LOGI(TAG, "Status collector initialized (QEMU mode, ADC skipped)");
+    return;
+#endif
+
     /* 1. Initialize ADC Unit */
     adc_oneshot_unit_init_cfg_t init_config = {
         .unit_id = ADC_UNIT_1,
