@@ -288,12 +288,25 @@ static void deferred_work_task(void *param)
                     break;
                 case DEFERRED_REBOOT:
                     vTaskDelay(pdMS_TO_TICKS(500));
+                    ESP_LOGI(TAG, "deferred reboot: calling esp_restart()");
                     esp_restart();
+                    /* esp_restart() never returns; if it does, fail loudly. */
+                    ESP_LOGE(TAG, "deferred reboot: esp_restart() RETURNED (should never happen)");
+                    abort();
                     break;
                 case DEFERRED_FACTORY_RESET:
                     vTaskDelay(pdMS_TO_TICKS(500));
-                    portal_reset_to_default();
+                    ESP_LOGI(TAG, "deferred factory reset: clearing portal content");
+                    esp_err_t fr_err = portal_reset_to_default();
+                    ESP_LOGI(TAG, "deferred factory reset: portal_reset_to_default -> %s (%d)",
+                             esp_err_to_name(fr_err), fr_err);
+                    /* Let NVS writes settle and flash-cache users release locks. */
+                    vTaskDelay(pdMS_TO_TICKS(1500));
+                    ESP_LOGI(TAG, "deferred factory reset: calling esp_restart()");
                     esp_restart();
+                    /* esp_restart() never returns; if it does, fail loudly. */
+                    ESP_LOGE(TAG, "deferred factory reset: esp_restart() RETURNED (should never happen)");
+                    abort();
                     break;
             }
         }
@@ -338,7 +351,7 @@ esp_err_t init_ble_manager(void)
 
     deferred_queue = xQueueCreate(4, sizeof(deferred_work_t));
     if (deferred_queue) {
-        xTaskCreate(deferred_work_task, "ble_deferred", 4096, NULL, 5, &deferred_task_handle);
+        xTaskCreate(deferred_work_task, "ble_deferred", 8192, NULL, 5, &deferred_task_handle);
     }
 
     rc = nimble_port_init();
