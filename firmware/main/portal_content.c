@@ -147,10 +147,16 @@ esp_err_t portal_load_from_nvs(void)
     }
 
     /* Get content size */
-    uint32_t size;
+    uint32_t size = 0;
     ret = nvs_get_u32(nvs_handle, PORTAL_NVS_SIZE_KEY, &size);
+    if (ret == ESP_ERR_NVS_NOT_FOUND) {
+        ESP_LOGI(TAG, "No saved content size (key absent)");
+        nvs_close(nvs_handle);
+        g_is_custom = false;
+        return ESP_ERR_NVS_NOT_FOUND;
+    }
     if (ret != ESP_OK || size == 0 || size > PORTAL_MAX_SIZE) {
-        ESP_LOGW(TAG, "Invalid content size in NVS");
+        ESP_LOGW(TAG, "Invalid content size in NVS (ret=%s size=%lu)", esp_err_to_name(ret), (unsigned long)size);
         nvs_close(nvs_handle);
         g_is_custom = false;
         return ESP_ERR_INVALID_SIZE;
@@ -402,6 +408,11 @@ void portal_transfer_abort(void)
     
     g_content_buffer = NULL;
     g_content_size = 0;
+    /* The buffer backing g_content_buffer was freed above; reset the
+     * allocation bookkeeping too, otherwise a later portal_content_set()
+     * or portal_load_from_nvs() sees g_allocated_size >= needed size and
+     * memcpy()s into a dangling pointer (use-after-free -> crash). */
+    g_allocated_size = 0;
 
     memset(&g_transfer, 0, sizeof(portal_transfer_state_t));
     g_transfer.status = PORTAL_STATUS_IDLE;
@@ -586,6 +597,10 @@ esp_err_t portal_reset_to_default(void)
     if (g_content_buffer && g_is_custom) {
         free(g_content_buffer);
         g_content_buffer = NULL;
+        /* Keep allocation bookkeeping in sync: a later portal_content_set()
+         * or portal_load_from_nvs() must reallocate instead of writing into
+         * the freed buffer. */
+        g_allocated_size = 0;
     }
 
     g_content_size = 0;

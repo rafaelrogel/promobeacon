@@ -473,6 +473,13 @@ void tracker_on_connect(const uint8_t* mac_addr)
         slot = oldest_idx;
     }
     
+    /* Update statistics. NOTE: must run BEFORE the session is written into
+     * g_active below, otherwise is_unique_mac() would see the just-inserted
+     * session and never count this MAC as unique — total_unique_clients
+     * stayed 0 forever. is_unique_mac() scans g_active + history, so it must
+     * observe the pre-insert state. */
+    update_stats_on_connect(mac_addr);
+
     /* Initialize new session */
     client_session_t* session = &g_active.active[slot];
     memset(session, 0, sizeof(client_session_t));
@@ -491,9 +498,6 @@ void tracker_on_connect(const uint8_t* mac_addr)
     if (slot >= g_active.active_count) {
         g_active.active_count = slot + 1;
     }
-    
-    /* Update statistics */
-    update_stats_on_connect(mac_addr);
     
     ESP_LOGD(TAG, "Active clients: %u", g_active.active_count);
 }

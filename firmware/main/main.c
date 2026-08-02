@@ -41,6 +41,9 @@
 #include "status_collector.h"
 #include "config_manager.h"
 #include "ota_update.h"
+#ifdef PROMOBEACON_QEMU
+#include "qemu_selftest.h"
+#endif
 #include "client_tracker.h"
 #include "portal_content.h"
 
@@ -255,6 +258,11 @@ void app_main(void)
 
     /* Mark firmware as valid to prevent rollback (must be after all init) */
     ota_mark_valid();
+
+#ifdef PROMOBEACON_QEMU
+    /* Run the QEMU self-test battery to exercise all non-radio logic */
+    qemu_selftest_run();
+#endif
 
 #ifndef PROMOBEACON_QEMU
     ESP_LOGI(TAG, "PromoBeacon ESP32 started successfully");

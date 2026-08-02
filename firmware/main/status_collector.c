@@ -130,8 +130,14 @@ void update_status(void)
     
     /* Update client count from WiFi */
     wifi_sta_list_t sta_list;
-    esp_wifi_ap_get_sta_list(&sta_list);
-    current_status.client_count = sta_list.num;
+    memset(&sta_list, 0, sizeof(sta_list));
+    esp_err_t wifi_ret = esp_wifi_ap_get_sta_list(&sta_list);
+    if (wifi_ret == ESP_OK) {
+        current_status.client_count = sta_list.num;
+    } else {
+        /* WiFi not up (or init failed): report 0 rather than garbage. */
+        current_status.client_count = 0;
+    }
     
     /* Update session duration (32-bit seconds since boot/mode start) */
     current_status.session_duration_sec = session_seconds;
