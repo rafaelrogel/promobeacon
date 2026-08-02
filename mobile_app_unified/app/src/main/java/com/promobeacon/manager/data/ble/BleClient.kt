@@ -216,11 +216,12 @@ class BleClient @Inject constructor(
             }
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                when (characteristic.uuid.toString()) {
-                    BleConstants.CHAR_STATUS -> {
+                // Note: characteristic.uuid.toString() is always lowercase; constants are uppercase
+                when (characteristic.uuid.toString().lowercase()) {
+                    BleConstants.CHAR_STATUS.lowercase() -> {
                         _deviceStatus.value = characteristic.value
                     }
-                    BleConstants.CHAR_AUTH_STATUS -> {
+                    BleConstants.CHAR_AUTH_STATUS.lowercase() -> {
                         // Crucial: Update auth state even from manual read fallback
                         if (characteristic.value.isNotEmpty()) {
                             updateAuthenticationState(characteristic.value[0])
@@ -233,14 +234,15 @@ class BleClient @Inject constructor(
         override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
             Log.d(tag, "onCharacteristicChanged: ${characteristic.uuid}")
 
-            if (characteristic.uuid.toString() == BleConstants.CHAR_STATUS) {
+            val uuid = characteristic.uuid.toString().lowercase()
+            if (uuid == BleConstants.CHAR_STATUS.lowercase()) {
                 _deviceStatus.value = characteristic.value
-            } else if (characteristic.uuid.toString() == BleConstants.CHAR_AUTH_STATUS) {
+            } else if (uuid == BleConstants.CHAR_AUTH_STATUS.lowercase()) {
                 // Update authentication state from notification
                 if (characteristic.value.isNotEmpty()) {
                     updateAuthenticationState(characteristic.value[0])
                 }
-            } else if (characteristic.uuid.toString() == BleConstants.CHAR_PORTAL_CTRL) {
+            } else if (uuid == BleConstants.CHAR_PORTAL_CTRL.lowercase()) {
                 // Handle portal status notifications
                 if (characteristic.value.isNotEmpty()) {
                     val status = characteristic.value[0]
