@@ -203,13 +203,30 @@ esp_err_t update_ap_ssid(const char* new_ssid)
     memcpy(wifi_config.ap.ssid, ap_ssid, strlen(ap_ssid));
     wifi_config.ap.ssid_len = strlen(ap_ssid);
     
+    /* Changing the SSID with clients connected can leave the AP in an
+     * inconsistent state (clients lose routing/DHCP even though the AP
+     * keeps beaconing). Stop the AP, apply the new config, then restart
+     * it so the interface comes up cleanly. The netif/DHCP server are
+     * preserved across stop/start. */
+    ret = esp_wifi_stop();
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "WiFi stop failed during SSID update: %s", esp_err_to_name(ret));
+        return ret;
+    }
+    
     ret = esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "SSID update failed: %s", esp_err_to_name(ret));
         return ret;
     }
     
-    ESP_LOGI(TAG, "AP SSID updated: %s", ap_ssid);
+    ret = esp_wifi_start();
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "WiFi start failed during SSID update: %s", esp_err_to_name(ret));
+        return ret;
+    }
+    
+    ESP_LOGI(TAG, "AP SSID updated (clean restart): %s", ap_ssid);
     
     return ESP_OK;
 }
