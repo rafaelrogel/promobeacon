@@ -602,7 +602,7 @@ bool verify_admin_password(const char* password)
     size_t pw_len = strlen(stored);
     size_t in_len = strlen(password);
     
-    volatile int match = (pw_len != in_len);
+    volatile int match = 0;
     volatile const char *s = stored;
     volatile const char *p = password;
     size_t max_len = MAX_PASSWORD_LENGTH;
