@@ -581,11 +581,20 @@ class BleClient @Inject constructor(
     }
 
     /**
-     * Write configuration command
+     * Write configuration command.
+     *
+     * Firmware protocol (v4.1.5+): the config characteristic treats a write of
+     * exactly ONE byte as a command (CMD_REBOOT=0x02, CMD_RESET_DEFAULTS=0x03,
+     * CONFIG_START_OTA=0x03). Any write longer than 1 byte is interpreted as a
+     * raw WiFi password update. The app's old 6-byte frame (command + 3 params)
+     * therefore never reached the command branch — reboot/factory-reset were
+     * silently treated as a WiFi password write ("WiFi Password update received:
+     * \x02"). Send only the single command byte.
      */
     suspend fun writeConfig(command: Byte, param1: Short = 0, param2: Short = 0, param3: Byte = 0): Boolean {
-        val data = byteArrayOf(command, (param1.toInt() and 0xFF).toByte(), (param1.toInt() shr 8 and 0xFF).toByte(),
-            (param2.toInt() and 0xFF).toByte(), (param2.toInt() shr 8 and 0xFF).toByte(), param3)
+        // Only single-byte commands are supported by the current firmware protocol.
+        // (params are kept for API compatibility but not serialized.)
+        val data = byteArrayOf(command)
         return writeCharacteristic(configChar, data)
     }
 
