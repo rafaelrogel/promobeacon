@@ -45,8 +45,6 @@
 #include "portal_content.h"
 
 /* Tag for ESP_LOG output */
-#define MACSTR "%02x:%02x:%02x:%02x:%02x:%02x"
-#define MAC2STR(b)  b[0], b[1], b[2], b[3], b[4], b[5]
 static const char *TAG = "MAIN";
 
 /* Event group bits for synchronization */
@@ -127,7 +125,7 @@ static void global_event_handler(void* arg, esp_event_base_t event_base,
                 break;
         }
     } else if (event_base == IP_EVENT) {
-        if (event_id == IP_EVENT_AP_STAIPASSIGNED) {
+        if (event_id == IP_EVENT_ASSIGNED_IP_TO_CLIENT) {
             xEventGroupSetBits(system_event_group, WIFI_CONNECTED_BIT);
         }
     }
