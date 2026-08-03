@@ -67,22 +67,13 @@ esp_err_t init_config_manager(void)
     /* Load admin password */
     ret = load_admin_password(current_config.admin_password, sizeof(current_config.admin_password));
     if (ret != ESP_OK || current_config.admin_password[0] == '\0') {
-        {
-            const char charset[] = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
-            char random_pwd[9];
-            for (int i = 0; i < 8; i++) {
-                uint32_t rand_val = esp_random();
-                random_pwd[i] = charset[rand_val % (sizeof(charset) - 1)];
-            }
-            random_pwd[8] = '\0';
-            strncpy(current_config.admin_password, random_pwd, MAX_PASSWORD_LENGTH);
-            current_config.admin_password[MAX_PASSWORD_LENGTH] = '\0';
-            save_admin_password(random_pwd);
-            ESP_LOGW(TAG, "============================================");
-            ESP_LOGW(TAG, "DEFAULT ADMIN PASSWORD: %s", random_pwd);
-            ESP_LOGW(TAG, "Write this down! It will be required for admin access.");
-            ESP_LOGW(TAG, "============================================");
-        }
+        /* Fixed default admin password: 12345 (user requirement).
+         * This also covers the case after factory reset, where the
+         * namespace is erased and no password is stored. */
+        strncpy(current_config.admin_password, DEFAULT_ADMIN_PASSWORD, MAX_PASSWORD_LENGTH);
+        current_config.admin_password[MAX_PASSWORD_LENGTH] = '\0';
+        save_admin_password(DEFAULT_ADMIN_PASSWORD);
+        ESP_LOGI(TAG, "Admin password set to default (12345)");
     }
 
     /* Load configuration state */

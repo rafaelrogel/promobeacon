@@ -42,6 +42,7 @@ extern "C" {
 /* Default values */
 #define DEFAULT_PROMO_TEXT        "PROMOBEACON"
 #define DEFAULT_DEVICE_NAME       "PROMO-BEACON"
+#define DEFAULT_ADMIN_PASSWORD    "12345"
 #define DEFAULT_HTML_SIZE         0  /* Use built-in default */
 
 /**
