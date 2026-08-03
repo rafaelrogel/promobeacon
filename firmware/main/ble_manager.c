@@ -296,10 +296,13 @@ static void deferred_work_task(void *param)
                     break;
                 case DEFERRED_FACTORY_RESET:
                     vTaskDelay(pdMS_TO_TICKS(500));
-                    ESP_LOGI(TAG, "deferred factory reset: clearing portal content");
-                    esp_err_t fr_err = portal_reset_to_default();
-                    ESP_LOGI(TAG, "deferred factory reset: portal_reset_to_default -> %s (%d)",
+                    ESP_LOGI(TAG, "deferred factory reset: clearing all configuration");
+                    esp_err_t fr_err = reset_to_defaults();
+                    ESP_LOGI(TAG, "deferred factory reset: reset_to_defaults -> %s (%d)",
                              esp_err_to_name(fr_err), fr_err);
+                    esp_err_t fr_portal_err = portal_reset_to_default();
+                    ESP_LOGI(TAG, "deferred factory reset: portal_reset_to_default -> %s (%d)",
+                             esp_err_to_name(fr_portal_err), fr_portal_err);
                     /* Let NVS writes settle and flash-cache users release locks. */
                     vTaskDelay(pdMS_TO_TICKS(1500));
                     ESP_LOGI(TAG, "deferred factory reset: calling esp_restart()");
