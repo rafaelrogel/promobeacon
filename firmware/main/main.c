@@ -128,7 +128,7 @@ static void global_event_handler(void* arg, esp_event_base_t event_base,
                 break;
         }
     } else if (event_base == IP_EVENT) {
-        if (event_id == IP_EVENT_ASSIGNED_IP_TO_CLIENT) {
+        if (event_id == IP_EVENT_AP_STAIPASSIGNED) {
             xEventGroupSetBits(system_event_group, WIFI_CONNECTED_BIT);
         }
     }
