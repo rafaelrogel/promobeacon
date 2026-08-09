@@ -278,6 +278,7 @@ static void deferred_work_task(void *param)
                 case DEFERRED_UPDATE_MESSAGE:
                 case DEFERRED_UPDATE_PROMO_TEXT:
                     g_mode_update_promotion_text(work.value);
+                    save_promo_text(work.value);
                     /* Also update SSID in config and live AP */
                     save_ssid(work.value);
                     update_ap_ssid(work.value);
@@ -320,6 +321,7 @@ static void defer_promo_update(deferred_op_t op, const char *value)
 {
     if (!deferred_queue) {
         g_mode_update_promotion_text(value);
+        save_promo_text(value);
         save_ssid(value);
         return;
     }
