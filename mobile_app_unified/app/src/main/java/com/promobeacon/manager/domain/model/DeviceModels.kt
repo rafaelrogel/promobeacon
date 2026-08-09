@@ -56,6 +56,7 @@ data class DeviceStatus(
  * @property portalHtml Captive portal HTML content
  */
 data class GModeConfig(
+    val deviceName: String = "PromoBeacon",
     val ssid: String = "PromoBeacon",
     val password: String = "",
     val promoText: String = "VISITE-NOS",

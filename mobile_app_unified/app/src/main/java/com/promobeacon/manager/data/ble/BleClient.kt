@@ -580,6 +580,11 @@ class BleClient @Inject constructor(
         }
     }
 
+    suspend fun writeDeviceName(name: String): Boolean {
+        val data = name.toByteArray(Charsets.UTF_8)
+        return writeCharacteristic(deviceNameChar, data)
+    }
+
     /**
      * Write configuration command.
      *
@@ -599,9 +604,9 @@ class BleClient @Inject constructor(
     }
 
     suspend fun writeSsid(ssid: String): Boolean {
-        val data = ssid.toByteArray(Charsets.UTF_8)
-        // Link SSID to Promo Text characteristic for consistency
-        return writeCharacteristic(promoTextChar, data)
+        // No-op: SSID is driven by promo text on the firmware side.
+        // Returning true to maintain API compatibility.
+        return true
     }
 
     suspend fun writeWifiPassword(password: String): Boolean {

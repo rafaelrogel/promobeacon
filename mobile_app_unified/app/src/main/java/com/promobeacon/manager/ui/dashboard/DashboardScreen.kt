@@ -399,6 +399,7 @@ private fun GModeSettingsCard(
     isSaving: Boolean,
     onSaveConfig: (GModeConfig) -> Unit
 ) {
+    var deviceName by remember { mutableStateOf(config.deviceName) }
     var ssid by remember { mutableStateOf(config.ssid) }
     var promoText by remember { mutableStateOf(config.promoText) }
     var showPasswordField by remember { mutableStateOf(config.password.isNotEmpty()) }
@@ -406,6 +407,7 @@ private fun GModeSettingsCard(
     var newAdminPassword by remember { mutableStateOf("") }
 
     LaunchedEffect(config) {
+        deviceName = config.deviceName
         ssid = config.ssid
         promoText = config.promoText
         showPasswordField = config.password.isNotEmpty()
@@ -429,6 +431,20 @@ private fun GModeSettingsCard(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            // Device Name
+            OutlinedTextField(
+                value = deviceName,
+                onValueChange = { deviceName = it },
+                label = { Text("Device Name") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                leadingIcon = {
+                    Icon(Icons.Default.Devices, contentDescription = null)
+                }
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             // Network name
             OutlinedTextField(
@@ -526,6 +542,7 @@ private fun GModeSettingsCard(
                 onClick = {
                     onSaveConfig(
                         config.copy(
+                            deviceName = deviceName,
                             ssid = ssid,
                             promoText = promoText,
                             password = if (showPasswordField) password else "",

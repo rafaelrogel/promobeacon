@@ -106,12 +106,10 @@ class DeviceRepositoryImpl @Inject constructor(
                 return@withContext Result.failure(Exception("Failed to write promotion text"))
             }
 
-            // Write SSID if it differs from promo text
-            if (config.ssid != config.promoText) {
-                val ssidSuccess = bleClient.writeSsid(config.ssid)
-                if (!ssidSuccess) {
-                    return@withContext Result.failure(Exception("Failed to write SSID"))
-                }
+            // Write device name to GAP
+            val deviceNameSuccess = bleClient.writeDeviceName(config.deviceName)
+            if (!deviceNameSuccess) {
+                return@withContext Result.failure(Exception("Failed to write device name"))
             }
 
             // Write WiFi password if provided
@@ -139,6 +137,7 @@ class DeviceRepositoryImpl @Inject constructor(
             val promoText = bleClient.readPromoText() ?: ""
             val deviceName = bleClient.readDeviceName() ?: promoText
             val config = GModeConfig(
+                deviceName = deviceName,
                 ssid = deviceName,
                 promoText = promoText,
                 password = "",
