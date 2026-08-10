@@ -1,11 +1,14 @@
 package com.promobeacon.manager.data.repository
 
 import android.content.Context
+import com.promobeacon.manager.data.ble.AuthenticationState
 import com.promobeacon.manager.data.ble.BleClient
 import com.promobeacon.manager.domain.model.GModeConfig
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
@@ -21,6 +24,7 @@ class DeviceRepositoryImplTest {
     @Before
     fun setup() {
         bleClient = mockk(relaxed = true)
+        every { bleClient.authenticationState } returns MutableStateFlow(AuthenticationState.AUTHENTICATED)
         context = mockk(relaxed = true)
         repository = DeviceRepositoryImpl(bleClient, context)
     }
@@ -71,5 +75,16 @@ class DeviceRepositoryImplTest {
 
         assertTrue(result.isSuccess)
         coVerify(exactly = 0) { bleClient.writeWifiPassword(any()) }
+    }
+
+    @Test
+    fun `updateGModeConfig fails when not authenticated`() = runTest {
+        every { bleClient.authenticationState } returns MutableStateFlow(AuthenticationState.NOT_AUTHENTICATED)
+
+        val config = GModeConfig(promoText = "Welcome")
+        val result = repository.updateGModeConfig(config)
+
+        assertFalse(result.isSuccess)
+        coVerify(exactly = 0) { bleClient.writePromoText(any()) }
     }
 }

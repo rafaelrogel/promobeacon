@@ -538,6 +538,7 @@ class BleClient @Inject constructor(
      * Write message
      */
     suspend fun writeMessage(message: String): Boolean {
+        if (!ensureAuthenticatedForWrite()) return false
         val bytes = message.toByteArray(Charsets.UTF_8)
         return writeCharacteristic(messageChar, bytes)
     }
@@ -546,6 +547,7 @@ class BleClient @Inject constructor(
      * Write promotion text
      */
     suspend fun writePromoText(text: String): Boolean {
+        if (!ensureAuthenticatedForWrite()) return false
         val bytes = text.toByteArray(Charsets.UTF_8)
         return writeCharacteristic(promoTextChar, bytes)
     }
@@ -581,6 +583,7 @@ class BleClient @Inject constructor(
     }
 
     suspend fun writeDeviceName(name: String): Boolean {
+        if (!ensureAuthenticatedForWrite()) return false
         val data = name.toByteArray(Charsets.UTF_8)
         return writeCharacteristic(deviceNameChar, data)
     }
@@ -597,6 +600,7 @@ class BleClient @Inject constructor(
      * \x02"). Send only the single command byte.
      */
     suspend fun writeConfig(command: Byte, param1: Short = 0, param2: Short = 0, param3: Byte = 0): Boolean {
+        if (!ensureAuthenticatedForWrite()) return false
         // Only single-byte commands are supported by the current firmware protocol.
         // (params are kept for API compatibility but not serialized.)
         val data = byteArrayOf(command)
@@ -610,6 +614,7 @@ class BleClient @Inject constructor(
     }
 
     suspend fun writeWifiPassword(password: String): Boolean {
+        if (!ensureAuthenticatedForWrite()) return false
         val data = password.toByteArray(Charsets.UTF_8)
         return writeCharacteristic(configChar, data)
     }
@@ -879,6 +884,7 @@ class BleClient @Inject constructor(
      * Set new admin password
      */
     suspend fun writeAdminPassword(newPassword: String): Boolean {
+        if (!ensureAuthenticatedForWrite()) return false
         val characteristic = adminPasswordChar ?: return false
         val device = bluetoothGatt?.device ?: return false
         
@@ -1004,6 +1010,20 @@ class BleClient @Inject constructor(
      */
     fun isAuthenticated(): Boolean {
         return _authenticationState.value == AuthenticationState.AUTHENTICATED
+    }
+
+    private suspend fun ensureAuthenticatedForWrite(): Boolean {
+        if (_authenticationState.value == AuthenticationState.AUTHENTICATED) {
+            return true
+        }
+        val finalState = kotlinx.coroutines.withTimeoutOrNull(5000L) {
+            _authenticationState.first { 
+                it == AuthenticationState.AUTHENTICATED || 
+                it == AuthenticationState.FAILED || 
+                it == AuthenticationState.LOCKED 
+            }
+        }
+        return finalState == AuthenticationState.AUTHENTICATED
     }
 
     /**

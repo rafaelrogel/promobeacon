@@ -100,6 +100,19 @@ class DeviceRepositoryImpl @Inject constructor(
 
     override suspend fun updateGModeConfig(config: GModeConfig): Result<Unit> = withContext(Dispatchers.IO) {
         try {
+            val isAuth = bleClient.authenticationState.value == com.promobeacon.manager.data.ble.AuthenticationState.AUTHENTICATED ||
+                kotlinx.coroutines.withTimeoutOrNull(5000L) {
+                    bleClient.authenticationState.first { 
+                        it == com.promobeacon.manager.data.ble.AuthenticationState.AUTHENTICATED || 
+                        it == com.promobeacon.manager.data.ble.AuthenticationState.FAILED || 
+                        it == com.promobeacon.manager.data.ble.AuthenticationState.LOCKED 
+                    }
+                } == com.promobeacon.manager.data.ble.AuthenticationState.AUTHENTICATED
+
+            if (!isAuth) {
+                return@withContext Result.failure(Exception("Authentication required. Please login first."))
+            }
+
             // Write promotion text (this also updates AP SSID on firmware side)
             val promoSuccess = bleClient.writePromoText(config.promoText)
             if (!promoSuccess) {
@@ -153,6 +166,19 @@ class DeviceRepositoryImpl @Inject constructor(
 
     override suspend fun reboot(): Result<Unit> = withContext(Dispatchers.IO) {
         try {
+            val isAuth = bleClient.authenticationState.value == com.promobeacon.manager.data.ble.AuthenticationState.AUTHENTICATED ||
+                kotlinx.coroutines.withTimeoutOrNull(5000L) {
+                    bleClient.authenticationState.first { 
+                        it == com.promobeacon.manager.data.ble.AuthenticationState.AUTHENTICATED || 
+                        it == com.promobeacon.manager.data.ble.AuthenticationState.FAILED || 
+                        it == com.promobeacon.manager.data.ble.AuthenticationState.LOCKED 
+                    }
+                } == com.promobeacon.manager.data.ble.AuthenticationState.AUTHENTICATED
+
+            if (!isAuth) {
+                return@withContext Result.failure(Exception("Authentication required. Please login first."))
+            }
+
             val success = bleClient.writeConfig(BleConstants.CMD_REBOOT.toByte())
             if (success) Result.success(Unit) else Result.failure(Exception("Reboot command failed"))
         } catch (e: Exception) {
@@ -162,6 +188,19 @@ class DeviceRepositoryImpl @Inject constructor(
 
     override suspend fun resetToDefaults(): Result<Unit> = withContext(Dispatchers.IO) {
         try {
+            val isAuth = bleClient.authenticationState.value == com.promobeacon.manager.data.ble.AuthenticationState.AUTHENTICATED ||
+                kotlinx.coroutines.withTimeoutOrNull(5000L) {
+                    bleClient.authenticationState.first { 
+                        it == com.promobeacon.manager.data.ble.AuthenticationState.AUTHENTICATED || 
+                        it == com.promobeacon.manager.data.ble.AuthenticationState.FAILED || 
+                        it == com.promobeacon.manager.data.ble.AuthenticationState.LOCKED 
+                    }
+                } == com.promobeacon.manager.data.ble.AuthenticationState.AUTHENTICATED
+
+            if (!isAuth) {
+                return@withContext Result.failure(Exception("Authentication required. Please login first."))
+            }
+
             val success = bleClient.writeConfig(BleConstants.CMD_RESET_DEFAULTS.toByte())
 
             if (success) {
