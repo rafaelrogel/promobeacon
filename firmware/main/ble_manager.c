@@ -172,6 +172,13 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
                 .val_handle = &h_auth,
             },
             {
+                /* Device Name: 12345684-... */
+                .uuid = BLE_UUID128_DECLARE(0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x84, 0x56, 0x34, 0x12),
+                .access_cb = ble_svc_gatt_handler,
+                .flags = BLE_GATT_CHR_F_READ | BLE_GATT_CHR_F_WRITE,
+                .val_handle = &h_device_name,
+            },
+            {
                 /* Auth Status: 12345685-... */
                 .uuid = BLE_UUID128_DECLARE(0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x85, 0x56, 0x34, 0x12),
                 .access_cb = ble_svc_gatt_handler,
