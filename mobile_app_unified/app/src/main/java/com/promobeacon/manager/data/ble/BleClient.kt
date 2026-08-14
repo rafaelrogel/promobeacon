@@ -47,6 +47,7 @@ object BleConstants {
     const val CHAR_PORTAL_DATA = "12345681-1234-1234-1234-123456789ABC"  // Portal data chunks
     const val CHAR_PORTAL_CTRL = "12345682-1234-1234-1234-123456789ABC"  // Portal control & status
     const val CHAR_AUTH = "12345683-1234-1234-1234-123456789ABC"  // Authentication
+    const val CHAR_DEVICE_NAME = "12345684-1234-1234-1234-123456789ABC" // Custom Device Name
     const val CHAR_AUTH_STATUS = "12345685-1234-1234-1234-123456789ABC"  // Auth status
     const val CHAR_ADMIN_PASSWORD = "12345686-1234-1234-1234-123456789ABC"  // Admin password change
     const val CHAR_STATS = "1234567E-1234-1234-1234-123456789ABC"         // Aggregated stats
@@ -484,9 +485,8 @@ class BleClient @Inject constructor(
         sessionsChar = service.getCharacteristic(java.util.UUID.fromString(BleConstants.CHAR_SESSIONS))
         sessionCtrlChar = service.getCharacteristic(java.util.UUID.fromString(BleConstants.CHAR_SESSION_CTRL))
 
-        // Find GAP Device Name
-        val gapService = gatt.getService(java.util.UUID.fromString("00001800-0000-1000-8000-00805f9b34fb"))
-        deviceNameChar = gapService?.getCharacteristic(java.util.UUID.fromString("00002a00-0000-1000-8000-00805f9b34fb"))
+        // Find custom PromoBeacon Device Name
+        deviceNameChar = service.getCharacteristic(java.util.UUID.fromString(BleConstants.CHAR_DEVICE_NAME))
 
         // Authentication characteristics
         findAuthCharacteristics(gatt)
