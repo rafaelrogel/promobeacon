@@ -400,7 +400,6 @@ private fun GModeSettingsCard(
     onSaveConfig: (GModeConfig) -> Unit
 ) {
     var deviceName by remember { mutableStateOf(config.deviceName) }
-    var ssid by remember { mutableStateOf(config.ssid) }
     var promoText by remember { mutableStateOf(config.promoText) }
     var showPasswordField by remember { mutableStateOf(config.password.isNotEmpty()) }
     var password by remember { mutableStateOf(config.password) }
@@ -408,7 +407,6 @@ private fun GModeSettingsCard(
 
     LaunchedEffect(config) {
         deviceName = config.deviceName
-        ssid = config.ssid
         promoText = config.promoText
         showPasswordField = config.password.isNotEmpty()
         password = config.password
@@ -446,15 +444,29 @@ private fun GModeSettingsCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Network name
+            // Network name (SSID) — firmware ties the AP SSID to the promotion
+            // text (writeSsid is a no-op on the BLE client). Editing it here would
+            // be a phantom field, so we show it as a read-only hint instead.
             OutlinedTextField(
-                value = ssid,
-                onValueChange = { ssid = it },
+                value = "",
+                onValueChange = {},
+                readOnly = true,
+                enabled = false,
                 label = { Text("Network Name (SSID)") },
+                placeholder = {
+                    Text(promoText.ifEmpty { "(set by promotion text)" })
+                },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 leadingIcon = {
                     Icon(Icons.Default.Wifi, contentDescription = null)
+                },
+                supportingText = {
+                    Text(
+                        "The WiFi SSID follows the promotion text below (firmware behavior).",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             )
 
@@ -543,7 +555,7 @@ private fun GModeSettingsCard(
                     onSaveConfig(
                         config.copy(
                             deviceName = deviceName,
-                            ssid = ssid,
+                            ssid = promoText,
                             promoText = promoText,
                             password = if (showPasswordField) password else "",
                             newAdminPassword = newAdminPassword
