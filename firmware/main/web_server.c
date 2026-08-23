@@ -288,7 +288,7 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
 
     set_device_configured();
 
-    const char* success = "<html><body style='font-family:sans-serif;text-align:center;padding:50px;background:#f0f9ff;'>"
+    const char* success = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body style='font-family:sans-serif;text-align:center;padding:50px;background:#f0f9ff;'>"
                           "<h1 style='color:#0369a1'>Setup Successful!</h1>"
                           "<p>Device is restarting to apply changes...</p></body></html>";
     httpd_resp_send(req, success, strlen(success));
