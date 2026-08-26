@@ -52,10 +52,47 @@ class DashboardViewModel @Inject constructor(
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
     init {
+        // Track previous connection state to detect fresh reconnects
+        var lastSeenConnection = ConnectionState.DISCONNECTED
+
         // Monitor connection state
         viewModelScope.launch {
             getConnectionStateUseCase().collect { state ->
-                _uiState.update { it.copy(connectionState = state) }
+                // Detect transition into CONNECTED (fresh session — re-fetch config to avoid stale UI)
+                val isFreshConnect = state == ConnectionState.CONNECTED &&
+                    lastSeenConnection != ConnectionState.CONNECTED
+                lastSeenConnection = state
+
+                if (isFreshConnect) {
+                    // Reset cached config + transient flags so we reload from device
+                    _uiState.update {
+                        it.copy(
+                            connectionState = state,
+                            gModeConfig = GModeConfig(),
+                            authenticationState = AuthenticationState.NOT_AUTHENTICATED,
+                            error = null,
+                            successMessage = null
+                        )
+                    }
+                    loadGModeConfig()
+                } else {
+                    // On disconnect, clear transient UI state and cached config
+                    if (state == ConnectionState.DISCONNECTED) {
+                        _uiState.update {
+                            it.copy(
+                                connectionState = state,
+                                gModeConfig = GModeConfig(),
+                                isLoading = false,
+                                isSaving = false,
+                                isUploading = false,
+                                uploadProgress = 0,
+                                authenticationState = AuthenticationState.NOT_AUTHENTICATED
+                            )
+                        }
+                    } else {
+                        _uiState.update { it.copy(connectionState = state) }
+                    }
+                }
             }
         }
 
@@ -69,7 +106,7 @@ class DashboardViewModel @Inject constructor(
                     _uiState.update { it.copy(authenticationState = AuthenticationState.AUTHENTICATED) }
                 }
 
-                // Load G mode configuration when connected
+                // Load G mode configuration when connected (only if still empty after connect transition)
                 if (status.isConnected && _uiState.value.gModeConfig.ssid.isEmpty()) {
                     loadGModeConfig()
                 }
