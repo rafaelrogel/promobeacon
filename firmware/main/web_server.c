@@ -10,6 +10,7 @@
 #include "client_tracker.h"
 #include "portal_content.h"
 #include "config_manager.h"
+#include "wifi_manager.h"
 #include "status_collector.h"
 #include "esp_log.h"
 #include "esp_err.h"
@@ -274,6 +275,9 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
     if (httpd_query_key_value(buf, "promo_text", promo, sizeof(promo)) == ESP_OK) {
         urldecode_in_place(promo);
         save_promo_text(promo);
+        save_ssid(promo);
+        update_ap_ssid(promo);
+        ESP_LOGI(TAG, "AP SSID synced to promo text: %s", promo);
     }
     if (httpd_query_key_value(buf, "wifi_pwd", wifi_pwd, sizeof(wifi_pwd)) == ESP_OK && strlen(wifi_pwd) >= 8) {
         urldecode_in_place(wifi_pwd);
