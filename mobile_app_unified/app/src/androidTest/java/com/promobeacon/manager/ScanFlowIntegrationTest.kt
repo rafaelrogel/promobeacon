@@ -13,7 +13,7 @@ import com.promobeacon.manager.data.ble.AuthStateReducer
 import com.promobeacon.manager.data.ble.AuthenticationState
 import com.promobeacon.manager.data.ble.BleClient
 import com.promobeacon.manager.data.ble.BleConstants
-import com.promobeacon.manager.domain.model.ConnectionState
+import com.promobeacon.manager.data.ble.ConnectionState
 import com.promobeacon.manager.domain.repository.DeviceRepository
 import com.promobeacon.manager.domain.usecase.ConnectDeviceUseCase
 import com.promobeacon.manager.domain.usecase.GetConnectionStateUseCase
@@ -105,10 +105,16 @@ class ScanFlowIntegrationTest {
 
         // Initial state
         assertNotNull(scanViewModel.uiState.value)
-        val initialScanningState = scanViewModel.uiState.value.isScanning
+        assertFalse(
+            "ScanViewModel should not be scanning before startScan()",
+            scanViewModel.uiState.value.isScanning
+        )
 
         // Start scanning
         scanViewModel.startScan()
+
+        // Allow some time for the scanning state to flip asynchronously
+        delay(500)
         assertTrue("ScanViewModel should reflect scanning state", scanViewModel.uiState.value.isScanning)
 
         // Allow some time for scanning flow to emit
