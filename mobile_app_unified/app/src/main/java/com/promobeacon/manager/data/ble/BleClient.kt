@@ -115,6 +115,7 @@ class BleClient @Inject constructor(
     val deviceStatus: StateFlow<ByteArray?> = _deviceStatus.asStateFlow()
 
     private val writeMutex = Mutex()
+    private val descriptorMutex = Mutex()
 
 
     internal var adminPasswordChar: BluetoothGattCharacteristic? = null
@@ -169,12 +170,14 @@ class BleClient @Inject constructor(
                     Log.d(tag, "Connected to GATT server, requesting MTU...")
                     bluetoothGatt?.requestMtu(512)
                 } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                    _authenticationState.value = AuthenticationState.NOT_AUTHENTICATED
                     _connectionState.value = ConnectionState.DISCONNECTED
                     Log.d(tag, "Disconnected from GATT server")
                     close()
                 }
             } else {
                 Log.e(tag, "Connection error: $status")
+                _authenticationState.value = AuthenticationState.NOT_AUTHENTICATED
                 _connectionState.value = ConnectionState.DISCONNECTED
                 close()
             }
@@ -193,9 +196,12 @@ class BleClient @Inject constructor(
                 scope.launch(Dispatchers.IO) {
                     findCharacteristics(gatt)
                     _connectionState.value = ConnectionState.CONNECTED
+                    delay(300)
+                    readAuthStatus()
                 }
             } else {
                 Log.w(tag, "onServicesDiscovered failed: $status")
+                _authenticationState.value = AuthenticationState.NOT_AUTHENTICATED
                 _connectionState.value = ConnectionState.DISCONNECTED
                 close()
             }
@@ -255,6 +261,9 @@ class BleClient @Inject constructor(
 
         override fun onCharacteristicWrite(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
             Log.d(tag, "onCharacteristicWrite: ${characteristic.uuid}, status=$status")
+            if (status == 5 /* GATT_INSUFFICIENT_AUTHENTICATION */) {
+                _authenticationState.value = AuthStateReducer.reduce(_authenticationState.value, AuthEvent.WRITE_REJECTED_BY_AUTH)
+            }
             pendingWrite?.complete(status == BluetoothGatt.GATT_SUCCESS)
             pendingWrite = null
         }
@@ -388,6 +397,7 @@ class BleClient @Inject constructor(
             }
 
             // Connect
+            _authenticationState.value = AuthenticationState.NOT_AUTHENTICATED
             _connectionState.value = ConnectionState.CONNECTING
 
             bluetoothGatt = bluetoothDevice.connectGatt(
@@ -445,6 +455,14 @@ class BleClient @Inject constructor(
             bluetoothGatt = null
         } catch (e: SecurityException) {
             Log.e(tag, "Security exception during close", e)
+        } finally {
+            _authenticationState.value = AuthenticationState.NOT_AUTHENTICATED
+            _deviceStatus.value = null
+            portalUploadProgress.value = 0f
+            portalUploadInProgress = false
+            pendingReads.clear()
+            pendingWrite = null
+            pendingDescriptorWrite = null
         }
     }
 
@@ -500,24 +518,37 @@ class BleClient @Inject constructor(
     /**
      * Enable notifications
      */
-    private suspend fun enableNotifications(characteristic: BluetoothGattCharacteristic?) {
-        if (characteristic == null) return
+    private suspend fun enableNotifications(characteristic: BluetoothGattCharacteristic?): Boolean {
+        if (characteristic == null) return false
 
-        try {
-            bluetoothGatt?.setCharacteristicNotification(characteristic, true)
+        return descriptorMutex.withLock {
+            try {
+                bluetoothGatt?.setCharacteristicNotification(characteristic, true)
 
-            val descriptor = characteristic.getDescriptor(
-                java.util.UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
-            )
-            if (descriptor != null) {
-                val deferred = CompletableDeferred<Boolean>()
-                pendingDescriptorWrite = deferred
-                descriptor.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
-                bluetoothGatt?.writeDescriptor(descriptor)
-                withTimeoutOrNull(2000L) { deferred.await() }
+                val descriptor = characteristic.getDescriptor(
+                    java.util.UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
+                )
+                if (descriptor != null) {
+                    val deferred = CompletableDeferred<Boolean>()
+                    pendingDescriptorWrite = deferred
+                    descriptor.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                    val initiated = bluetoothGatt?.writeDescriptor(descriptor) ?: false
+                    if (!initiated) {
+                        pendingDescriptorWrite = null
+                        return@withLock false
+                    }
+                    val result = withTimeoutOrNull(2000L) { deferred.await() } ?: false
+                    if (pendingDescriptorWrite == deferred) {
+                        pendingDescriptorWrite = null
+                    }
+                    result
+                } else {
+                    false
+                }
+            } catch (e: SecurityException) {
+                Log.e(tag, "Security exception during enableNotifications", e)
+                false
             }
-        } catch (e: SecurityException) {
-            Log.e(tag, "Security exception during enableNotifications", e)
         }
     }
 
@@ -540,7 +571,11 @@ class BleClient @Inject constructor(
     suspend fun writeMessage(message: String): Boolean {
         if (!ensureAuthenticatedForWrite()) return false
         val bytes = message.toByteArray(Charsets.UTF_8)
-        return writeCharacteristic(messageChar, bytes)
+        val success = writeCharacteristic(messageChar, bytes)
+        if (!success && _authenticationState.value != AuthenticationState.AUTHENTICATED) {
+            _authenticationState.value = AuthStateReducer.reduce(_authenticationState.value, AuthEvent.WRITE_REJECTED_BY_AUTH)
+        }
+        return success
     }
 
     /**
@@ -549,7 +584,11 @@ class BleClient @Inject constructor(
     suspend fun writePromoText(text: String): Boolean {
         if (!ensureAuthenticatedForWrite()) return false
         val bytes = text.toByteArray(Charsets.UTF_8)
-        return writeCharacteristic(promoTextChar, bytes)
+        val success = writeCharacteristic(promoTextChar, bytes)
+        if (!success && _authenticationState.value != AuthenticationState.AUTHENTICATED) {
+            _authenticationState.value = AuthStateReducer.reduce(_authenticationState.value, AuthEvent.WRITE_REJECTED_BY_AUTH)
+        }
+        return success
     }
 
     suspend fun readPromoText(): String? {
@@ -585,7 +624,11 @@ class BleClient @Inject constructor(
     suspend fun writeDeviceName(name: String): Boolean {
         if (!ensureAuthenticatedForWrite()) return false
         val data = name.toByteArray(Charsets.UTF_8)
-        return writeCharacteristic(deviceNameChar, data)
+        val success = writeCharacteristic(deviceNameChar, data)
+        if (!success && _authenticationState.value != AuthenticationState.AUTHENTICATED) {
+            _authenticationState.value = AuthStateReducer.reduce(_authenticationState.value, AuthEvent.WRITE_REJECTED_BY_AUTH)
+        }
+        return success
     }
 
     /**
@@ -604,7 +647,11 @@ class BleClient @Inject constructor(
         // Only single-byte commands are supported by the current firmware protocol.
         // (params are kept for API compatibility but not serialized.)
         val data = byteArrayOf(command)
-        return writeCharacteristic(configChar, data)
+        val success = writeCharacteristic(configChar, data)
+        if (!success && _authenticationState.value != AuthenticationState.AUTHENTICATED) {
+            _authenticationState.value = AuthStateReducer.reduce(_authenticationState.value, AuthEvent.WRITE_REJECTED_BY_AUTH)
+        }
+        return success
     }
 
     suspend fun writeSsid(ssid: String): Boolean {
@@ -616,7 +663,11 @@ class BleClient @Inject constructor(
     suspend fun writeWifiPassword(password: String): Boolean {
         if (!ensureAuthenticatedForWrite()) return false
         val data = password.toByteArray(Charsets.UTF_8)
-        return writeCharacteristic(configChar, data)
+        val success = writeCharacteristic(configChar, data)
+        if (!success && _authenticationState.value != AuthenticationState.AUTHENTICATED) {
+            _authenticationState.value = AuthStateReducer.reduce(_authenticationState.value, AuthEvent.WRITE_REJECTED_BY_AUTH)
+        }
+        return success
     }
 
     /**
@@ -889,7 +940,11 @@ class BleClient @Inject constructor(
         val device = bluetoothGatt?.device ?: return false
         
         Log.i(tag, "Writing new admin password to ${device.address}")
-        return writeCharacteristic(characteristic, newPassword.toByteArray(Charsets.UTF_8))
+        val success = writeCharacteristic(characteristic, newPassword.toByteArray(Charsets.UTF_8))
+        if (!success && _authenticationState.value != AuthenticationState.AUTHENTICATED) {
+            _authenticationState.value = AuthStateReducer.reduce(_authenticationState.value, AuthEvent.WRITE_REJECTED_BY_AUTH)
+        }
+        return success
     }
 
     /**
@@ -1016,39 +1071,35 @@ class BleClient @Inject constructor(
         if (_authenticationState.value == AuthenticationState.AUTHENTICATED) {
             return true
         }
-        val finalState = kotlinx.coroutines.withTimeoutOrNull(5000L) {
+        val finalState = kotlinx.coroutines.withTimeoutOrNull(2000L) {
             _authenticationState.first { 
                 it == AuthenticationState.AUTHENTICATED || 
                 it == AuthenticationState.FAILED || 
                 it == AuthenticationState.LOCKED 
             }
         }
-        return finalState == AuthenticationState.AUTHENTICATED
+        if (finalState != AuthenticationState.AUTHENTICATED) {
+            if (_authenticationState.value != AuthenticationState.LOCKED && _authenticationState.value != AuthenticationState.FAILED) {
+                _authenticationState.value = AuthStateReducer.reduce(_authenticationState.value, AuthEvent.WRITE_REJECTED_BY_AUTH)
+            }
+            return false
+        }
+        return true
     }
 
     /**
      * Update authentication state based on status characteristic
      */
     private fun updateAuthenticationState(status: Byte) {
-        val statusInt = status.toInt() and 0xFF
-        when (statusInt) {
-            BleConstants.AUTH_STATUS_IDLE -> {
-                // No change, keep current state
-            }
-            BleConstants.AUTH_STATUS_REQUIRED -> {
-                _authenticationState.value = AuthenticationState.REQUIRED
-            }
-            BleConstants.AUTH_STATUS_SUCCESS -> {
-                _authenticationState.value = AuthenticationState.AUTHENTICATED
-                Log.i(tag, "Authentication successful")
-            }
-            BleConstants.AUTH_STATUS_FAILED -> {
-                _authenticationState.value = AuthenticationState.FAILED
-                Log.w(tag, "Authentication failed")
-            }
-            BleConstants.AUTH_STATUS_LOCKED -> {
-                _authenticationState.value = AuthenticationState.LOCKED
-                Log.e(tag, "Device locked due to too many failed attempts")
+        val event = AuthStateReducer.fromFirmwareStatus(status) ?: return
+        val newState = AuthStateReducer.reduce(_authenticationState.value, event)
+        if (_authenticationState.value != newState) {
+            _authenticationState.value = newState
+            when (newState) {
+                AuthenticationState.AUTHENTICATED -> Log.i(tag, "Authentication successful")
+                AuthenticationState.FAILED -> Log.w(tag, "Authentication failed")
+                AuthenticationState.LOCKED -> Log.e(tag, "Device locked due to too many failed attempts")
+                else -> {}
             }
         }
     }
