@@ -217,4 +217,111 @@ class DeviceRepositoryImplTest {
         assertEquals("OLÁ", config?.deviceName)
         assertEquals("OLÁ", config?.ssid)
     }
+
+    // ---- BUG 1 regression: writeDeviceName must succeed when the BLE write completes (no GAP 0x2A00) ----
+
+    @Test
+    fun `updateGModeConfig succeeds when both writePromoText and writeDeviceName return true (BUG1 fix path)`() = runTest {
+        coEvery { bleClient.writePromoText("PROMO") } returns true
+        coEvery { bleClient.writeDeviceName("DEV") } returns true
+
+        val config = GModeConfig(
+            deviceName = "DEV",
+            ssid = "PROMO",
+            promoText = "PROMO",
+            password = "",
+            newAdminPassword = ""
+        )
+        val result = repository.updateGModeConfig(config)
+
+        assertTrue(result.isSuccess)
+        coVerify { bleClient.writePromoText("PROMO") }
+        coVerify { bleClient.writeDeviceName("DEV") }
+    }
+
+    @Test
+    fun `updateGModeConfig short-circuits when writePromoText fails (does not attempt writeDeviceName)`() = runTest {
+        coEvery { bleClient.writePromoText(any()) } returns false
+
+        val config = GModeConfig(promoText = "X", deviceName = "Y")
+        val result = repository.updateGModeConfig(config)
+
+        assertFalse(result.isSuccess)
+        coVerify { bleClient.writePromoText("X") }
+        coVerify(exactly = 0) { bleClient.writeDeviceName(any()) }
+    }
+
+    @Test
+    fun `updateGModeConfig reports failure when only writeDeviceName fails (BUG1 regression guard)`() = runTest {
+        coEvery { bleClient.writePromoText("PROMO") } returns true
+        coEvery { bleClient.writeDeviceName("DEV") } returns false
+
+        val config = GModeConfig(promoText = "PROMO", deviceName = "DEV")
+        val result = repository.updateGModeConfig(config)
+
+        assertFalse(result.isSuccess)
+        coVerify { bleClient.writePromoText("PROMO") }
+        coVerify { bleClient.writeDeviceName("DEV") }
+    }
+
+    @Test
+    fun `updateGModeConfig skips writeWifiPassword when password is empty`() = runTest {
+        coEvery { bleClient.writePromoText("PROMO") } returns true
+        coEvery { bleClient.writeDeviceName("DEV") } returns true
+
+        val config = GModeConfig(promoText = "PROMO", deviceName = "DEV", password = "")
+        val result = repository.updateGModeConfig(config)
+
+        assertTrue(result.isSuccess)
+        coVerify(exactly = 0) { bleClient.writeWifiPassword(any()) }
+    }
+
+    @Test
+    fun `updateGModeConfig writes wifi password when provided`() = runTest {
+        coEvery { bleClient.writePromoText("PROMO") } returns true
+        coEvery { bleClient.writeDeviceName("DEV") } returns true
+        coEvery { bleClient.writeWifiPassword("newpass") } returns true
+
+        val config = GModeConfig(promoText = "PROMO", deviceName = "DEV", password = "newpass")
+        val result = repository.updateGModeConfig(config)
+
+        assertTrue(result.isSuccess)
+        coVerify { bleClient.writeWifiPassword("newpass") }
+    }
+
+    // ---- BUG 2 regression: cache must not mask firmware-side state across reconnect/reset ----
+
+    @Test
+    fun `readGModeConfig returns cached value when available`() = runTest {
+        coEvery { bleClient.readPromoText() } returns "FIRST"
+        coEvery { bleClient.readDeviceName() } returns "FIRST_DEV"
+
+        val first = repository.readGModeConfig()
+        assertTrue(first.isSuccess)
+        assertEquals("FIRST", first.getOrNull()?.promoText)
+        coVerify(exactly = 1) { bleClient.readPromoText() }
+
+        // Second read uses cache — does not hit BLE again
+        val second = repository.readGModeConfig()
+        assertEquals("FIRST", second.getOrNull()?.promoText)
+        coVerify(exactly = 1) { bleClient.readPromoText() }
+    }
+
+    @Test
+    fun `readGModeConfig after resetToDefaults hits BLE again (cache cleared)`() = runTest {
+        coEvery { bleClient.readPromoText() } returnsMany listOf("OLD", "FRESH")
+        coEvery { bleClient.readDeviceName() } returnsMany listOf("OLD_DEV", "FRESH_DEV")
+        coEvery { bleClient.writeConfig(BleConstants.CMD_RESET_DEFAULTS.toByte()) } returns true
+
+        // Prime cache
+        repository.readGModeConfig()
+        // Reset
+        val reset = repository.resetToDefaults()
+        assertTrue(reset.isSuccess)
+        // After reset, next read should fetch from BLE (cache cleared)
+        val after = repository.readGModeConfig()
+        assertTrue(after.isSuccess)
+        assertEquals("FRESH", after.getOrNull()?.promoText)
+        coVerify(exactly = 2) { bleClient.readPromoText() }
+    }
 }
