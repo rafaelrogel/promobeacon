@@ -265,6 +265,25 @@ class DeviceRepositoryImplTest {
     }
 
     @Test
+    fun `BUG 1 guard updateGModeConfig NAO escreve no GAP 0x2A00 apenas delega para bleClient writeDeviceName que usa a char custom`() = runTest {
+        coEvery { bleClient.writePromoText("PROMO") } returns true
+        coEvery { bleClient.writeDeviceName("DEV") } returns true
+
+        val config = GModeConfig(
+            deviceName = "DEV",
+            ssid = "PROMO",
+            promoText = "PROMO",
+            password = "",
+            newAdminPassword = ""
+        )
+        val result = repository.updateGModeConfig(config)
+
+        assertTrue(result.isSuccess)
+        coVerify { bleClient.writeDeviceName("DEV") }
+        // Verify we rely on bleClient's writeDeviceName (custom char) and do not directly write to 0x2A00/GAP here
+    }
+
+    @Test
     fun `updateGModeConfig skips writeWifiPassword when password is empty`() = runTest {
         coEvery { bleClient.writePromoText("PROMO") } returns true
         coEvery { bleClient.writeDeviceName("DEV") } returns true

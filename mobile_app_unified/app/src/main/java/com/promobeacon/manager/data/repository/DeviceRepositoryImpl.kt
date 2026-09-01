@@ -119,7 +119,7 @@ class DeviceRepositoryImpl @Inject constructor(
                 return@withContext Result.failure(Exception("Failed to write promotion text"))
             }
 
-            // Write device name to GAP
+            // Write device name to custom CHAR_DEVICE_NAME
             val deviceNameSuccess = bleClient.writeDeviceName(config.deviceName)
             if (!deviceNameSuccess) {
                 return@withContext Result.failure(Exception("Failed to write device name"))
