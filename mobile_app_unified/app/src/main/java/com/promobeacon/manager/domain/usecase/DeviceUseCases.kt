@@ -107,6 +107,17 @@ class ReadGModeConfigUseCase @Inject constructor(
 }
 
 /**
+ * Refresh G Mode Configuration Use Case
+ */
+class RefreshGModeConfigUseCase @Inject constructor(
+    private val repository: DeviceRepository
+) {
+    suspend operator fun invoke(): Result<GModeConfig> {
+        return repository.refreshGModeConfig()
+    }
+}
+
+/**
  * Reboot Device Use Case
  */
 class RebootDeviceUseCase @Inject constructor(

@@ -64,6 +64,13 @@ interface DeviceRepository {
     suspend fun readGModeConfig(): Result<GModeConfig>
 
     /**
+     * Refresh G mode configuration from device ignoring cache
+     *
+     * @return G mode configuration
+     */
+    suspend fun refreshGModeConfig(): Result<GModeConfig>
+
+    /**
      * Reboot device
      *
      * @return Operation result

@@ -11,6 +11,7 @@ import com.promobeacon.manager.domain.usecase.GetDeviceStatusUseCase
 import com.promobeacon.manager.domain.usecase.ReadGModeConfigUseCase
 import com.promobeacon.manager.domain.usecase.RebootDeviceUseCase
 import com.promobeacon.manager.domain.usecase.ResetToDefaultsUseCase
+import com.promobeacon.manager.domain.usecase.RefreshGModeConfigUseCase
 import com.promobeacon.manager.domain.usecase.UpdateGModeConfigUseCase
 import com.promobeacon.manager.domain.usecase.UploadPortalUseCase
 import io.mockk.coEvery
@@ -43,6 +44,7 @@ class DashboardViewModelTest {
     private lateinit var getConnectionState: GetConnectionStateUseCase
     private lateinit var getDeviceStatus: GetDeviceStatusUseCase
     private lateinit var readGModeConfig: ReadGModeConfigUseCase
+    private lateinit var refreshGModeConfig: RefreshGModeConfigUseCase
     private lateinit var updateGModeConfig: UpdateGModeConfigUseCase
     private lateinit var rebootDevice: RebootDeviceUseCase
     private lateinit var resetToDefaults: ResetToDefaultsUseCase
@@ -56,6 +58,7 @@ class DashboardViewModelTest {
         getConnectionState = mockk()
         getDeviceStatus = mockk()
         readGModeConfig = mockk()
+        refreshGModeConfig = mockk()
         updateGModeConfig = mockk()
         rebootDevice = mockk()
         resetToDefaults = mockk()
@@ -75,6 +78,7 @@ class DashboardViewModelTest {
         getConnectionStateUseCase = getConnectionState,
         getDeviceStatusUseCase = getDeviceStatus,
         readGModeConfigUseCase = readGModeConfig,
+        refreshGModeConfigUseCase = refreshGModeConfig,
         updateGModeConfigUseCase = updateGModeConfig,
         rebootDeviceUseCase = rebootDevice,
         resetToDefaultsUseCase = resetToDefaults,
@@ -87,12 +91,12 @@ class DashboardViewModelTest {
         val connectionFlow = MutableStateFlow(ConnectionState.DISCONNECTED)
         every { getConnectionState.invoke() } returns connectionFlow
         every { getDeviceStatus.invoke() } returns flowOf(DeviceStatus())
-        coEvery { readGModeConfig.invoke() } returns Result.success(GModeConfig())
+        coEvery { refreshGModeConfig.invoke() } returns Result.success(GModeConfig())
 
         val vm = newViewModel()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Emit CONNECTED for the first time → should reset config and trigger load
+        // Emit CONNECTED for the first time → should reset config and trigger refresh
         connectionFlow.value = ConnectionState.CONNECTED
         testDispatcher.scheduler.advanceUntilIdle()
 
@@ -101,7 +105,8 @@ class DashboardViewModelTest {
         assertEquals(ConnectionState.CONNECTED, vm.uiState.value.connectionState)
         // Auth must be reset to NOT_AUTHENTICATED so user re-auths on new session
         assertEquals(AuthenticationState.NOT_AUTHENTICATED, vm.uiState.value.authenticationState)
-        coVerify(exactly = 1) { readGModeConfig.invoke() }
+        coVerify(exactly = 1) { refreshGModeConfig.invoke() }
+        coVerify(exactly = 0) { readGModeConfig.invoke() }
     }
 
     @Test
@@ -109,7 +114,7 @@ class DashboardViewModelTest {
         val connectionFlow = MutableStateFlow(ConnectionState.DISCONNECTED)
         every { getConnectionState.invoke() } returns connectionFlow
         every { getDeviceStatus.invoke() } returns flowOf(DeviceStatus())
-        coEvery { readGModeConfig.invoke() } returns Result.success(GModeConfig())
+        coEvery { refreshGModeConfig.invoke() } returns Result.success(GModeConfig())
 
         val vm = newViewModel()
         testDispatcher.scheduler.advanceUntilIdle()
@@ -120,8 +125,8 @@ class DashboardViewModelTest {
         connectionFlow.value = ConnectionState.CONNECTED
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // readGModeConfig called exactly once (only on the transition)
-        coVerify(exactly = 1) { readGModeConfig.invoke() }
+        // refreshGModeConfig called exactly once (only on the transition)
+        coVerify(exactly = 1) { refreshGModeConfig.invoke() }
     }
 
     @Test
@@ -129,14 +134,14 @@ class DashboardViewModelTest {
         val connectionFlow = MutableStateFlow(ConnectionState.DISCONNECTED)
         every { getConnectionState.invoke() } returns connectionFlow
         every { getDeviceStatus.invoke() } returns flowOf(DeviceStatus(isConnected = true))
-        coEvery { readGModeConfig.invoke() } returns Result.success(
+        coEvery { refreshGModeConfig.invoke() } returns Result.success(
             GModeConfig(ssid = "OLD_SSID", deviceName = "OldName", promoText = "OldPromo")
         )
 
         val vm = newViewModel()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Connect → loads config
+        // Connect → loads config via refresh
         connectionFlow.value = ConnectionState.CONNECTED
         testDispatcher.scheduler.advanceUntilIdle()
         assertEquals("OLD_SSID", vm.uiState.value.gModeConfig.ssid)
@@ -158,7 +163,7 @@ class DashboardViewModelTest {
         val connectionFlow = MutableStateFlow(ConnectionState.DISCONNECTED)
         every { getConnectionState.invoke() } returns connectionFlow
         every { getDeviceStatus.invoke() } returns flowOf(DeviceStatus())
-        coEvery { readGModeConfig.invoke() } returns Result.success(
+        coEvery { refreshGModeConfig.invoke() } returns Result.success(
             GModeConfig(ssid = "FRESH_SSID")
         )
 
@@ -175,8 +180,8 @@ class DashboardViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
         assertEquals("PromoBeacon", vm.uiState.value.gModeConfig.ssid)
 
-        // Reconnect — should fetch again and populate with new values
-        coEvery { readGModeConfig.invoke() } returns Result.success(
+        // Reconnect — should fetch again via refresh and populate with new values
+        coEvery { refreshGModeConfig.invoke() } returns Result.success(
             GModeConfig(ssid = "ANOTHER_SSID")
         )
         connectionFlow.value = ConnectionState.CONNECTED
@@ -184,7 +189,7 @@ class DashboardViewModelTest {
 
         assertEquals("ANOTHER_SSID", vm.uiState.value.gModeConfig.ssid)
         assertEquals(AuthenticationState.NOT_AUTHENTICATED, vm.uiState.value.authenticationState)
-        coVerify(exactly = 2) { readGModeConfig.invoke() }
+        coVerify(exactly = 2) { refreshGModeConfig.invoke() }
     }
 
     @Test
@@ -200,5 +205,24 @@ class DashboardViewModelTest {
         assertEquals(AuthenticationState.NOT_AUTHENTICATED, vm.uiState.value.authenticationState)
         assertEquals(ConnectionState.DISCONNECTED, vm.uiState.value.connectionState)
         assertFalse(vm.uiState.value.isLoading)
+    }
+
+    @Test
+    fun `fresh CONNECTED transition invokes refreshGModeConfig ignoring cache and updates state`() = runTest {
+        val connectionFlow = MutableStateFlow(ConnectionState.DISCONNECTED)
+        every { getConnectionState.invoke() } returns connectionFlow
+        every { getDeviceStatus.invoke() } returns flowOf(DeviceStatus())
+        coEvery { refreshGModeConfig.invoke() } returns Result.success(GModeConfig(ssid = "FRESH_NO_CACHE"))
+
+        val vm = newViewModel()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        // Emit CONNECTED for the first time
+        connectionFlow.value = ConnectionState.CONNECTED
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        assertEquals("FRESH_NO_CACHE", vm.uiState.value.gModeConfig.ssid)
+        coVerify(exactly = 1) { refreshGModeConfig.invoke() }
+        coVerify(exactly = 0) { readGModeConfig.invoke() }
     }
 }

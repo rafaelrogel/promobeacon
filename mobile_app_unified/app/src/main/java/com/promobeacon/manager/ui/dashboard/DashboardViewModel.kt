@@ -41,6 +41,7 @@ class DashboardViewModel @Inject constructor(
     private val getConnectionStateUseCase: GetConnectionStateUseCase,
     private val getDeviceStatusUseCase: GetDeviceStatusUseCase,
     private val readGModeConfigUseCase: ReadGModeConfigUseCase,
+    private val refreshGModeConfigUseCase: RefreshGModeConfigUseCase,
     private val updateGModeConfigUseCase: UpdateGModeConfigUseCase,
     private val rebootDeviceUseCase: RebootDeviceUseCase,
     private val resetToDefaultsUseCase: ResetToDefaultsUseCase,
@@ -74,7 +75,7 @@ class DashboardViewModel @Inject constructor(
                             successMessage = null
                         )
                     }
-                    loadGModeConfig()
+                    refreshGModeConfig()
                 } else {
                     // On disconnect, clear transient UI state and cached config
                     if (state == ConnectionState.DISCONNECTED) {
@@ -199,6 +200,18 @@ class DashboardViewModel @Inject constructor(
     private fun loadGModeConfig() {
         viewModelScope.launch {
             val result = readGModeConfigUseCase()
+            if (result.isSuccess) {
+                _uiState.update { it.copy(gModeConfig = result.getOrDefault(GModeConfig())) }
+            }
+        }
+    }
+
+    /**
+     * Refresh G mode configuration ignoring cache
+     */
+    private fun refreshGModeConfig() {
+        viewModelScope.launch {
+            val result = refreshGModeConfigUseCase()
             if (result.isSuccess) {
                 _uiState.update { it.copy(gModeConfig = result.getOrDefault(GModeConfig())) }
             }

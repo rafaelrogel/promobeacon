@@ -164,6 +164,26 @@ class DeviceRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun refreshGModeConfig(): Result<GModeConfig> = withContext(Dispatchers.IO) {
+        cachedGModeConfig = null
+        try {
+            val promoText = bleClient.readPromoText() ?: ""
+            val deviceName = bleClient.readDeviceName() ?: promoText
+            val config = GModeConfig(
+                deviceName = deviceName,
+                ssid = deviceName,
+                promoText = promoText,
+                password = "",
+                newAdminPassword = ""
+            )
+            cachedGModeConfig = config
+            Result.success(config)
+        } catch (e: Exception) {
+            val config = GModeConfig()
+            Result.success(config)
+        }
+    }
+
     override suspend fun reboot(): Result<Unit> = withContext(Dispatchers.IO) {
         try {
             val isAuth = bleClient.authenticationState.value == com.promobeacon.manager.data.ble.AuthenticationState.AUTHENTICATED ||

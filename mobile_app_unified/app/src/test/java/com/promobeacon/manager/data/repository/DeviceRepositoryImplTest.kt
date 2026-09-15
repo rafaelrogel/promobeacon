@@ -343,4 +343,37 @@ class DeviceRepositoryImplTest {
         assertEquals("FRESH", after.getOrNull()?.promoText)
         coVerify(exactly = 2) { bleClient.readPromoText() }
     }
+
+    @Test
+    fun `refreshGModeConfig ignores cache and re-reads from bleClient`() = runTest {
+        coEvery { bleClient.readPromoText() } returns "FIRST"
+        coEvery { bleClient.readDeviceName() } returns "FIRST_DEV"
+
+        repository.readGModeConfig()
+        coVerify(exactly = 1) { bleClient.readPromoText() }
+
+        // Mudar o valor mockado
+        coEvery { bleClient.readPromoText() } returns "SECOND"
+        coEvery { bleClient.readDeviceName() } returns "SECOND_DEV"
+
+        val result = repository.refreshGModeConfig()
+        assertTrue(result.isSuccess)
+        assertEquals("SECOND", result.getOrNull()?.promoText)
+        coVerify(exactly = 2) { bleClient.readPromoText() }
+    }
+
+    @Test
+    fun `refreshGModeConfig updates cache with fresh value`() = runTest {
+        coEvery { bleClient.readPromoText() } returns "FRESH"
+        coEvery { bleClient.readDeviceName() } returns "FRESH_DEV"
+
+        repository.refreshGModeConfig()
+        coVerify(exactly = 1) { bleClient.readPromoText() }
+
+        // Subsequente readGModeConfig usa o cache
+        val result = repository.readGModeConfig()
+        assertTrue(result.isSuccess)
+        assertEquals("FRESH", result.getOrNull()?.promoText)
+        coVerify(exactly = 1) { bleClient.readPromoText() } // sem nova chamada
+    }
 }
