@@ -57,12 +57,14 @@ class DeviceRepositoryImplTest {
         coEvery { bleClient.writePromoText(any()) } returns true
         coEvery { bleClient.writeDeviceName(any()) } returns true
         coEvery { bleClient.writeWifiPassword(any()) } returns true
+        coEvery { bleClient.writeAdminPassword(any()) } returns true
 
         val config = GModeConfig(
             deviceName = "MyDevice",
             ssid = "MyDevice",
             promoText = "Welcome",
-            password = "secretpassword"
+            password = "secretpassword",
+            newAdminPassword = "newadminpass"
         )
 
         val result = repository.updateGModeConfig(config)
@@ -71,6 +73,7 @@ class DeviceRepositoryImplTest {
         coVerify { bleClient.writePromoText("Welcome") }
         coVerify { bleClient.writeDeviceName("MyDevice") }
         coVerify { bleClient.writeWifiPassword("secretpassword") }
+        coVerify { bleClient.writeAdminPassword("newadminpass") }
     }
 
     @Test
@@ -98,6 +101,43 @@ class DeviceRepositoryImplTest {
 
         assertTrue(result.isSuccess)
         coVerify(exactly = 0) { bleClient.writeWifiPassword(any()) }
+    }
+
+    @Test
+    fun `updateGModeConfig skips admin password when empty`() = runTest {
+        coEvery { bleClient.writePromoText(any()) } returns true
+        coEvery { bleClient.writeDeviceName(any()) } returns true
+        coEvery { bleClient.writeWifiPassword(any()) } returns true
+
+        val config = GModeConfig(
+            deviceName = "MyDevice",
+            promoText = "Welcome",
+            password = "pwd",
+            newAdminPassword = ""
+        )
+        val result = repository.updateGModeConfig(config)
+
+        assertTrue(result.isSuccess)
+        coVerify(exactly = 0) { bleClient.writeAdminPassword(any()) }
+    }
+
+    @Test
+    fun `updateGModeConfig fails when writeAdminPassword fails`() = runTest {
+        coEvery { bleClient.writePromoText(any()) } returns true
+        coEvery { bleClient.writeDeviceName(any()) } returns true
+        coEvery { bleClient.writeWifiPassword(any()) } returns true
+        coEvery { bleClient.writeAdminPassword(any()) } returns false
+
+        val config = GModeConfig(
+            deviceName = "MyDevice",
+            promoText = "Welcome",
+            password = "pwd",
+            newAdminPassword = "newadminpass"
+        )
+        val result = repository.updateGModeConfig(config)
+
+        assertFalse(result.isSuccess)
+        coVerify { bleClient.writeAdminPassword("newadminpass") }
     }
 
     @Test

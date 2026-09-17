@@ -133,6 +133,11 @@ class DeviceRepositoryImpl @Inject constructor(
                 }
             }
 
+            if (config.newAdminPassword.isNotEmpty()) {
+                val adminSuccess = bleClient.writeAdminPassword(config.newAdminPassword)
+                if (!adminSuccess) return@withContext Result.failure(Exception("Failed to write admin password"))
+            }
+
             // Update cache
             cachedGModeConfig = config
 
