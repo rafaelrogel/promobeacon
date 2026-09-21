@@ -27,3 +27,8 @@ __pycache__/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# SSSF Factory / Agent runtime artifacts
+adws/adw_data/sessions/
+adws/adw_data/sssf.db*
+adws/adw_data/access_state.json

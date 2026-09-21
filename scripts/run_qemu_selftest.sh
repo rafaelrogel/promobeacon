@@ -9,14 +9,53 @@ SUF="${ENV//-/_}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 FW="$ROOT/firmware"
 BUILD="$FW/.pio/build/$ENV"
-ESPTOOL="/home/rafael/.platformio/packages/tool-esptoolpy/esptool.py"
-QEMU="${QEMU:-/home/rafael/.local/bin/qemu-system-riscv32}"
 OUT="/tmp/qemu_selftest_${SUF}.log"
 MERGED="/tmp/qemu_${SUF}_flash.bin"
 
+# Descoberta de binários com fallback portátil
+# 1. PIO
+if [ -n "${PIO:-}" ]; then
+  :
+elif command -v pio >/dev/null 2>&1; then
+  PIO="$(command -v pio)"
+elif [ -x "$HOME/pio_venv/bin/pio" ]; then
+  PIO="$HOME/pio_venv/bin/pio"
+elif [ -x "$HOME/.platformio/penv/bin/pio" ]; then
+  PIO="$HOME/.platformio/penv/bin/pio"
+else
+  echo "ERRO: pio não encontrado no PATH nem em PIO. Defina PIO=/caminho/para/pio"
+  exit 1
+fi
+
+# 2. ESPTOOL
+if [ -n "${ESPTOOL:-}" ]; then
+  :
+elif command -v esptool.py >/dev/null 2>&1; then
+  ESPTOOL="$(command -v esptool.py)"
+elif [ -f "${PLATFORMIO_CORE_DIR:-$HOME/.platformio}/packages/tool-esptoolpy/esptool.py" ]; then
+  ESPTOOL="${PLATFORMIO_CORE_DIR:-$HOME/.platformio}/packages/tool-esptoolpy/esptool.py"
+elif [ -f "$HOME/.platformio/venv/bin/esptool.py" ]; then
+  ESPTOOL="$HOME/.platformio/venv/bin/esptool.py"
+else
+  echo "ERRO: esptool.py não encontrado. Defina ESPTOOL=/caminho/para/esptool.py"
+  exit 1
+fi
+
+# 3. QEMU
+if [ -n "${QEMU:-}" ]; then
+  :
+elif command -v qemu-system-riscv32 >/dev/null 2>&1; then
+  QEMU="$(command -v qemu-system-riscv32)"
+elif [ -x "$HOME/.local/bin/qemu-system-riscv32" ]; then
+  QEMU="$HOME/.local/bin/qemu-system-riscv32"
+else
+  echo "ERRO: qemu-system-riscv32 não encontrado. Baixe de https://github.com/espressif/qemu (release esp-develop) e coloque no PATH ou defina QEMU=/caminho/para/qemu-system-riscv32"
+  exit 1
+fi
+
 # 1) Build do env QEMU
 echo "== BUILD $ENV =="
-( cd "$FW" && /home/rafael/pio_venv/bin/pio run -e "$ENV" ) || {
+( cd "$FW" && "$PIO" run -e "$ENV" ) || {
   echo "ERRO: build $ENV falhou"; exit 1; }
 echo "BUILD OK"
 
@@ -26,7 +65,12 @@ for f in "$BUILD/bootloader.bin" "$BUILD/partitions.bin" "$BUILD/firmware.bin"; 
 done
 rm -f "$MERGED"
 echo "== MERGE (pad 4MB) =="
-python3 "$ESPTOOL" --chip esp32c3 merge_bin \
+if [[ "$ESPTOOL" == *.py ]]; then
+  ESPTOOL_CMD=(python3 "$ESPTOOL")
+else
+  ESPTOOL_CMD=("$ESPTOOL")
+fi
+"${ESPTOOL_CMD[@]}" --chip esp32c3 merge_bin \
   -o "$MERGED" --flash_mode dout --flash_size 4MB --flash_freq 40m \
   0x0 "$BUILD/bootloader.bin" \
   0x8000 "$BUILD/partitions.bin" \

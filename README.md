@@ -164,6 +164,40 @@ flutter build ipa
 flutter build apk
 ```
 
+## Testing
+
+### Stress Simulation (Host Python)
+Validates IP table concurrency protection (mutex), constant-time admin password comparison, and asynchronous BLE write queue integrity:
+```bash
+python firmware/stress_test_sim.py
+```
+
+### QEMU Firmware Self-Test (ESP32-C3 Emulation)
+Runs the complete firmware test suite under Espressif's QEMU emulator (`esp32c3-qemu` environment, `PROMOBEACON_QEMU=1` flag activating `qemu_selftest.h`):
+```bash
+# Prerequisites:
+# Install qemu-system-riscv32 from Espressif's QEMU fork (release esp-develop):
+# https://github.com/espressif/qemu/releases
+# Add qemu-system-riscv32 to PATH or specify via QEMU=/path/to/binary
+
+scripts/run_qemu_selftest.sh
+```
+Supported environment variables:
+- `PIO`: Path to PlatformIO CLI executable (auto-discovered if omitted)
+- `ESPTOOL`: Path to `esptool.py` (auto-discovered if omitted)
+- `QEMU`: Path to `qemu-system-riscv32` (auto-discovered if omitted)
+
+Success criteria:
+- `SELFTEST: ALL PASSED (baseline 79/79)`
+
+### Mobile Application Unit Tests
+Executes the comprehensive unit test suite (54 tests) for the Android unified app:
+```bash
+cd mobile_app_unified
+./gradlew :app:testDebugUnitTest
+```
+*(Note: Gradle distribution is downloaded automatically on the first run).*
+
 ## Configuration
 
 ### Promotion Text
