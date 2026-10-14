@@ -8,6 +8,7 @@
 #include "status_collector.h"
 #include "esp_log.h"
 #include "esp_err.h"
+#include "esp_timer.h"
 #include "esp_adc/adc_oneshot.h"
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"
@@ -42,7 +43,7 @@ void init_status_collector(void)
     memset(&current_status, 0, sizeof(current_status));
     memset(clients, 0, sizeof(clients));
     
-    session_start_time = xTaskGetTickCount() * portTICK_PERIOD_MS / 1000;
+    session_start_time = (uint32_t)(esp_timer_get_time() / 1000000ULL);
     total_portal_time = 0;
     portal_session_count = 0;
 
@@ -208,7 +209,7 @@ void on_client_connected(const uint8_t* mac)
     /* Record connection */
     clients[slot].active = true;
     memcpy(clients[slot].mac, mac, 6);
-    clients[slot].connect_time = xTaskGetTickCount() * portTICK_PERIOD_MS / 1000;
+    clients[slot].connect_time = (uint32_t)(esp_timer_get_time() / 1000000ULL);
     clients[slot].portal_start_time = clients[slot].connect_time;
     
     ESP_LOGD(TAG, "Client connected: slot=%d, MAC=" MACSTR, slot, MAC2STR(mac));
@@ -219,7 +220,7 @@ void on_client_connected(const uint8_t* mac)
  */
 void on_client_disconnected(const uint8_t* mac)
 {
-    uint32_t current_time = xTaskGetTickCount() * portTICK_PERIOD_MS / 1000;
+    uint32_t current_time = (uint32_t)(esp_timer_get_time() / 1000000ULL);
     
     /* Find matching client */
     for (int i = 0; i < MAX_TRACKED_CLIENTS; i++) {
@@ -244,7 +245,7 @@ void on_client_disconnected(const uint8_t* mac)
  */
 uint32_t get_session_duration(void)
 {
-    uint32_t current_time = xTaskGetTickCount() * portTICK_PERIOD_MS / 1000;
+    uint32_t current_time = (uint32_t)(esp_timer_get_time() / 1000000ULL);
     return current_time - session_start_time;
 }
 

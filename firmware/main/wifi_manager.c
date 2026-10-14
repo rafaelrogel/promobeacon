@@ -406,9 +406,12 @@ void handle_dns_requests(void)
     /* 3. Find the end of the Question section */
     uint8_t* ptr = buffer + 12; // Skip header
     while (ptr < buffer + recv_len && *ptr > 0) {
+        if (ptr + *ptr + 1 >= buffer + recv_len) return; // Boundary protection
         ptr += (*ptr + 1);
     }
+    if (ptr >= buffer + recv_len) return; // Boundary protection
     ptr++; // Skip null terminator of labels
+    if (ptr + 4 > buffer + recv_len) return; // Boundary protection
     ptr += 4; // Skip Type and Class (4 bytes)
 
     if (ptr + 16 > buffer + DNS_BUFFER_SIZE) return; // Prevention

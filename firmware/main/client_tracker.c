@@ -372,7 +372,7 @@ void tracker_deinit(void)
 
 void tracker_save_to_nvs(void)
 {
-    if (!g_initialized) {
+    if (!g_initialized || !g_dirty) {
         return;
     }
     
