@@ -11,6 +11,13 @@ import argparse
 import subprocess
 from pathlib import Path
 
+# Force UTF-8 on stdout for cross-platform safety
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 # Base paths
 ROOT_DIR = Path(__file__).resolve().parent.parent
 FW_DIR = ROOT_DIR / "firmware"
@@ -34,7 +41,7 @@ def generate_keys():
     """Generate RSA-3072 signing key for Secure Boot v2."""
     espsecure = find_espsecure()
     print("=" * 70)
-    print("  🔐 PROMOBEACON — GERACAO DE CHAVES DE SEGURANCA")
+    print("  [SEC] PROMOBEACON - GERACAO DE CHAVES DE SEGURANCA")
     print("=" * 70)
     
     if KEY_FILE.exists():
@@ -51,14 +58,14 @@ def generate_keys():
         print("[ERRO] Falha ao gerar chave RSA com espsecure.")
         sys.exit(1)
     
-    print(f"✅ Chave privada RSA-3072 gerada: {KEY_FILE}")
-    print("   ⚠️  IMPORTANTE: Guarde este arquivo em local seguro e NUNCA compartilhe no Git!")
+    print(f"[OK] Chave privada RSA-3072 gerada: {KEY_FILE}")
+    print("   [!] IMPORTANTE: Guarde este arquivo em local seguro e NUNCA compartilhe no Git!")
 
     # Extract public key digest for eFuse burning
-    digest_cmd = espsecure + ["digest_secure_boot_signing_key", "--keyfile", str(KEY_FILE), "-o", str(PUBLIC_KEY_DIGEST)]
+    digest_cmd = espsecure + ["digest_sbv2_public_key", "--keyfile", str(KEY_FILE), "-o", str(PUBLIC_KEY_DIGEST)]
     res = subprocess.run(digest_cmd)
     if res.returncode == 0:
-        print(f"✅ Digest da chave pública gerado: {PUBLIC_KEY_DIGEST}")
+        print(f"[OK] Digest da chave pública gerado: {PUBLIC_KEY_DIGEST}")
 
 def sign_binary(binary_path: str):
     """Sign a firmware binary with the Secure Boot key."""
@@ -88,7 +95,7 @@ def sign_binary(binary_path: str):
         print("[ERRO] Falha ao assinar binário.")
         sys.exit(1)
 
-    print(f"✅ Binário assinado com sucesso: {signed_output}")
+    print(f"[OK] Binário assinado com sucesso: {signed_output}")
 
 def verify_binary(binary_path: str):
     """Verify the signature on a firmware binary."""
@@ -101,9 +108,9 @@ def verify_binary(binary_path: str):
     cmd = espsecure + ["verify_signature", "--version", "2", "--keyfile", str(KEY_FILE), str(bin_file)]
     res = subprocess.run(cmd)
     if res.returncode == 0:
-        print(f"✅ Assinatura VÁLIDA: {bin_file.name}")
+        print(f"[OK] Assinatura VÁLIDA: {bin_file.name}")
     else:
-        print(f"❌ Assinatura INVÁLIDA ou ausente: {bin_file.name}")
+        print(f"[FALHA] Assinatura INVÁLIDA ou ausente: {bin_file.name}")
 
 def print_help_guide():
     print("""
