@@ -223,10 +223,21 @@
             📄 Baixar Plano de Governo Completo (PDF)
         </a>
 
-        <!-- Botão Secundário: Conectar ao Wi-Fi -->
-        <a href="/connect" class="btn btn-outline">
-            Liberar Acesso Wi-Fi
-        </a>
+        <!-- Botão Secundário Útil: Copiar Número para a Urna -->
+        <button class="btn btn-outline" onclick="copyBallot()">
+            📋 Copiar Número (15.123)
+        </button>
+        <script>
+            function copyBallot() {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText('15.123').then(() => {
+                        alert('✅ Número 15.123 copiado para o seu celular!');
+                    }).catch(() => { alert('Número para votar: 15.123'); });
+                } else {
+                    alert('Número para votar: 15.123');
+                }
+            }
+        </script>
 
         <!-- Rodapé Legal Obrigatório -->
         <div class="legal-footer">

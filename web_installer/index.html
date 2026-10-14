@@ -909,7 +909,10 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
   <h2>${subtitle}</h2>
   <p>${desc}</p>
   <a href="${btn1Url}" class="btn" download>${btn1Text}</a>
-  <a href="/connect" class="btn btn-outline">Liberar Internet Wi-Fi</a>
+  ${isPolitical 
+    ? `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${title}').then(()=>alert('Número e dados copiados para sua memória!'))}else{alert('${title}')}">📋 Salvar / Copiar Número</button>`
+    : `<button class="btn btn-outline" onclick="alert('Mostre esta tela para ativar sua promoção exclusiva!')">🏷️ Ativar Oferta no Balcão</button>`
+  }
   <div class="footer">Rede: ${ssid} • PromoBeacon</div>
 </div>
 </body>
