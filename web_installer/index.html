@@ -577,7 +577,12 @@
                         <div class="tpl-chip active" onclick="loadTemplate('restaurant')">🍽️ Restaurante & Cardápio PDF</div>
                         <div class="tpl-chip" onclick="loadTemplate('retail')">🏷️ Loja & Cupom</div>
                         <div class="tpl-chip" onclick="loadTemplate('e_santinho')">🗳️ e-Santinho Político</div>
-                        <div class="tpl-chip" onclick="loadTemplate('event')">🎪 Evento & Cronograma PDF</div>
+                        <div class="tpl-chip" onclick="loadTemplate('real_estate')">🏠 Imobiliária & Plantas</div>
+                        <div class="tpl-chip" onclick="loadTemplate('church')">⛪ Igreja & Boletim</div>
+                        <div class="tpl-chip" onclick="loadTemplate('hotel')">🏨 Hotel & Guia Hóspede</div>
+                        <div class="tpl-chip" onclick="loadTemplate('clinic')">🏥 Clínica & Guia Paciente</div>
+                        <div class="tpl-chip" onclick="loadTemplate('auto')">🚗 Veículos & Catálogo</div>
+                        <div class="tpl-chip" onclick="loadTemplate('event')">🎪 Evento & Cronograma</div>
                         <div class="tpl-chip" onclick="loadTemplate('custom')">✏️ Em Branco</div>
                     </div>
 
@@ -784,6 +789,61 @@
                 btn1Url: "/assets/plano_governo.pdf",
                 img: ""
             },
+            real_estate: {
+                title: "Residencial Parque dos Ipês",
+                ssid: "Stand_Vendas_Plantas",
+                subtitle: "Apartamentos de 2 e 3 Quartos • Lazer Completo",
+                desc: "Conectado ao Stand Oficial! Baixe o Book de Apresentação e as Plantas Baixas em PDF. Veja os valores e fale com o corretor de plantão.",
+                color1: "#059669",
+                color2: "#0284c7",
+                btn1Text: "📑 Baixar Book & Plantas Baixas (PDF)",
+                btn1Url: "/assets/book_plantas.pdf",
+                img: ""
+            },
+            church: {
+                title: "Paróquia São José • Comunidade",
+                ssid: "Boletim_Semanal_Oracoes",
+                subtitle: "Liturgia, Cânticos e Boletim Semanal",
+                desc: "Bem-vindo à nossa celebração! Baixe o folheto litúrgico e a ordem das orações em PDF para acompanhar pelo celular sem desperdício de papel.",
+                color1: "#7c3aed",
+                color2: "#d97706",
+                btn1Text: "📖 Baixar Folheto Litúrgico da Semana (PDF)",
+                btn1Url: "/assets/folheto_liturgico.pdf",
+                img: ""
+            },
+            hotel: {
+                title: "Pousada Vista do Sol",
+                ssid: "Guia_Hospede_Pousada",
+                subtitle: "Guia do Hóspede • Regras & Passeios Locais",
+                desc: "Seja muito bem-vindo! Baixe nosso Guia Completo com horário do café, cardápio do quarto e os melhores roteiros e praias da nossa região.",
+                color1: "#ea580c",
+                color2: "#0891b2",
+                btn1Text: "🗺️ Baixar Guia do Hóspede & Dicas (PDF)",
+                btn1Url: "/assets/guia_hospede.pdf",
+                img: ""
+            },
+            clinic: {
+                title: "Clínica Integrada de Especialidades",
+                ssid: "Clinica_Guia_Paciente",
+                subtitle: "Orientações, Convênios & Exames",
+                desc: "Conectado à sala de espera! Baixe o Guia do Paciente com orientações para pré/pós-consultas, tabela de convênios atendidos e corpo clínico.",
+                color1: "#0284c7",
+                color2: "#10b981",
+                btn1Text: "📋 Baixar Guia do Paciente (PDF)",
+                btn1Url: "/assets/guia_paciente.pdf",
+                img: ""
+            },
+            auto: {
+                title: "AutoCar Seminovos Selecionados",
+                ssid: "Estoque_Autos_Tabela",
+                subtitle: "Estoque Atualizado com Laudo Pericial",
+                desc: "Confira nosso catálogo de veículos revisados com garantia e procedência atestada. Baixe a tabela com fotos, ficha técnica e condições de financiamento.",
+                color1: "#dc2626",
+                color2: "#2563eb",
+                btn1Text: "🚘 Baixar Catálogo de Veículos (PDF)",
+                btn1Url: "/assets/catalogo_veiculos.pdf",
+                img: ""
+            },
             event: {
                 title: "Tech Summit 2026",
                 ssid: "PromoBeacon_Event",
@@ -875,8 +935,36 @@
                 ? `<div class="img-wrap"><img src="${currentUploadedImageBase64}" alt="Banner"></div>`
                 : '';
 
-            const isPolitical = /santinho|eleiç|deputad|vereador|prefeit|candidat|govern/i.test(title + subtitle + desc);
-            const badgeLabel = isPolitical ? "🗳️ e-Santinho Oficial" : "Wi-Fi Oficial";
+            let badgeLabel = "PromoBeacon Oficial";
+            let secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Mostre esta tela no local para validar sua promoção!')">🏷️ Ativar Oferta no Balcão</button>`;
+
+            const textAll = (title + " " + subtitle + " " + desc).toLowerCase();
+
+            if (/santinho|eleiç|deputad|vereador|prefeit|candidat|govern/i.test(textAll)) {
+                badgeLabel = "🗳️ e-Santinho Oficial";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${title}').then(()=>alert('Número e dados copiados para sua memória!'))}else{alert('${title}')}">📋 Salvar / Copiar Número</button>`;
+            } else if (/igreja|paróquia|liturg|cântico|oração|dízimo|culto|pastor|padre/i.test(textAll)) {
+                badgeLabel = "⛪ Comunidade & Liturgia";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('PIX_DA_COMUNIDADE').then(()=>alert('Chave Pix copiada para o seu celular!'))}else{alert('Contribua com nossa comunidade!')}">🕊️ Copiar Chave Pix</button>`;
+            } else if (/apartamento|imóvel|imobili|residencia|planta|corretor|lote|condom/i.test(textAll)) {
+                badgeLabel = "🏠 Stand de Vendas Oficial";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('Contato do Corretor de Plantão: (11) 99999-9999').then(()=>alert('Contato do corretor copiado!'))}else{alert('Fale com o corretor no stand!')}">📞 Salvar Contato do Corretor</button>`;
+            } else if (/hotel|pousada|hóspede|resort|chalé|check-in|quarto/i.test(textAll)) {
+                badgeLabel = "🏨 Guia do Hóspede";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Horário Café: 07h-10h • Checkout: 12h • Recepção: Ramal 9')">🕒 Ver Horários & Regras</button>`;
+            } else if (/clínica|médic|paciente|consulta|exame|doutor|saúde|odontol/i.test(textAll)) {
+                badgeLabel = "🏥 Guia do Paciente";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Apresente sua carteirinha do convênio e documento na recepção!')">💳 Instruções de Atendimento</button>`;
+            } else if (/carro|veículo|auto|seminovo|concession|revisão|oficina/i.test(textAll)) {
+                badgeLabel = "🚗 Estoque Selecionado";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Fale com nosso consultor no pátio para test drive e avaliação!')">🚘 Solicitar Test Drive</button>`;
+            } else if (/cardápio|restaurante|bistrô|pizza|lanche|burger|bar|café/i.test(textAll)) {
+                badgeLabel = "🍽️ Cardápio & Ofertas";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Mostre este cupom ao garçom ou atendente para ativar seu desconto!')">⭐ Ativar Desconto no Pedido</button>`;
+            } else if (/evento|summit|palestra|workshop|conferência|feira/i.test(textAll)) {
+                badgeLabel = "🎪 Programação Oficial";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Apresente seu QR Code de credencial na entrada das salas!')">🎟️ Ver Regras de Credenciamento</button>`;
+            }
 
             return `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -909,10 +997,7 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
   <h2>${subtitle}</h2>
   <p>${desc}</p>
   <a href="${btn1Url}" class="btn" download>${btn1Text}</a>
-  ${isPolitical 
-    ? `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${title}').then(()=>alert('Número e dados copiados para sua memória!'))}else{alert('${title}')}">📋 Salvar / Copiar Número</button>`
-    : `<button class="btn btn-outline" onclick="alert('Mostre esta tela para ativar sua promoção exclusiva!')">🏷️ Ativar Oferta no Balcão</button>`
-  }
+  ${secondaryBtnHtml}
   <div class="footer">Rede: ${ssid} • PromoBeacon</div>
 </div>
 </body>
