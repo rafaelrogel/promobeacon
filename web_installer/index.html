@@ -576,6 +576,7 @@
                     <div class="template-selector">
                         <div class="tpl-chip active" onclick="loadTemplate('restaurant')">🍽️ Restaurante & Cardápio PDF</div>
                         <div class="tpl-chip" onclick="loadTemplate('retail')">🏷️ Loja & Cupom</div>
+                        <div class="tpl-chip" onclick="loadTemplate('e_santinho')">🗳️ e-Santinho Político</div>
                         <div class="tpl-chip" onclick="loadTemplate('event')">🎪 Evento & Cronograma PDF</div>
                         <div class="tpl-chip" onclick="loadTemplate('custom')">✏️ Em Branco</div>
                     </div>
@@ -772,6 +773,17 @@
                 btn1Url: "/assets/catalogo.pdf",
                 img: ""
             },
+            e_santinho: {
+                title: "Dr. Marcos Silva • 15.123",
+                ssid: "WiFi_DrMarcos_15123",
+                subtitle: "Saúde, Educação e Trabalho de Verdade",
+                desc: "Bem-vindo ao nosso e-Santinho Oficial! Conheça nossas 20 Propostas de Governo e compromissos pelo nosso município. Baixe o plano completo em PDF e vote consciente!",
+                color1: "#2563eb",
+                color2: "#10b981",
+                btn1Text: "🗳️ Baixar Plano de Governo Oficial (PDF)",
+                btn1Url: "/assets/plano_governo.pdf",
+                img: ""
+            },
             event: {
                 title: "Tech Summit 2026",
                 ssid: "PromoBeacon_Event",
@@ -863,6 +875,9 @@
                 ? `<div class="img-wrap"><img src="${currentUploadedImageBase64}" alt="Banner"></div>`
                 : '';
 
+            const isPolitical = /santinho|eleiç|deputad|vereador|prefeit|candidat|govern/i.test(title + subtitle + desc);
+            const badgeLabel = isPolitical ? "🗳️ e-Santinho Oficial" : "Wi-Fi Oficial";
+
             return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -888,7 +903,7 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
 </head>
 <body>
 <div class="card">
-  <div class="badge">Wi-Fi Oficial</div>
+  <div class="badge">${badgeLabel}</div>
   <h1>${title}</h1>
   ${imageHtml}
   <h2>${subtitle}</h2>
