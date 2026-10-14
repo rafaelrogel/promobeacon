@@ -160,11 +160,19 @@ class ExportStatsToCsvUseCase @Inject constructor(
 
 /**
  * Upload Portal Page Use Case
+ *
+ * Validates captive portal HTML for offline compliance:
+ * - Content cannot be blank
+ * - Content must not exceed max payload size (32KB)
+ * - Proactively warns/rejects external resources (images, scripts, styles) that fail on an offline captive portal unless explicitly allowed.
  */
 class UploadPortalUseCase @Inject constructor(
     private val repository: DeviceRepository
 ) {
-    suspend operator fun invoke(htmlContent: String): Flow<UploadProgress> {
+    suspend operator fun invoke(
+        htmlContent: String,
+        allowExternalResources: Boolean = false
+    ): Flow<UploadProgress> {
         // Validate HTML content
         if (htmlContent.isBlank()) {
             return flowOf(UploadProgress.Error("HTML content cannot be empty"))
@@ -177,6 +185,33 @@ class UploadPortalUseCase @Inject constructor(
             return flowOf(UploadProgress.Error("HTML content too large, max ${maxSize / 1024}KB supported"))
         }
 
+        if (!allowExternalResources) {
+            val externalResource = findExternalResource(htmlContent)
+            if (externalResource != null) {
+                return flowOf(
+                    UploadProgress.Error(
+                        "HTML contains external resource '$externalResource'. PromoBeacon operates offline; embed images as Base64/SVG and inline all CSS/JS."
+                    )
+                )
+            }
+        }
+
         return repository.uploadPortalContent(htmlContent)
     }
+
+    companion object {
+        private val EXTERNAL_RESOURCE_REGEX = Regex(
+            """(?i)(?:\bsrc\s*=\s*["']?(https?://[^\s"'>]+)["']?|<link\b[^>]*\bhref\s*=\s*["']?(https?://[^\s"'>]+)["']?|@import\s+(?:url\()?["']?(https?://[^\s"')]+)["']?\))"""
+        )
+
+        /**
+         * Scans HTML content for external URLs (images, scripts, external CSS) that would fail offline.
+         * Returns the first offending URL found, or null if compliant.
+         */
+        fun findExternalResource(html: String): String? {
+            val match = EXTERNAL_RESOURCE_REGEX.find(html) ?: return null
+            return match.groupValues.drop(1).firstOrNull { it.isNotEmpty() } ?: match.value
+        }
+    }
 }
+
