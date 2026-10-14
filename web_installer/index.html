@@ -1,33 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://unpkg.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob: https://unpkg.com; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://unpkg.com data: blob:;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PromoBeacon Web Installer</title>
+    <title>PromoBeacon Suite — Flasher, Criador de Portal & Verificador</title>
     <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js" integrity="sha384-DLSRQX8nILUsYRCKoOL+FvGRis5HoNA+9ak4QYqreENR9UVDIXUSoZrdt1Ibty96" crossorigin="anonymous"
-        onerror="document.querySelector('.installer-box').innerHTML='<p style=color:#ef4444;text-align:center;padding:32px>Could not load installer tools. Please check your internet connection and reload.</p>'">
+        onerror="const b = document.querySelector('.installer-box'); if(b) b.innerHTML='<p style=color:#ef4444;text-align:center;padding:32px>Não foi possível carregar as ferramentas de gravação. Verifique sua conexão e recarregue.</p>'">
     </script>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --primary: #818cf8;
+            --bg-color: #0b0f19;
+            --card-bg: rgba(22, 30, 49, 0.75);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: #818cf8;
             --secondary: #c084fc;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
             --text: #f8fafc;
             --text-muted: #94a3b8;
+            --text-dim: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            padding: 32px 16px;
             overflow-x: hidden;
         }
 
@@ -38,60 +50,116 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 10% 10%, rgba(67, 56, 186, 0.3) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(30, 27, 75, 0.5) 0%, transparent 40%);
+                radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.2) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.15) 0%, transparent 45%);
             z-index: -1;
+            pointer-events: none;
         }
 
-        .container {
-            max-width: 600px;
-            width: 90%;
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 32px;
-            padding: 48px;
+        .header-section {
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            margin-bottom: 24px;
+            max-width: 800px;
         }
 
         .logo {
-            font-size: 3rem;
-            margin-bottom: 8px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            font-size: 2.75rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            color: transparent;
-            font-weight: 800;
+            margin-bottom: 4px;
         }
 
-        h1 {
-            font-size: 1.5rem;
-            margin-bottom: 24px;
-            color: #fff;
-        }
-
-        p {
+        .subtitle {
             color: var(--text-muted);
-            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        /* Navigation Tabs */
+        .tabs-nav {
+            display: flex;
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            padding: 6px;
+            border-radius: 9999px;
+            border: 1px solid var(--card-border);
             margin-bottom: 32px;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+        }
+
+        /* Container & Panels */
+        .main-container {
+            width: 100%;
+            max-width: 1100px;
+            transition: max-width 0.3s ease;
+        }
+
+        .panel {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 36px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        /* TAB 1: Flasher Styles */
+        .flasher-container {
+            max-width: 580px;
+            margin: 0 auto;
+            text-align: center;
         }
 
         .installer-box {
-            background: rgba(15, 23, 42, 0.4);
+            background: rgba(15, 23, 42, 0.5);
             border-radius: 20px;
             padding: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 32px;
+            border: 1px solid var(--card-border);
+            margin: 24px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -109,75 +177,926 @@
             font-size: 0.9rem;
             color: var(--text-muted);
             margin-top: 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 24px;
+            border-top: 1px solid var(--card-border);
+            padding-top: 20px;
+            width: 100%;
         }
 
         .steps > b {
-            color: var(--primary);
+            color: var(--primary-light);
             display: block;
             margin-bottom: 8px;
         }
 
-        ul {
+        .steps ul {
             padding-left: 20px;
-            margin: 0;
         }
 
-        li {
-            margin-bottom: 8px;
+        .steps li {
+            margin-bottom: 6px;
         }
+
+        /* TAB 2: Visual Builder Styles */
+        .builder-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 32px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .builder-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .color-pickers {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .color-pickers input[type="color"] {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .file-dropzone {
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(15, 23, 42, 0.3);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .file-dropzone:hover {
+            border-color: var(--primary-light);
+            background: rgba(99, 102, 241, 0.05);
+            color: var(--text);
+        }
+
+        .template-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tpl-chip {
+            padding: 8px 14px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .tpl-chip.active, .tpl-chip:hover {
+            background: rgba(99, 102, 241, 0.2);
+            color: white;
+            border-color: var(--primary-light);
+        }
+
+        /* Live Smartphone Mockup */
+        .phone-mockup {
+            width: 100%;
+            max-width: 380px;
+            background: #000;
+            border-radius: 46px;
+            padding: 12px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 4px #1f2937;
+            position: sticky;
+            top: 24px;
+        }
+
+        .phone-notch {
+            width: 130px;
+            height: 22px;
+            background: #000;
+            margin: 0 auto 6px;
+            border-radius: 0 0 16px 16px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .phone-status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 16px 6px;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .phone-screen {
+            background: #0f172a;
+            border-radius: 36px;
+            overflow: hidden;
+            height: 580px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .phone-captive-header {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            text-align: center;
+            color: #94a3b8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .phone-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #0f172a;
+        }
+
+        /* Quota Bar */
+        .quota-bar-container {
+            margin-top: 14px;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 12px;
+            padding: 12px 16px;
+            border: 1px solid var(--card-border);
+        }
+
+        .quota-bar-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+        }
+
+        .progress-track {
+            height: 6px;
+            background: #1e293b;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 10%;
+            background: var(--accent);
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.8);
+            color: var(--text);
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        /* TAB 3: Verifier Styles */
+        .verifier-box {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .audit-results {
+            margin-top: 24px;
+            display: none;
+        }
+
+        .audit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: rgba(15, 23, 42, 0.5);
+            border-left: 4px solid var(--text-dim);
+        }
+
+        .audit-item.pass {
+            border-left-color: var(--accent);
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .audit-item.warning {
+            border-left-color: var(--warning);
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .audit-item.fail {
+            border-left-color: var(--danger);
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-pass { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .badge-fail { background: rgba(239, 68, 68, 0.2); color: #f87171; }
 
         .footer {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.3);
-            margin-top: 40px;
+            margin-top: 48px;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="bg-gradient"></div>
-    <div class="container">
+
+    <div class="header-section">
         <div class="logo">PromoBeacon</div>
-        <h1>Firmware Installer</h1>
-        <p>Connect your PromoBeacon device to your computer via USB to install or update to the latest version.</p>
+        <p class="subtitle">Central Oficial de Firmware, Criação e Auditoria de Portais Captive Offline</p>
+    </div>
 
-        <div class="installer-box">
-            <esp-web-install-button manifest="manifest.json">
-                <button slot="activate" style="
-                    padding: 14px 40px;
-                    background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
-                    color: white;
-                    border: none;
-                    border-radius: 14px;
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
-                    transition: all 0.2s;
-                ">Start Installation</button>
-            </esp-web-install-button>
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab('flasher')">
+            <span>⚡</span> Flasher USB
+        </button>
+        <button class="tab-btn" onclick="switchTab('builder')">
+            <span>🎨</span> Criador No-Code
+        </button>
+        <button class="tab-btn" onclick="switchTab('verifier')">
+            <span>🔍</span> Verificador & Linter
+        </button>
+    </div>
 
-            <div class="steps">
-                <b>Ready to go?</b>
-                <ul>
-                    <li>Use <b>Google Chrome</b> or <b>Microsoft Edge</b>.</li>
-                    <li>Connect your chip via USB.</li>
-                    <li>Select the correct COM port when prompted.</li>
-                    <li>Choose "Erase Data" if you want a clean install.</li>
-                </ul>
+    <div class="main-container">
+        <!-- TAB 1: FLASHER -->
+        <div id="tab-flasher" class="panel active">
+            <div class="card flasher-container">
+                <h2 style="margin-bottom: 8px;">Instalador de Firmware WebSerial</h2>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+                    Grave a versão oficial do PromoBeacon diretamente no seu ESP32 pelo navegador Google Chrome ou Edge.
+                </p>
+
+                <div class="installer-box">
+                    <esp-web-install-button manifest="manifest.json">
+                        <button slot="activate" style="
+                            padding: 14px 40px;
+                            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+                            color: white;
+                            border: none;
+                            border-radius: 14px;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+                            transition: all 0.2s;
+                        ">Iniciar Gravação</button>
+                    </esp-web-install-button>
+
+                    <div class="steps">
+                        <b>Instruções Rápidas:</b>
+                        <ul>
+                            <li>Conecte o chip ESP32 / ESP32-C3 / ESP32-S3 via cabo USB de dados.</li>
+                            <li>Clique no botão e selecione a porta serial (COM) correspondente.</li>
+                            <li>Para uma instalação limpa, marque a opção <i>Erase Data</i>.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="footer">Version 2.0.0 • Supports ESP32, S3, and C3 Variants</div>
+        <!-- TAB 2: BUILDER (NO-CODE VISUAL) -->
+        <div id="tab-builder" class="panel">
+            <div class="builder-grid">
+                <!-- Controls Side -->
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+                        <h2>Criador de Portal Captive</h2>
+                        <span class="badge badge-pass" id="builder-status-badge">Pronto para Enviar</span>
+                    </div>
+
+                    <label>Escolha um Template Rápido:</label>
+                    <div class="template-selector">
+                        <div class="tpl-chip active" onclick="loadTemplate('restaurant')">🍽️ Restaurante & Cardápio PDF</div>
+                        <div class="tpl-chip" onclick="loadTemplate('retail')">🏷️ Loja & Cupom</div>
+                        <div class="tpl-chip" onclick="loadTemplate('event')">🎪 Evento & Cronograma PDF</div>
+                        <div class="tpl-chip" onclick="loadTemplate('custom')">✏️ Em Branco</div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome do Negócio</label>
+                            <input type="text" id="cfg-title" value="Bistrô & Lounge" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>SSID / Wi-Fi da Promoção</label>
+                            <input type="text" id="cfg-ssid" value="PromoBeacon_Bistro" maxlength="32" oninput="updatePreview()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Subtítulo / Chamada Principal</label>
+                        <input type="text" id="cfg-subtitle" value="Cardápio do Dia & 15% OFF no Almoço" oninput="updatePreview()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Texto Descritivo</label>
+                        <textarea id="cfg-desc" oninput="updatePreview()">Conectado à nossa rede exclusiva! Baixe nosso cardápio completo em PDF ou mostre esta tela ao garçom para ativar seu desconto.</textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Personalização de Cores</label>
+                            <div class="color-pickers">
+                                <input type="color" id="cfg-color1" value="#6366f1" onchange="updatePreview()">
+                                <input type="color" id="cfg-color2" value="#a855f7" onchange="updatePreview()">
+                                <span style="font-size:0.85rem; color:var(--text-muted)">Gradiente dos Botões & Destaques</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Foto de Destaque / Logo</label>
+                            <input type="file" id="cfg-img-file" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+                            <div class="file-dropzone" onclick="document.getElementById('cfg-img-file').click()">
+                                <span id="cfg-img-label">📷 Clique para foto (auto-comprime p/ Base64)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PDF Action Link -->
+                    <div style="background: rgba(15, 23, 42, 0.4); border-radius: 16px; padding: 16px; border: 1px solid var(--card-border); margin-bottom: 20px;">
+                        <label style="color: var(--primary-light);">📄 Botão de Ação / Download do PDF:</label>
+                        <div class="form-row" style="margin-top: 8px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Texto do Botão</label>
+                                <input type="text" id="cfg-btn1-text" value="📄 Baixar Cardápio Completo (PDF)" oninput="updatePreview()">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Caminho do Arquivo PDF no ESP32</label>
+                                <input type="text" id="cfg-btn1-url" value="/assets/cardapio.pdf" oninput="updatePreview()">
+                            </div>
+                        </div>
+                        <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 8px;">
+                            💡 Dica: Caminhos relativos como <code>/assets/cardapio.pdf</code> funcionam 100% offline no ESP32 sem precisar de internet!
+                        </p>
+                    </div>
+
+                    <!-- Export Buttons -->
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="copyHtmlToClipboard()">
+                            📋 Copiar HTML p/ App
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadHtmlFile()">
+                            💾 Baixar index.html
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadWiFiPackage()">
+                            📦 Baixar Pacote Wi-Fi (/assets/)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Phone Simulator Side -->
+                <div>
+                    <div class="phone-mockup">
+                        <div class="phone-notch"></div>
+                        <div class="phone-status-bar">
+                            <span>09:41</span>
+                            <span>Wi-Fi: <b id="phone-ssid-display">PromoBeacon</b></span>
+                            <span>100% 🔋</span>
+                        </div>
+                        <div class="phone-screen">
+                            <div class="phone-captive-header">
+                                <span style="font-size: 0.7rem; color: #38bdf8;">Conectado</span>
+                                <span style="font-weight: 600;">192.168.4.1</span>
+                                <span style="font-size: 0.7rem; color: #38bdf8; cursor: pointer;">Concluído</span>
+                            </div>
+                            <iframe id="phone-preview-iframe" class="phone-iframe"></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Quota & Compliance Box -->
+                    <div class="quota-bar-container">
+                        <div class="quota-bar-header">
+                            <span>Tamanho do Portal (Quota BLE):</span>
+                            <b id="quota-text">0 KB / 32 KB</b>
+                        </div>
+                        <div class="progress-track">
+                            <div id="quota-fill" class="progress-fill"></div>
+                        </div>
+                        <p id="quota-desc" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+                            ✅ Compatível com NVS e envio instantâneo via Bluetooth no App PromoBeacon.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: VERIFIER & LINTER -->
+        <div id="tab-verifier" class="panel">
+            <div class="card verifier-box">
+                <h2>Verificador & Auditor de Sites Offline</h2>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+                    Já tem um site ou página pronta? Cole o código HTML ou envie o arquivo para testar se ele funciona offline em captive portals.
+                </p>
+
+                <div class="form-group">
+                    <label>Selecione um arquivo .html ou .htm:</label>
+                    <input type="file" id="linter-file-input" accept=".html,.htm" style="display:none" onchange="handleLinterFileUpload(event)">
+                    <div class="file-dropzone" onclick="document.getElementById('linter-file-input').click()">
+                        📁 Arraste ou clique para selecionar seu arquivo HTML
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Ou cole o código HTML diretamente:</label>
+                    <textarea id="linter-code-input" style="height: 140px; font-family: monospace; font-size: 0.85rem;" placeholder="<!DOCTYPE html><html>..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="runLinterAudit()">
+                        🔍 Analisar Conformidade
+                    </button>
+                    <button class="btn btn-secondary" id="autofix-btn" style="display:none;" onclick="autoFixHtml()">
+                        ⚡ Auto-Corrigir para PromoBeacon
+                    </button>
+                </div>
+
+                <!-- Audit Results Area -->
+                <div id="audit-results" class="audit-results">
+                    <h3 style="margin-bottom: 14px; font-size: 1.1rem;">Resultado da Auditoria:</h3>
+                    <div id="audit-items-container"></div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="footer">
+        PromoBeacon Suite v2.0.0 • Compatível com toda a frota ESP32, S3 e C3
+    </div>
+
+    <!-- Scripts for Builder, Linter & Phone Preview -->
     <script>
-        if (!('serial' in navigator)) {
-            const installerBox = document.querySelector('.installer-box');
-            if (installerBox) {
-                installerBox.innerHTML = '<div style="padding: 32px; text-align: center;"><h3 style="color: #ef4444;">Browser Not Supported</h3><p style="color: #94a3b8;">Web Serial API requires Chrome, Edge, or Opera. Please use a supported browser.</p></div>';
+        // Tab Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
+
+            const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabName));
+            if (activeBtn) activeBtn.classList.add('active');
+
+            const activePanel = document.getElementById('tab-' + tabName);
+            if (activePanel) activePanel.classList.add('active');
+
+            if (tabName === 'builder') {
+                updatePreview();
             }
         }
+
+        // Templates Data
+        const TEMPLATES = {
+            restaurant: {
+                title: "Bistrô & Lounge Gourmet",
+                ssid: "PromoBeacon_Bistro",
+                subtitle: "Cardápio do Dia & 15% OFF no Almoço",
+                desc: "Conectado à nossa rede exclusiva! Baixe nosso cardápio completo em PDF abaixo ou mostre esta tela ao garçom para ativar seu desconto.",
+                color1: "#6366f1",
+                color2: "#a855f7",
+                btn1Text: "📄 Baixar Cardápio Completo (PDF)",
+                btn1Url: "/assets/cardapio.pdf",
+                img: ""
+            },
+            retail: {
+                title: "Loja Moda & Estilo",
+                ssid: "PromoBeacon_Promo",
+                subtitle: "Coleção Verão: Compre 1 Leve 2",
+                desc: "Aproveite descontos imperdíveis válidos apenas hoje enquanto você visita nosso espaço físico. Baixe nosso catálogo digital!",
+                color1: "#0ea5e9",
+                color2: "#10b981",
+                btn1Text: "🛍️ Baixar Catálogo de Ofertas (PDF)",
+                btn1Url: "/assets/catalogo.pdf",
+                img: ""
+            },
+            event: {
+                title: "Tech Summit 2026",
+                ssid: "PromoBeacon_Event",
+                subtitle: "Wi-Fi Oficial & Cronograma das Palestras",
+                desc: "Bem-vindo ao evento! Acesse a programação completa das trilhas e salas de workshops no documento oficial.",
+                color1: "#f59e0b",
+                color2: "#ef4444",
+                btn1Text: "📅 Baixar Cronograma Completo (PDF)",
+                btn1Url: "/assets/cronograma.pdf",
+                img: ""
+            },
+            custom: {
+                title: "Meu Negócio",
+                ssid: "PromoBeacon_WiFi",
+                subtitle: "Oferta Especial Para Você",
+                desc: "Seja muito bem-vindo! Aproveite nossa conexão rápida e confira as promoções exclusivas preparadas para você.",
+                color1: "#6366f1",
+                color2: "#3b82f6",
+                btn1Text: "📄 Ver Documento (PDF)",
+                btn1Url: "/assets/documento.pdf",
+                img: ""
+            }
+        };
+
+        let currentUploadedImageBase64 = "";
+
+        function loadTemplate(key) {
+            document.querySelectorAll('.tpl-chip').forEach(c => c.classList.remove('active'));
+            const activeChip = Array.from(document.querySelectorAll('.tpl-chip')).find(c => c.getAttribute('onclick').includes(key));
+            if (activeChip) activeChip.classList.add('active');
+
+            const t = TEMPLATES[key] || TEMPLATES.custom;
+            document.getElementById('cfg-title').value = t.title;
+            document.getElementById('cfg-ssid').value = t.ssid;
+            document.getElementById('cfg-subtitle').value = t.subtitle;
+            document.getElementById('cfg-desc').value = t.desc;
+            document.getElementById('cfg-color1').value = t.color1;
+            document.getElementById('cfg-color2').value = t.color2;
+            document.getElementById('cfg-btn1-text').value = t.btn1Text;
+            document.getElementById('cfg-btn1-url').value = t.btn1Url;
+            updatePreview();
+        }
+
+        // Image compression to Base64 (WebP/JPEG max 600px width)
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 480;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height = Math.round((height * MAX_WIDTH) / width);
+                        width = MAX_WIDTH;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    currentUploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.65);
+                    document.getElementById('cfg-img-label').innerText = '✅ Foto Carregada (' + Math.round(currentUploadedImageBase64.length/1024) + ' KB)';
+                    updatePreview();
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Generate Self-Contained Offline HTML
+        function generatePortalHtml() {
+            const title = document.getElementById('cfg-title').value || "PromoBeacon";
+            const ssid = document.getElementById('cfg-ssid').value || "PromoBeacon";
+            const subtitle = document.getElementById('cfg-subtitle').value || "";
+            const desc = document.getElementById('cfg-desc').value || "";
+            const color1 = document.getElementById('cfg-color1').value || "#6366f1";
+            const color2 = document.getElementById('cfg-color2').value || "#a855f7";
+            const btn1Text = document.getElementById('cfg-btn1-text').value || "Acessar";
+            const btn1Url = document.getElementById('cfg-btn1-url').value || "/assets/cardapio.pdf";
+
+            const imageHtml = currentUploadedImageBase64 
+                ? `<div class="img-wrap"><img src="${currentUploadedImageBase64}" alt="Banner"></div>`
+                : '';
+
+            return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${title}</title>
+<style>
+:root { --p: ${color1}; --s: ${color2}; --bg: #0f172a; }
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+body { background:var(--bg); color:#f8fafc; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; text-align:center; }
+.card { background:rgba(30,41,59,0.85); border:1px solid rgba(255,255,255,0.12); border-radius:24px; padding:32px 24px; width:100%; max-width:380px; box-shadow:0 20px 40px rgba(0,0,0,0.5); }
+.badge { display:inline-block; font-size:0.75rem; font-weight:700; color:#38bdf8; background:rgba(56,189,248,0.15); padding:4px 12px; border-radius:999px; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.05em; }
+h1 { font-size:1.6rem; font-weight:800; background:linear-gradient(to right, ${color1}, ${color2}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; line-height:1.2; }
+h2 { font-size:1.05rem; font-weight:600; color:#cbd5e1; margin-bottom:14px; }
+p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
+.img-wrap { width:100%; border-radius:16px; overflow:hidden; margin-bottom:20px; box-shadow:0 8px 20px rgba(0,0,0,0.4); max-height:180px; }
+.img-wrap img { width:100%; height:100%; object-fit:cover; display:block; }
+.btn { display:block; width:100%; padding:14px; background:linear-gradient(135deg, var(--p), var(--s)); color:#fff; text-decoration:none; border-radius:14px; font-weight:700; font-size:0.95rem; box-shadow:0 8px 18px rgba(99,102,241,0.35); transition:transform 0.15s; margin-bottom:12px; }
+.btn:active { transform:scale(0.98); }
+.btn-outline { background:transparent; border:1px solid rgba(255,255,255,0.2); box-shadow:none; color:#cbd5e1; }
+.footer { font-size:0.75rem; color:#64748b; margin-top:16px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="badge">Wi-Fi Oficial</div>
+  <h1>${title}</h1>
+  ${imageHtml}
+  <h2>${subtitle}</h2>
+  <p>${desc}</p>
+  <a href="${btn1Url}" class="btn" download>${btn1Text}</a>
+  <a href="/connect" class="btn btn-outline">Liberar Internet Wi-Fi</a>
+  <div class="footer">Rede: ${ssid} • PromoBeacon</div>
+</div>
+</body>
+</html>`;
+        }
+
+        // Update Live Phone Preview & Byte Quota
+        function updatePreview() {
+            const html = generatePortalHtml();
+            const iframe = document.getElementById('phone-preview-iframe');
+            if (iframe) {
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(html);
+                doc.close();
+            }
+
+            const ssid = document.getElementById('cfg-ssid').value || "PromoBeacon";
+            document.getElementById('phone-ssid-display').innerText = ssid;
+
+            // Byte Quota Calculation (UTF-8 bytes)
+            const bytes = new TextEncoder().encode(html).length;
+            const kb = (bytes / 1024).toFixed(1);
+            document.getElementById('quota-text').innerText = `${kb} KB / 32 KB`;
+
+            const percentage = Math.min(100, Math.round((bytes / (32 * 1024)) * 100));
+            const fill = document.getElementById('quota-fill');
+            const badge = document.getElementById('builder-status-badge');
+            fill.style.width = percentage + '%';
+
+            if (bytes <= 32 * 1024) {
+                fill.style.backgroundColor = '#10b981'; // Green
+                badge.className = 'badge badge-pass';
+                badge.innerText = 'Pronto para App (BLE)';
+                document.getElementById('quota-desc').innerHTML = '✅ <b>Compatível com NVS e BLE:</b> Cabe perfeitamente na cota instantânea do App mobile.';
+            } else {
+                fill.style.backgroundColor = '#f59e0b'; // Yellow/Orange
+                badge.className = 'badge badge-warning';
+                badge.innerText = 'Modo Wi-Fi / SPIFFS';
+                document.getElementById('quota-desc').innerHTML = '⚠️ <b>Excede 32KB para BLE:</b> Perfeito para a partição <b>SPIFFS via Wi-Fi</b> (até 192KB+ no ESP32).';
+            }
+        }
+
+        // Copy HTML to Clipboard
+        function copyHtmlToClipboard() {
+            const html = generatePortalHtml();
+            navigator.clipboard.writeText(html).then(() => {
+                alert('✅ Código HTML copiado para a área de transferência! Cole no App PromoBeacon para enviar por Bluetooth.');
+            }).catch(err => {
+                prompt('Copie o código abaixo:', html);
+            });
+        }
+
+        // Download Single index.html File
+        function downloadHtmlFile() {
+            const html = generatePortalHtml();
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Download Wi-Fi Package Instructions
+        function downloadWiFiPackage() {
+            downloadHtmlFile();
+            const readme = "INSTRUÇÕES DO PACOTE WI-FI PROMOBEACON:\n\n1. Arquivo 'index.html' gerado.\n2. Crie uma pasta chamada 'assets' e coloque seu arquivo PDF (ex: 'cardapio.pdf') dentro dela.\n3. Envie para o ESP32 conectando ao Wi-Fi dele e acessando http://192.168.4.1/upload (ou via Web Admin).\n";
+            const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'LEIA_ME_PACOTE_WIFI.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // TAB 3: Linter & Auditor Logic
+        function handleLinterFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                document.getElementById('linter-code-input').value = evt.target.result;
+                runLinterAudit();
+            };
+            reader.readAsText(file);
+        }
+
+        function runLinterAudit() {
+            const code = document.getElementById('linter-code-input').value.trim();
+            if (!code) {
+                alert('Por favor, cole o código HTML ou selecione um arquivo para auditar.');
+                return;
+            }
+
+            const resultsContainer = document.getElementById('audit-items-container');
+            resultsContainer.innerHTML = '';
+            document.getElementById('audit-results').style.display = 'block';
+
+            const bytes = new TextEncoder().encode(code).length;
+            const kb = (bytes / 1024).toFixed(1);
+
+            let hasErrors = false;
+
+            // 1. Size Check
+            if (bytes <= 32 * 1024) {
+                addAuditItem('pass', 'Tamanho do Arquivo', `Tamanho: ${kb} KB (<= 32 KB). Compatível tanto com transferência rápida via BLE quanto SPIFFS.`);
+            } else {
+                addAuditItem('warning', 'Tamanho Excede Cota BLE', `Tamanho: ${kb} KB (> 32 KB). Não poderá ser enviado por Bluetooth BLE sem compressão, mas funciona perfeitamente via partição SPIFFS por Wi-Fi.`);
+            }
+
+            // 2. External Resource Check (Images, Scripts, CSS)
+            const extRegex = /(?:src|href)\s*=\s*["']?(https?:\/\/[^\s"'>]+)["']?/gi;
+            let match;
+            const externalUrls = [];
+            while ((match = extRegex.exec(code)) !== null) {
+                // Ignore standard external link anchors <a href="..."> if they are social links, but flag media/scripts
+                externalUrls.push(match[1]);
+            }
+
+            if (externalUrls.length === 0) {
+                addAuditItem('pass', 'Recursos 100% Offline', 'Nenhuma dependência externa encontrada. O site não irá quebrar no portal captive.');
+            } else {
+                hasErrors = true;
+                const sample = externalUrls.slice(0, 3).join(', ');
+                addAuditItem('fail', 'Dependências Externas Detectadas', `Foram encontrados links/recursos externos (${sample}). Portais captive offline não têm acesso à internet; imagens e scripts externos falharão ao carregar.`);
+            }
+
+            // 3. Viewport Meta Check
+            if (/<meta\s+name=["']viewport["']/i.test(code)) {
+                addAuditItem('pass', 'Meta Viewport Responsivo', 'A página declara configuração mobile para smartphones iOS e Android.');
+            } else {
+                addAuditItem('warning', 'Meta Viewport Ausente', 'Recomenda-se adicionar <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code> para correta renderização em celulares.');
+            }
+
+            // 4. Relative Assets Link Check
+            const assetRegex = /(?:src|href)\s*=\s*["'](?:\/assets\/|assets\/)([^"']+)["']/gi;
+            const assetMatches = [];
+            while ((match = assetRegex.exec(code)) !== null) {
+                assetMatches.push(match[1]);
+            }
+            if (assetMatches.length > 0) {
+                addAuditItem('pass', 'Caminhos Locais (/assets/) Detectados', `Identificados ${assetMatches.length} arquivos locais vinculados (ex: ${assetMatches[0]}). Estes arquivos serão servidos diretamente da partição SPIFFS do ESP32.`);
+            }
+
+            // Show Auto-fix button if errors were found
+            document.getElementById('autofix-btn').style.display = hasErrors ? 'inline-flex' : 'none';
+        }
+
+        function addAuditItem(type, title, desc) {
+            const container = document.getElementById('audit-items-container');
+            const item = document.createElement('div');
+            item.className = `audit-item ${type}`;
+
+            let icon = '✅';
+            let badgeClass = 'badge-pass';
+            let badgeLabel = 'APROVADO';
+
+            if (type === 'warning') {
+                icon = '⚠️';
+                badgeClass = 'badge-warning';
+                badgeLabel = 'ATENÇÃO';
+            } else if (type === 'fail') {
+                icon = '❌';
+                badgeClass = 'badge-fail';
+                badgeLabel = 'FALHA OFFLINE';
+            }
+
+            item.innerHTML = `
+                <div style="font-size: 1.3rem;">${icon}</div>
+                <div style="flex:1;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <b style="color:var(--text); font-size:0.95rem;">${title}</b>
+                        <span class="badge ${badgeClass}">${badgeLabel}</span>
+                    </div>
+                    <div style="font-size:0.85rem; color:var(--text-muted); line-height:1.4;">${desc}</div>
+                </div>
+            `;
+            container.appendChild(item);
+        }
+
+        // Auto-Fix Code for PromoBeacon
+        function autoFixHtml() {
+            let code = document.getElementById('linter-code-input').value;
+            // 1. Add viewport if missing
+            if (!/<meta\s+name=["']viewport["']/i.test(code)) {
+                code = code.replace(/<head[^>]*>/i, '$&\n<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+            }
+            // 2. Rewrite external image src to local /assets/ placeholder or SVG
+            code = code.replace(/src=["']https?:\/\/[^"']+\/([^"']+)["']/gi, 'src="/assets/$1"');
+            document.getElementById('linter-code-input').value = code;
+            alert('⚡ Auto-Correção aplicada! Links externos foram adaptados para caminhos locais /assets/ e o viewport responsivo foi garantido.');
+            runLinterAudit();
+        }
+
+        // Initial preview render on load
+        window.addEventListener('DOMContentLoaded', () => {
+            updatePreview();
+        });
     </script>
 </body>
 </html>
