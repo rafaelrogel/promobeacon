@@ -307,13 +307,31 @@ void app_main(void)
             }
 #endif
             
-            /* Check for timed out clients (10 minute timeout) */
-            tracker_check_timeouts(600);
+            /* Heap Canary Guard: monitor free heap to prevent OOM panic */
+            uint32_t free_heap = esp_get_free_heap_size();
+            static uint8_t low_heap_consecutive = 0;
+            if (free_heap < 16384) {
+                if (++low_heap_consecutive >= 3) {
+                    ESP_LOGE(TAG, "CRITICAL: Free heap dangerously low (%" PRIu32 " bytes). Initiating safe recovery restart...", free_heap);
+                    tracker_save_to_nvs();
+                    tracker_mac_save_to_nvs();
+                    vTaskDelay(pdMS_TO_TICKS(100));
+                    esp_restart();
+                }
+            } else {
+                low_heap_consecutive = 0;
+            }
+
+            /* Check for timed out clients (5 minute idle timeout for faster slot recycling) */
+            tracker_check_timeouts(300);
             
+            /* BLE idle timeout check (release GATT slot if inactive for >180s) */
+            ble_check_inactivity_timeout(180);
+
             /* Update tracker activity timestamp */
             tracker_update_activity();
             
-            /* Save tracker state periodically (every 10 seconds) */
+            /* Save tracker state periodically (every 10 seconds, only if dirty) */
             if (loop_counter >= 1000) {
                 tracker_save_to_nvs();
                 tracker_mac_save_to_nvs();

@@ -740,6 +740,15 @@ esp_err_t ble_get_token_hint(char* buffer, size_t buffer_size);
  */
 bool ble_is_client_authenticated(void);
 
+/**
+ * @brief Check BLE connection inactivity and auto-disconnect if idle
+ *
+ * Prevents single-client lockout by terminating stale connections.
+ *
+ * @param timeout_sec Inactivity threshold in seconds
+ */
+void ble_check_inactivity_timeout(uint32_t timeout_sec);
+
 #ifdef __cplusplus
 }
 #endif

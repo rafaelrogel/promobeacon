@@ -11,6 +11,7 @@
 #include "ble_manager.h"
 #include "esp_log.h"
 #include "esp_err.h"
+#include "esp_timer.h"
 #include "nvs_flash.h"
 #include <string.h>
 #include <inttypes.h>
@@ -62,6 +63,7 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg);
 static DeviceMode g_current_mode = MODE_G;
 static ConnectionState g_conn_state = CONN_STATE_DISCONNECTED;
 static uint16_t g_conn_handle = 0;
+static uint32_t g_last_ble_activity = 0;
 static bool g_is_authenticated = false;
 static uint8_t g_auth_status = AUTH_STATUS_REQUIRED;
 static char g_device_name[MAX_DEVICE_NAME_LENGTH + 1] = "PromoBeacon";
@@ -574,6 +576,7 @@ bool ble_is_client_authenticated(void) { return g_is_authenticated; }
 static int ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt *ctxt, void *arg)
 {
     int rc;
+    g_last_ble_activity = (uint32_t)(esp_timer_get_time() / 1000000ULL);
 
     if (attr_handle == h_mode_control) {
         if (ctxt->op == BLE_GATT_ACCESS_OP_READ_CHR) {
@@ -809,16 +812,20 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
                 ESP_LOGE(TAG, "Connection failed; status=%d, restarting advertising", event->connect.status);
                 g_conn_state = CONN_STATE_DISCONNECTED;
                 g_conn_handle = 0;
+                g_last_ble_activity = 0;
                 ble_advertise();
             } else {
                 ESP_LOGI(TAG, "BLE Connected");
                 g_conn_state = CONN_STATE_CONNECTED;
                 g_conn_handle = event->connect.conn_handle;
+                g_last_ble_activity = (uint32_t)(esp_timer_get_time() / 1000000ULL);
             }
             break;
         case BLE_GAP_EVENT_DISCONNECT:
             ESP_LOGI(TAG, "BLE Disconnected");
             g_conn_state = CONN_STATE_DISCONNECTED;
+            g_conn_handle = 0;
+            g_last_ble_activity = 0;
             g_is_authenticated = false;
             g_auth_status = AUTH_STATUS_REQUIRED;
             ble_advertise();
@@ -837,4 +844,15 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
             break;
     }
     return 0;
+}
+
+void ble_check_inactivity_timeout(uint32_t timeout_sec)
+{
+    if (g_conn_state == CONN_STATE_CONNECTED && timeout_sec > 0 && g_conn_handle != 0) {
+        uint32_t now = (uint32_t)(esp_timer_get_time() / 1000000ULL);
+        if (g_last_ble_activity > 0 && (now - g_last_ble_activity) >= timeout_sec) {
+            ESP_LOGW(TAG, "BLE connection idle for %" PRIu32 "s, disconnecting to release slot", now - g_last_ble_activity);
+            ble_gap_terminate(g_conn_handle, BLE_ERR_REM_USER_CONN_TERM);
+        }
+    }
 }

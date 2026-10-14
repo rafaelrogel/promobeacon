@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 /* Maximum tracked clients */
-#define MAX_TRACKED_CLIENTS       6
+#define MAX_TRACKED_CLIENTS       8
 
 /* Hardware configuration (Multi-Chip Support)
  * Automatically detects the ESP32 variant during compilation */

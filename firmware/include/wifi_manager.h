@@ -21,7 +21,7 @@ extern "C" {
 /* WiFi configuration constants */
 #define MAX_SSID_LENGTH           32
 #define MAX_PASSWORD_LENGTH       64
-#define MAX_CLIENT_CONNECTIONS    6
+#define MAX_CLIENT_CONNECTIONS    8
 #define DEFAULT_AP_CHANNEL        1
 #define DEFAULT_BEACON_INTERVAL   100
 
@@ -34,7 +34,7 @@ extern "C" {
 #define AP_IP_ADDR                192, 168, 4, 1
 #define AP_NETMASK                255, 255, 255, 0
 #define DHCP_START_ADDR           192, 168, 4, 2
-#define DHCP_END_ADDR             192, 168, 4, 7
+#define DHCP_END_ADDR             192, 168, 4, 15
 
 /**
  * @brief WiFi AP configuration structure
