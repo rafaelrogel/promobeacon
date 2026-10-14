@@ -576,7 +576,7 @@
                     <div class="template-selector">
                         <div class="tpl-chip active" onclick="loadTemplate('restaurant')">🍽️ Restaurant & PDF Menu</div>
                         <div class="tpl-chip" onclick="loadTemplate('retail')">🏷️ Retail & Coupon</div>
-                        <div class="tpl-chip" onclick="loadTemplate('e_santinho')">🗳️ Campaign Flyer (e-Santinho)</div>
+                        <div class="tpl-chip" onclick="loadTemplate('e_santinho')">🗳️ Political Campaign Flyer</div>
                         <div class="tpl-chip" onclick="loadTemplate('real_estate')">🏠 Real Estate & Plans</div>
                         <div class="tpl-chip" onclick="loadTemplate('church')">⛪ Church & Bulletin</div>
                         <div class="tpl-chip" onclick="loadTemplate('hotel')">🏨 Hotel & Guest Guide</div>
@@ -622,6 +622,7 @@
                             <div class="file-dropzone" onclick="document.getElementById('cfg-img-file').click()">
                                 <span id="cfg-img-label">📷 Click to upload photo (auto-compressed to Base64)</span>
                             </div>
+                            <button id="cfg-img-clear" type="button" class="btn btn-secondary" style="display:none; padding: 6px 12px; font-size: 0.8rem; margin-top: 8px; width: 100%;" onclick="clearUploadedImage(event)">🗑️ Remove Photo</button>
                         </div>
                     </div>
 
@@ -779,7 +780,7 @@
                 img: ""
             },
             e_santinho: {
-                title: "Dr. Marcus Silva • #15.123",
+                title: "Dr. Marcus Silva • District 4 (#15123)",
                 ssid: "WiFi_DrMarcus_15123",
                 subtitle: "Real Healthcare, Education and Community Progress",
                 desc: "Welcome to our official digital campaign flyer! Learn about our 20 government proposals and commitments for our city. Download the full policy whitepaper in PDF and vote with confidence!",
@@ -870,6 +871,18 @@
 
         let currentUploadedImageBase64 = "";
 
+        function clearUploadedImage(e) {
+            if (e) e.stopPropagation();
+            currentUploadedImageBase64 = "";
+            const fileInput = document.getElementById('cfg-img-file');
+            if (fileInput) fileInput.value = "";
+            const label = document.getElementById('cfg-img-label');
+            if (label) label.innerText = "📷 Click to upload photo (auto-compressed to Base64)";
+            const clearBtn = document.getElementById('cfg-img-clear');
+            if (clearBtn) clearBtn.style.display = "none";
+            updatePreview();
+        }
+
         function loadTemplate(key) {
             document.querySelectorAll('.tpl-chip').forEach(c => c.classList.remove('active'));
             const activeChip = Array.from(document.querySelectorAll('.tpl-chip')).find(c => c.getAttribute('onclick').includes(key));
@@ -884,6 +897,9 @@
             document.getElementById('cfg-color2').value = t.color2;
             document.getElementById('cfg-btn1-text').value = t.btn1Text;
             document.getElementById('cfg-btn1-url').value = t.btn1Url;
+            if (!t.img) {
+                clearUploadedImage();
+            }
             updatePreview();
         }
 
@@ -913,11 +929,18 @@
 
                     currentUploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.65);
                     document.getElementById('cfg-img-label').innerText = '✅ Photo Loaded (' + Math.round(currentUploadedImageBase64.length/1024) + ' KB)';
+                    const clearBtn = document.getElementById('cfg-img-clear');
+                    if (clearBtn) clearBtn.style.display = 'block';
                     updatePreview();
                 };
                 img.src = evt.target.result;
             };
             reader.readAsDataURL(file);
+        }
+
+        // Helper to safely escape strings for JS string literals in HTML attributes
+        function escJs(s) {
+            return (s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
         }
 
         // Generate Self-Contained Offline HTML in English
@@ -939,13 +962,15 @@
             let secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Show this screen at the counter to claim your offer!')">🏷️ Redeem In-Store</button>`;
 
             const textAll = (title + " " + subtitle + " " + desc).toLowerCase();
+            const safeTitle = escJs(title);
 
-            if (/santinho|campaign|candidate|election|vote|silva|marcus/i.test(textAll)) {
+            if (/campaign|candidate|election|vote|ballot|senator|mayor|council|office|party|santinho|silva|marcus/i.test(textAll)) {
                 badgeLabel = "🗳️ Official Campaign Flyer";
-                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${title}').then(()=>alert('Candidate details copied to clipboard!'))}else{alert('${title}')}">📋 Copy Candidate Info</button>`;
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${safeTitle}').then(()=>alert('Candidate details copied to clipboard!'))}else{alert('${safeTitle}')}">📋 Copy Candidate Info</button>`;
             } else if (/church|parish|liturgy|hymn|prayer|worship|pastor|priest/i.test(textAll)) {
                 badgeLabel = "⛪ Community & Liturgy";
-                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('DONATION_KEY').then(()=>alert('Donation information copied to clipboard!'))}else{alert('Thank you for supporting our community!')}">🕊️ Copy Donation Details</button>`;
+                const churchDonation = escJs("giving@stjosephcommunity.org (Zelle / PayPal)");
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${churchDonation}').then(()=>alert('Donation information copied to clipboard!'))}else{alert('Donations: ${churchDonation}')}">🕊️ Copy Donation Details</button>`;
             } else if (/residence|apartment|real estate|condo|floor plan|agent|broker|home/i.test(textAll)) {
                 badgeLabel = "🏠 Sales Gallery Official";
                 secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('On-Site Agent Contact: +1 (555) 019-2834').then(()=>alert('Agent contact copied!'))}else{alert('Visit our agent on site!')}">📞 Contact On-Site Agent</button>`;
@@ -1115,20 +1140,33 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
                 addAuditItem('warning', 'Payload Exceeds BLE Quota', `Size: ${kb} KB (> 32 KB). Cannot be transferred via BLE without compression, but works natively via the 2.7MB SPIFFS partition over Wi-Fi.`);
             }
 
-            // 2. External Resource Check (Images, Scripts, CSS)
-            const extRegex = /(?:src|href)\s*=\s*["']?(https?:\/\/[^\s"'>]+)["']?/gi;
+            // 2. External Resource Check (Parity with Mobile App UploadPortalUseCase)
+            // Checks render-blocking elements: <link rel="stylesheet" href="...">, src="...", @import url(...)
+            const renderBlockRegex = /(?:<link\b[^>]*\bhref\s*=\s*["']?(https?:\/\/[^\s"'>]+)["']?|\bsrc\s*=\s*["']?(https?:\/\/[^\s"'>]+)["']?|@import\s+(?:url\()?["']?(https?:\/\/[^\s"')]+)["']?\))/gi;
             let match;
             const externalUrls = [];
-            while ((match = extRegex.exec(code)) !== null) {
-                externalUrls.push(match[1]);
+            while ((match = renderBlockRegex.exec(code)) !== null) {
+                const url = match[1] || match[2] || match[3] || match[0];
+                externalUrls.push(url);
+            }
+
+            // Also check for non-blocking external links (<a href="https://...">)
+            const anchorExtRegex = /<a\b[^>]*\bhref\s*=\s*["']?(https?:\/\/[^\s"'>]+)["']?/gi;
+            const externalAnchors = [];
+            while ((match = anchorExtRegex.exec(code)) !== null) {
+                externalAnchors.push(match[1]);
             }
 
             if (externalUrls.length === 0) {
-                addAuditItem('pass', '100% Offline Resources', 'No external internet dependencies detected. The portal will render reliably offline.');
+                addAuditItem('pass', '100% Offline Resources', 'No external render-blocking dependencies detected. The portal renders 100% reliably offline.');
             } else {
                 hasErrors = true;
                 const sample = externalUrls.slice(0, 3).join(', ');
-                addAuditItem('fail', 'External Dependencies Detected', `Found external links/resources (${sample}). Offline captive portals have no WAN/internet connection; external media and scripts will fail to load.`);
+                addAuditItem('fail', 'External Dependencies Detected', `Found external render-blocking resources (${sample}). Captive portals have no internet; external media, scripts, and CSS stylesheets will fail to load.`);
+            }
+
+            if (externalAnchors.length > 0) {
+                addAuditItem('warning', 'External Anchor Links Found', `Identified ${externalAnchors.length} external anchor links (e.g., ${externalAnchors[0]}). These do not prevent offline rendering, but visitors won't be able to open them until they connect to the Internet.`);
             }
 
             // 3. Viewport Meta Check
@@ -1189,10 +1227,16 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
             let code = document.getElementById('linter-code-input').value;
             // 1. Add viewport if missing
             if (!/<meta\s+name=["']viewport["']/i.test(code)) {
-                code = code.replace(/<head[^>]*>/i, '$&\n<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+                if (/<head[^>]*>/i.test(code)) {
+                    code = code.replace(/<head[^>]*>/i, '$&\n<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+                } else if (/<html[^>]*>/i.test(code)) {
+                    code = code.replace(/<html[^>]*>/i, '$&\n<head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>');
+                } else {
+                    code = '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' + code;
+                }
             }
             // 2. Rewrite external image src to local /assets/ placeholder or SVG
-            code = code.replace(/src=["']https?:\/\/[^"']+\/([^"']+)["']/gi, 'src="/assets/$1"');
+            code = code.replace(/src=["']https?:\/\/[^"']+\/([^"'>]+)["']/gi, 'src="/assets/$1"');
             document.getElementById('linter-code-input').value = code;
             alert('⚡ Auto-Fix applied! External URLs were adapted to local /assets/ paths and responsive viewport was ensured.');
             runLinterAudit();
