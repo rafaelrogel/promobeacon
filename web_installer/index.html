@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob: https://unpkg.com; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://unpkg.com data: blob:;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PromoBeacon Suite — Flasher, Criador de Portal & Verificador</title>
+    <title>PromoBeacon Suite — Firmware Flasher, No-Code Portal Creator & Offline Linter</title>
     <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js"
         onerror="import('./install-button.js')">
     </script>
@@ -506,19 +506,19 @@
 
     <div class="header-section">
         <div class="logo">PromoBeacon</div>
-        <p class="subtitle">Central Oficial de Firmware, Criação e Auditoria de Portais Captive Offline</p>
+        <p class="subtitle">Official Suite for Firmware Flashing, Captive Portal Authoring & Offline Auditing</p>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="switchTab('flasher')">
-            <span>⚡</span> Flasher USB
+            <span>⚡</span> USB Flasher
         </button>
         <button class="tab-btn" onclick="switchTab('builder')">
-            <span>🎨</span> Criador No-Code
+            <span>🎨</span> No-Code Builder
         </button>
         <button class="tab-btn" onclick="switchTab('verifier')">
-            <span>🔍</span> Verificador & Linter
+            <span>🔍</span> Verifier & Linter
         </button>
     </div>
 
@@ -527,11 +527,11 @@
         <div id="tab-flasher" class="panel active">
             <div class="card flasher-container">
                 <div style="margin-bottom: 12px;">
-                    <span class="badge badge-pass" style="font-size: 0.85rem; padding: 6px 14px;">🚀 Arquitetura BigStorage: 2.7 MB Livres para Assets</span>
+                    <span class="badge badge-pass" style="font-size: 0.85rem; padding: 6px 14px;">🚀 BigStorage Architecture: 2.7 MB Free for Assets</span>
                 </div>
-                <h2 style="margin-bottom: 8px;">Instalador de Firmware WebSerial</h2>
+                <h2 style="margin-bottom: 8px;">WebSerial Firmware Installer</h2>
                 <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
-                    Grave a versão oficial do PromoBeacon diretamente no seu ESP32 pelo navegador Google Chrome ou Edge. O sistema agora dedica <b>2.7 MB</b> exclusivamente para seus sites, PDFs e imagens.
+                    Flash the official PromoBeacon firmware directly to your ESP32 using Google Chrome or Microsoft Edge. The system reserves <b>2.7 MB</b> exclusively for your offline websites, PDFs, and high-resolution images.
                 </p>
 
                 <div class="installer-box">
@@ -547,15 +547,15 @@
                             cursor: pointer;
                             box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
                             transition: all 0.2s;
-                        ">Iniciar Gravação</button>
+                        ">Start Installation</button>
                     </esp-web-install-button>
 
                     <div class="steps">
-                        <b>Instruções Rápidas:</b>
+                        <b>Quick Instructions:</b>
                         <ul>
-                            <li>Conecte o chip ESP32 / ESP32-C3 / ESP32-S3 via cabo USB de dados.</li>
-                            <li>Clique no botão e selecione a porta serial (COM) correspondente.</li>
-                            <li>Para uma instalação limpa, marque a opção <i>Erase Data</i>.</li>
+                            <li>Connect your ESP32 / ESP32-C3 / ESP32-S3 chip via a USB data cable.</li>
+                            <li>Click the button above and select the corresponding serial (COM) port.</li>
+                            <li>For a clean installation, select the <i>Erase Data</i> option when prompted.</li>
                         </ul>
                     </div>
                 </div>
@@ -568,91 +568,91 @@
                 <!-- Controls Side -->
                 <div class="card">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
-                        <h2>Criador de Portal Captive</h2>
-                        <span class="badge badge-pass" id="builder-status-badge">Pronto para Enviar</span>
+                        <h2>Captive Portal Creator</h2>
+                        <span class="badge badge-pass" id="builder-status-badge">Ready to Upload</span>
                     </div>
 
-                    <label>Escolha um Template Rápido:</label>
+                    <label>Choose a Ready-Made Template:</label>
                     <div class="template-selector">
-                        <div class="tpl-chip active" onclick="loadTemplate('restaurant')">🍽️ Restaurante & Cardápio PDF</div>
-                        <div class="tpl-chip" onclick="loadTemplate('retail')">🏷️ Loja & Cupom</div>
-                        <div class="tpl-chip" onclick="loadTemplate('e_santinho')">🗳️ e-Santinho Político</div>
-                        <div class="tpl-chip" onclick="loadTemplate('real_estate')">🏠 Imobiliária & Plantas</div>
-                        <div class="tpl-chip" onclick="loadTemplate('church')">⛪ Igreja & Boletim</div>
-                        <div class="tpl-chip" onclick="loadTemplate('hotel')">🏨 Hotel & Guia Hóspede</div>
-                        <div class="tpl-chip" onclick="loadTemplate('clinic')">🏥 Clínica & Guia Paciente</div>
-                        <div class="tpl-chip" onclick="loadTemplate('auto')">🚗 Veículos & Catálogo</div>
-                        <div class="tpl-chip" onclick="loadTemplate('event')">🎪 Evento & Cronograma</div>
-                        <div class="tpl-chip" onclick="loadTemplate('custom')">✏️ Em Branco</div>
+                        <div class="tpl-chip active" onclick="loadTemplate('restaurant')">🍽️ Restaurant & PDF Menu</div>
+                        <div class="tpl-chip" onclick="loadTemplate('retail')">🏷️ Retail & Coupon</div>
+                        <div class="tpl-chip" onclick="loadTemplate('e_santinho')">🗳️ Campaign Flyer (e-Santinho)</div>
+                        <div class="tpl-chip" onclick="loadTemplate('real_estate')">🏠 Real Estate & Plans</div>
+                        <div class="tpl-chip" onclick="loadTemplate('church')">⛪ Church & Bulletin</div>
+                        <div class="tpl-chip" onclick="loadTemplate('hotel')">🏨 Hotel & Guest Guide</div>
+                        <div class="tpl-chip" onclick="loadTemplate('clinic')">🏥 Clinic & Patient Guide</div>
+                        <div class="tpl-chip" onclick="loadTemplate('auto')">🚗 Auto Dealer & Inventory</div>
+                        <div class="tpl-chip" onclick="loadTemplate('event')">🎪 Event & Schedule</div>
+                        <div class="tpl-chip" onclick="loadTemplate('custom')">✏️ Blank / Custom</div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Nome do Negócio</label>
-                            <input type="text" id="cfg-title" value="Bistrô & Lounge" oninput="updatePreview()">
+                            <label>Business / Candidate Name</label>
+                            <input type="text" id="cfg-title" value="Bistro & Gourmet Lounge" oninput="updatePreview()">
                         </div>
                         <div class="form-group">
-                            <label>SSID / Wi-Fi da Promoção</label>
+                            <label>Promotion Wi-Fi SSID</label>
                             <input type="text" id="cfg-ssid" value="PromoBeacon_Bistro" maxlength="32" oninput="updatePreview()">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Subtítulo / Chamada Principal</label>
-                        <input type="text" id="cfg-subtitle" value="Cardápio do Dia & 15% OFF no Almoço" oninput="updatePreview()">
+                        <label>Headline / Catchphrase</label>
+                        <input type="text" id="cfg-subtitle" value="Daily Specials & 15% OFF Lunch" oninput="updatePreview()">
                     </div>
 
                     <div class="form-group">
-                        <label>Texto Descritivo</label>
-                        <textarea id="cfg-desc" oninput="updatePreview()">Conectado à nossa rede exclusiva! Baixe nosso cardápio completo em PDF ou mostre esta tela ao garçom para ativar seu desconto.</textarea>
+                        <label>Description Text</label>
+                        <textarea id="cfg-desc" oninput="updatePreview()">Connected to our exclusive local network! Download our full chef menu in PDF below or show this screen to your server to claim your discount.</textarea>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Personalização de Cores</label>
+                            <label>Color Customization</label>
                             <div class="color-pickers">
                                 <input type="color" id="cfg-color1" value="#6366f1" onchange="updatePreview()">
                                 <input type="color" id="cfg-color2" value="#a855f7" onchange="updatePreview()">
-                                <span style="font-size:0.85rem; color:var(--text-muted)">Gradiente dos Botões & Destaques</span>
+                                <span style="font-size:0.85rem; color:var(--text-muted)">Button & Accent Gradients</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Foto de Destaque / Logo</label>
+                            <label>Featured Image / Logo</label>
                             <input type="file" id="cfg-img-file" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
                             <div class="file-dropzone" onclick="document.getElementById('cfg-img-file').click()">
-                                <span id="cfg-img-label">📷 Clique para foto (auto-comprime p/ Base64)</span>
+                                <span id="cfg-img-label">📷 Click to upload photo (auto-compressed to Base64)</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- PDF Action Link -->
                     <div style="background: rgba(15, 23, 42, 0.4); border-radius: 16px; padding: 16px; border: 1px solid var(--card-border); margin-bottom: 20px;">
-                        <label style="color: var(--primary-light);">📄 Botão de Ação / Download do PDF:</label>
+                        <label style="color: var(--primary-light);">📄 Primary Action / PDF Download Link:</label>
                         <div class="form-row" style="margin-top: 8px;">
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label>Texto do Botão</label>
-                                <input type="text" id="cfg-btn1-text" value="📄 Baixar Cardápio Completo (PDF)" oninput="updatePreview()">
+                                <label>Button Label</label>
+                                <input type="text" id="cfg-btn1-text" value="📄 Download Full Menu (PDF)" oninput="updatePreview()">
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label>Caminho do Arquivo PDF no ESP32</label>
-                                <input type="text" id="cfg-btn1-url" value="/assets/cardapio.pdf" oninput="updatePreview()">
+                                <label>File Path on ESP32</label>
+                                <input type="text" id="cfg-btn1-url" value="/assets/menu.pdf" oninput="updatePreview()">
                             </div>
                         </div>
                         <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 8px;">
-                            💡 Dica: Caminhos relativos como <code>/assets/cardapio.pdf</code> funcionam 100% offline no ESP32 sem precisar de internet!
+                            💡 Pro-Tip: Relative paths like <code>/assets/menu.pdf</code> work 100% offline on the ESP32 without requiring any external internet!
                         </p>
                     </div>
 
                     <!-- Export Buttons -->
                     <div class="btn-group">
                         <button class="btn btn-primary" onclick="copyHtmlToClipboard()">
-                            📋 Copiar HTML p/ App
+                            📋 Copy HTML for App
                         </button>
                         <button class="btn btn-secondary" onclick="downloadHtmlFile()">
-                            💾 Baixar index.html
+                            💾 Download index.html
                         </button>
                         <button class="btn btn-secondary" onclick="downloadWiFiPackage()">
-                            📦 Baixar Pacote Wi-Fi (/assets/)
+                            📦 Download Wi-Fi Bundle (/assets/)
                         </button>
                     </div>
                 </div>
@@ -668,9 +668,9 @@
                         </div>
                         <div class="phone-screen">
                             <div class="phone-captive-header">
-                                <span style="font-size: 0.7rem; color: #38bdf8;">Conectado</span>
+                                <span style="font-size: 0.7rem; color: #38bdf8;">Connected</span>
                                 <span style="font-weight: 600;">192.168.4.1</span>
-                                <span style="font-size: 0.7rem; color: #38bdf8; cursor: pointer;">Concluído</span>
+                                <span style="font-size: 0.7rem; color: #38bdf8; cursor: pointer;">Done</span>
                             </div>
                             <iframe id="phone-preview-iframe" class="phone-iframe"></iframe>
                         </div>
@@ -679,14 +679,14 @@
                     <!-- Quota & Compliance Box -->
                     <div class="quota-bar-container">
                         <div class="quota-bar-header">
-                            <span>Tamanho do Portal (Quota BLE):</span>
+                            <span>Portal Payload Size (BLE Quota):</span>
                             <b id="quota-text">0 KB / 32 KB</b>
                         </div>
                         <div class="progress-track">
                             <div id="quota-fill" class="progress-fill"></div>
                         </div>
                         <p id="quota-desc" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
-                            ✅ Compatível com NVS e envio instantâneo via Bluetooth no App PromoBeacon.
+                            ✅ BLE & NVS Compliant: Fits in the mobile app instant Bluetooth upload limit.
                         </p>
                     </div>
                 </div>
@@ -696,36 +696,36 @@
         <!-- TAB 3: VERIFIER & LINTER -->
         <div id="tab-verifier" class="panel">
             <div class="card verifier-box">
-                <h2>Verificador & Auditor de Sites Offline</h2>
+                <h2>Offline Website Verifier & Auditor</h2>
                 <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
-                    Já tem um site ou página pronta? Cole o código HTML ou envie o arquivo para testar se ele funciona offline em captive portals.
+                    Already have an HTML page? Paste your code or upload a file to verify offline captive portal compliance.
                 </p>
 
                 <div class="form-group">
-                    <label>Selecione um arquivo .html ou .htm:</label>
+                    <label>Select an .html or .htm file:</label>
                     <input type="file" id="linter-file-input" accept=".html,.htm" style="display:none" onchange="handleLinterFileUpload(event)">
                     <div class="file-dropzone" onclick="document.getElementById('linter-file-input').click()">
-                        📁 Arraste ou clique para selecionar seu arquivo HTML
+                        📁 Drag & drop or click to select your HTML file
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Ou cole o código HTML diretamente:</label>
+                    <label>Or paste raw HTML code directly:</label>
                     <textarea id="linter-code-input" style="height: 140px; font-family: monospace; font-size: 0.85rem;" placeholder="<!DOCTYPE html><html>..."></textarea>
                 </div>
 
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="runLinterAudit()">
-                        🔍 Analisar Conformidade
+                        🔍 Analyze Compliance
                     </button>
                     <button class="btn btn-secondary" id="autofix-btn" style="display:none;" onclick="autoFixHtml()">
-                        ⚡ Auto-Corrigir para PromoBeacon
+                        ⚡ Auto-Fix for PromoBeacon
                     </button>
                 </div>
 
                 <!-- Audit Results Area -->
                 <div id="audit-results" class="audit-results">
-                    <h3 style="margin-bottom: 14px; font-size: 1.1rem;">Resultado da Auditoria:</h3>
+                    <h3 style="margin-bottom: 14px; font-size: 1.1rem;">Audit Results:</h3>
                     <div id="audit-items-container"></div>
                 </div>
             </div>
@@ -733,7 +733,7 @@
     </div>
 
     <div class="footer">
-        PromoBeacon Suite v2.0.0 • Compatível com toda a frota ESP32, S3 e C3
+        PromoBeacon Suite v2.2.0 • Compatible with entire ESP32, S3, and C3 Fleet • BigStorage 2.7MB Enabled
     </div>
 
     <!-- Scripts for Builder, Linter & Phone Preview -->
@@ -754,116 +754,116 @@
             }
         }
 
-        // Templates Data
+        // Templates Data in English
         const TEMPLATES = {
             restaurant: {
-                title: "Bistrô & Lounge Gourmet",
+                title: "Bistro & Gourmet Lounge",
                 ssid: "PromoBeacon_Bistro",
-                subtitle: "Cardápio do Dia & 15% OFF no Almoço",
-                desc: "Conectado à nossa rede exclusiva! Baixe nosso cardápio completo em PDF abaixo ou mostre esta tela ao garçom para ativar seu desconto.",
+                subtitle: "Daily Specials & 15% OFF Lunch",
+                desc: "Connected to our exclusive local network! Download our full chef menu in PDF below or show this screen to your server to claim your discount.",
                 color1: "#6366f1",
                 color2: "#a855f7",
-                btn1Text: "📄 Baixar Cardápio Completo (PDF)",
-                btn1Url: "/assets/cardapio.pdf",
+                btn1Text: "📄 Download Full Menu (PDF)",
+                btn1Url: "/assets/menu.pdf",
                 img: ""
             },
             retail: {
-                title: "Loja Moda & Estilo",
-                ssid: "PromoBeacon_Promo",
-                subtitle: "Coleção Verão: Compre 1 Leve 2",
-                desc: "Aproveite descontos imperdíveis válidos apenas hoje enquanto você visita nosso espaço físico. Baixe nosso catálogo digital!",
+                title: "Style & Trend Boutique",
+                ssid: "PromoBeacon_Sale",
+                subtitle: "Summer Collection: Buy 1 Get 1 Free",
+                desc: "Take advantage of flash deals valid today only while visiting our store. Download our digital lookbook and product catalogue!",
                 color1: "#0ea5e9",
                 color2: "#10b981",
-                btn1Text: "🛍️ Baixar Catálogo de Ofertas (PDF)",
-                btn1Url: "/assets/catalogo.pdf",
+                btn1Text: "🛍️ Download Sale Catalogue (PDF)",
+                btn1Url: "/assets/catalogue.pdf",
                 img: ""
             },
             e_santinho: {
-                title: "Dr. Marcos Silva • 15.123",
-                ssid: "WiFi_DrMarcos_15123",
-                subtitle: "Saúde, Educação e Trabalho de Verdade",
-                desc: "Bem-vindo ao nosso e-Santinho Oficial! Conheça nossas 20 Propostas de Governo e compromissos pelo nosso município. Baixe o plano completo em PDF e vote consciente!",
+                title: "Dr. Marcus Silva • #15.123",
+                ssid: "WiFi_DrMarcus_15123",
+                subtitle: "Real Healthcare, Education and Community Progress",
+                desc: "Welcome to our official digital campaign flyer! Learn about our 20 government proposals and commitments for our city. Download the full policy whitepaper in PDF and vote with confidence!",
                 color1: "#2563eb",
                 color2: "#10b981",
-                btn1Text: "🗳️ Baixar Plano de Governo Oficial (PDF)",
-                btn1Url: "/assets/plano_governo.pdf",
+                btn1Text: "🗳️ Download Campaign Proposals (PDF)",
+                btn1Url: "/assets/campaign_proposals.pdf",
                 img: ""
             },
             real_estate: {
-                title: "Residencial Parque dos Ipês",
-                ssid: "Stand_Vendas_Plantas",
-                subtitle: "Apartamentos de 2 e 3 Quartos • Lazer Completo",
-                desc: "Conectado ao Stand Oficial! Baixe o Book de Apresentação e as Plantas Baixas em PDF. Veja os valores e fale com o corretor de plantão.",
+                title: "Pinecrest Luxury Residences",
+                ssid: "SalesCenter_FloorPlans",
+                subtitle: "2 & 3 Bedroom Condos • Resort Amenities",
+                desc: "Connected to the official Sales Gallery! Download the full brochure, price list, and architectural floor plans in PDF. Speak with our on-site agent.",
                 color1: "#059669",
                 color2: "#0284c7",
-                btn1Text: "📑 Baixar Book & Plantas Baixas (PDF)",
-                btn1Url: "/assets/book_plantas.pdf",
+                btn1Text: "📑 Download Brochure & Floor Plans (PDF)",
+                btn1Url: "/assets/floor_plans.pdf",
                 img: ""
             },
             church: {
-                title: "Paróquia São José • Comunidade",
-                ssid: "Boletim_Semanal_Oracoes",
-                subtitle: "Liturgia, Cânticos e Boletim Semanal",
-                desc: "Bem-vindo à nossa celebração! Baixe o folheto litúrgico e a ordem das orações em PDF para acompanhar pelo celular sem desperdício de papel.",
+                title: "St. Joseph Community Church",
+                ssid: "Weekly_Bulletin_Prayers",
+                subtitle: "Liturgy, Hymns & Weekly Announcements",
+                desc: "Welcome to our service! Download this week's liturgical bulletin and order of prayers in PDF to follow along on your phone without paper waste.",
                 color1: "#7c3aed",
                 color2: "#d97706",
-                btn1Text: "📖 Baixar Folheto Litúrgico da Semana (PDF)",
-                btn1Url: "/assets/folheto_liturgico.pdf",
+                btn1Text: "📖 Download Weekly Liturgy Bulletin (PDF)",
+                btn1Url: "/assets/weekly_bulletin.pdf",
                 img: ""
             },
             hotel: {
-                title: "Pousada Vista do Sol",
-                ssid: "Guia_Hospede_Pousada",
-                subtitle: "Guia do Hóspede • Regras & Passeios Locais",
-                desc: "Seja muito bem-vindo! Baixe nosso Guia Completo com horário do café, cardápio do quarto e os melhores roteiros e praias da nossa região.",
+                title: "Seaside Breeze Resort & Inn",
+                ssid: "Guest_Directory_WiFi",
+                subtitle: "Guest Directory • House Rules & Local Tours",
+                desc: "Welcome to your stay! Download our comprehensive guest directory featuring breakfast hours, room service menu, and recommended beaches and excursions.",
                 color1: "#ea580c",
                 color2: "#0891b2",
-                btn1Text: "🗺️ Baixar Guia do Hóspede & Dicas (PDF)",
-                btn1Url: "/assets/guia_hospede.pdf",
+                btn1Text: "🗺️ Download Guest Directory & Map (PDF)",
+                btn1Url: "/assets/guest_directory.pdf",
                 img: ""
             },
             clinic: {
-                title: "Clínica Integrada de Especialidades",
-                ssid: "Clinica_Guia_Paciente",
-                subtitle: "Orientações, Convênios & Exames",
-                desc: "Conectado à sala de espera! Baixe o Guia do Paciente com orientações para pré/pós-consultas, tabela de convênios atendidos e corpo clínico.",
+                title: "Integrated Medical Care & Specialty Clinic",
+                ssid: "Clinic_Patient_Guide",
+                subtitle: "Patient Care Guide, Insurance & Lab Info",
+                desc: "Connected in our waiting lounge! Download our patient guide with pre/post-appointment preparation instructions, accepted insurance providers, and clinical staff.",
                 color1: "#0284c7",
                 color2: "#10b981",
-                btn1Text: "📋 Baixar Guia do Paciente (PDF)",
-                btn1Url: "/assets/guia_paciente.pdf",
+                btn1Text: "📋 Download Patient Care Guide (PDF)",
+                btn1Url: "/assets/patient_guide.pdf",
                 img: ""
             },
             auto: {
-                title: "AutoCar Seminovos Selecionados",
-                ssid: "Estoque_Autos_Tabela",
-                subtitle: "Estoque Atualizado com Laudo Pericial",
-                desc: "Confira nosso catálogo de veículos revisados com garantia e procedência atestada. Baixe a tabela com fotos, ficha técnica e condições de financiamento.",
+                title: "Apex Motorcars • Certified Pre-Owned",
+                ssid: "Showroom_Inventory_Deals",
+                subtitle: "Inspected Vehicles with Full Carfax History",
+                desc: "Browse our hand-picked inventory of inspected vehicles with warranty. Download our full inventory sheet with specs, pricing, and financing options.",
                 color1: "#dc2626",
                 color2: "#2563eb",
-                btn1Text: "🚘 Baixar Catálogo de Veículos (PDF)",
-                btn1Url: "/assets/catalogo_veiculos.pdf",
+                btn1Text: "🚘 Download Vehicle Inventory (PDF)",
+                btn1Url: "/assets/inventory_sheet.pdf",
                 img: ""
             },
             event: {
-                title: "Tech Summit 2026",
-                ssid: "PromoBeacon_Event",
-                subtitle: "Wi-Fi Oficial & Cronograma das Palestras",
-                desc: "Bem-vindo ao evento! Acesse a programação completa das trilhas e salas de workshops no documento oficial.",
+                title: "Global Tech Summit 2026",
+                ssid: "PromoBeacon_Summit",
+                subtitle: "Official Schedule & Keynote Tracks",
+                desc: "Welcome to the conference! Access the complete keynote agenda, breakout workshop locations, and speaker bios in the official event guide.",
                 color1: "#f59e0b",
                 color2: "#ef4444",
-                btn1Text: "📅 Baixar Cronograma Completo (PDF)",
-                btn1Url: "/assets/cronograma.pdf",
+                btn1Text: "📅 Download Conference Schedule (PDF)",
+                btn1Url: "/assets/summit_schedule.pdf",
                 img: ""
             },
             custom: {
-                title: "Meu Negócio",
+                title: "My Business",
                 ssid: "PromoBeacon_WiFi",
-                subtitle: "Oferta Especial Para Você",
-                desc: "Seja muito bem-vindo! Aproveite nossa conexão rápida e confira as promoções exclusivas preparadas para você.",
+                subtitle: "Special Offer Just For You",
+                desc: "Welcome! Enjoy our fast local beacon and discover the exclusive promotions prepared for your visit today.",
                 color1: "#6366f1",
                 color2: "#3b82f6",
-                btn1Text: "📄 Ver Documento (PDF)",
-                btn1Url: "/assets/documento.pdf",
+                btn1Text: "📄 View Document (PDF)",
+                btn1Url: "/assets/document.pdf",
                 img: ""
             }
         };
@@ -887,7 +887,7 @@
             updatePreview();
         }
 
-        // Image compression to Base64 (WebP/JPEG max 600px width)
+        // Image compression to Base64 (WebP/JPEG max 480px width)
         function handleImageUpload(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -912,7 +912,7 @@
                     ctx.drawImage(img, 0, 0, width, height);
 
                     currentUploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.65);
-                    document.getElementById('cfg-img-label').innerText = '✅ Foto Carregada (' + Math.round(currentUploadedImageBase64.length/1024) + ' KB)';
+                    document.getElementById('cfg-img-label').innerText = '✅ Photo Loaded (' + Math.round(currentUploadedImageBase64.length/1024) + ' KB)';
                     updatePreview();
                 };
                 img.src = evt.target.result;
@@ -920,7 +920,7 @@
             reader.readAsDataURL(file);
         }
 
-        // Generate Self-Contained Offline HTML
+        // Generate Self-Contained Offline HTML in English
         function generatePortalHtml() {
             const title = document.getElementById('cfg-title').value || "PromoBeacon";
             const ssid = document.getElementById('cfg-ssid').value || "PromoBeacon";
@@ -928,46 +928,46 @@
             const desc = document.getElementById('cfg-desc').value || "";
             const color1 = document.getElementById('cfg-color1').value || "#6366f1";
             const color2 = document.getElementById('cfg-color2').value || "#a855f7";
-            const btn1Text = document.getElementById('cfg-btn1-text').value || "Acessar";
-            const btn1Url = document.getElementById('cfg-btn1-url').value || "/assets/cardapio.pdf";
+            const btn1Text = document.getElementById('cfg-btn1-text').value || "Access";
+            const btn1Url = document.getElementById('cfg-btn1-url').value || "/assets/menu.pdf";
 
             const imageHtml = currentUploadedImageBase64 
                 ? `<div class="img-wrap"><img src="${currentUploadedImageBase64}" alt="Banner"></div>`
                 : '';
 
-            let badgeLabel = "PromoBeacon Oficial";
-            let secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Mostre esta tela no local para validar sua promoção!')">🏷️ Ativar Oferta no Balcão</button>`;
+            let badgeLabel = "PromoBeacon Official";
+            let secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Show this screen at the counter to claim your offer!')">🏷️ Redeem In-Store</button>`;
 
             const textAll = (title + " " + subtitle + " " + desc).toLowerCase();
 
-            if (/santinho|eleiç|deputad|vereador|prefeit|candidat|govern/i.test(textAll)) {
-                badgeLabel = "🗳️ e-Santinho Oficial";
-                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${title}').then(()=>alert('Número e dados copiados para sua memória!'))}else{alert('${title}')}">📋 Salvar / Copiar Número</button>`;
-            } else if (/igreja|paróquia|liturg|cântico|oração|dízimo|culto|pastor|padre/i.test(textAll)) {
-                badgeLabel = "⛪ Comunidade & Liturgia";
-                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('PIX_DA_COMUNIDADE').then(()=>alert('Chave Pix copiada para o seu celular!'))}else{alert('Contribua com nossa comunidade!')}">🕊️ Copiar Chave Pix</button>`;
-            } else if (/apartamento|imóvel|imobili|residencia|planta|corretor|lote|condom/i.test(textAll)) {
-                badgeLabel = "🏠 Stand de Vendas Oficial";
-                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('Contato do Corretor de Plantão: (11) 99999-9999').then(()=>alert('Contato do corretor copiado!'))}else{alert('Fale com o corretor no stand!')}">📞 Salvar Contato do Corretor</button>`;
-            } else if (/hotel|pousada|hóspede|resort|chalé|check-in|quarto/i.test(textAll)) {
-                badgeLabel = "🏨 Guia do Hóspede";
-                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Horário Café: 07h-10h • Checkout: 12h • Recepção: Ramal 9')">🕒 Ver Horários & Regras</button>`;
-            } else if (/clínica|médic|paciente|consulta|exame|doutor|saúde|odontol/i.test(textAll)) {
-                badgeLabel = "🏥 Guia do Paciente";
-                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Apresente sua carteirinha do convênio e documento na recepção!')">💳 Instruções de Atendimento</button>`;
-            } else if (/carro|veículo|auto|seminovo|concession|revisão|oficina/i.test(textAll)) {
-                badgeLabel = "🚗 Estoque Selecionado";
-                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Fale com nosso consultor no pátio para test drive e avaliação!')">🚘 Solicitar Test Drive</button>`;
-            } else if (/cardápio|restaurante|bistrô|pizza|lanche|burger|bar|café/i.test(textAll)) {
-                badgeLabel = "🍽️ Cardápio & Ofertas";
-                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Mostre este cupom ao garçom ou atendente para ativar seu desconto!')">⭐ Ativar Desconto no Pedido</button>`;
-            } else if (/evento|summit|palestra|workshop|conferência|feira/i.test(textAll)) {
-                badgeLabel = "🎪 Programação Oficial";
-                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Apresente seu QR Code de credencial na entrada das salas!')">🎟️ Ver Regras de Credenciamento</button>`;
+            if (/santinho|campaign|candidate|election|vote|silva|marcus/i.test(textAll)) {
+                badgeLabel = "🗳️ Official Campaign Flyer";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${title}').then(()=>alert('Candidate details copied to clipboard!'))}else{alert('${title}')}">📋 Copy Candidate Info</button>`;
+            } else if (/church|parish|liturgy|hymn|prayer|worship|pastor|priest/i.test(textAll)) {
+                badgeLabel = "⛪ Community & Liturgy";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('DONATION_KEY').then(()=>alert('Donation information copied to clipboard!'))}else{alert('Thank you for supporting our community!')}">🕊️ Copy Donation Details</button>`;
+            } else if (/residence|apartment|real estate|condo|floor plan|agent|broker|home/i.test(textAll)) {
+                badgeLabel = "🏠 Sales Gallery Official";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('On-Site Agent Contact: +1 (555) 019-2834').then(()=>alert('Agent contact copied!'))}else{alert('Visit our agent on site!')}">📞 Contact On-Site Agent</button>`;
+            } else if (/hotel|resort|inn|guest|breeze|room|checkout|stay/i.test(textAll)) {
+                badgeLabel = "🏨 Guest Directory";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Breakfast: 7AM-10AM • Checkout: 12PM • Front Desk: Dial 0')">🕒 View Hours & House Rules</button>`;
+            } else if (/clinic|medical|patient|doctor|health|care|exam|appointment/i.test(textAll)) {
+                badgeLabel = "🏥 Patient Care Guide";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Please present your ID and insurance card at the front desk!')">💳 Check-in Instructions</button>`;
+            } else if (/car|motor|vehicle|auto|pre-owned|inventory|showroom|deal/i.test(textAll)) {
+                badgeLabel = "🚗 Certified Inventory";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Speak with a showroom advisor for test drives and trade-in appraisals!')">🚘 Request Test Drive</button>`;
+            } else if (/menu|restaurant|bistro|lounge|food|burger|bar|coffee/i.test(textAll)) {
+                badgeLabel = "🍽️ Menu & Specials";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Show this voucher to your server to activate your special discount!')">⭐ Claim Offer with Server</button>`;
+            } else if (/summit|event|conference|schedule|keynote|workshop|speaker/i.test(textAll)) {
+                badgeLabel = "🎪 Official Program";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Please present your registration QR badge at hall entry!')">🎟️ Registration & Badges</button>`;
             }
 
             return `<!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -998,7 +998,7 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
   <p>${desc}</p>
   <a href="${btn1Url}" class="btn" download>${btn1Text}</a>
   ${secondaryBtnHtml}
-  <div class="footer">Rede: ${ssid} • PromoBeacon</div>
+  <div class="footer">Network: ${ssid} • PromoBeacon</div>
 </div>
 </body>
 </html>`;
@@ -1031,13 +1031,13 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
             if (bytes <= 32 * 1024) {
                 fill.style.backgroundColor = '#10b981'; // Green
                 badge.className = 'badge badge-pass';
-                badge.innerText = 'Pronto para App (BLE)';
-                document.getElementById('quota-desc').innerHTML = '✅ <b>Compatível com NVS e BLE:</b> Cabe perfeitamente na cota instantânea do App mobile.';
+                badge.innerText = 'Ready for App (BLE)';
+                document.getElementById('quota-desc').innerHTML = '✅ <b>BLE & NVS Compliant:</b> Fits within the instant Bluetooth quota for the mobile app.';
             } else {
                 fill.style.backgroundColor = '#f59e0b'; // Yellow/Orange
                 badge.className = 'badge badge-warning';
-                badge.innerText = 'Modo Wi-Fi / SPIFFS';
-                document.getElementById('quota-desc').innerHTML = '⚠️ <b>Excede 32KB para BLE:</b> Perfeito para a partição <b>SPIFFS via Wi-Fi</b> (até 192KB+ no ESP32).';
+                badge.innerText = 'Wi-Fi / SPIFFS Mode';
+                document.getElementById('quota-desc').innerHTML = '⚠️ <b>Exceeds 32KB for BLE:</b> Deploy via the <b>2.7MB Wi-Fi SPIFFS partition</b>.';
             }
         }
 
@@ -1045,9 +1045,9 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
         function copyHtmlToClipboard() {
             const html = generatePortalHtml();
             navigator.clipboard.writeText(html).then(() => {
-                alert('✅ Código HTML copiado para a área de transferência! Cole no App PromoBeacon para enviar por Bluetooth.');
+                alert('✅ HTML code copied to clipboard! Paste into the PromoBeacon Mobile App to upload via Bluetooth.');
             }).catch(err => {
-                prompt('Copie o código abaixo:', html);
+                prompt('Copy the code below:', html);
             });
         }
 
@@ -1068,12 +1068,12 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
         // Download Wi-Fi Package Instructions
         function downloadWiFiPackage() {
             downloadHtmlFile();
-            const readme = "INSTRUÇÕES DO PACOTE WI-FI PROMOBEACON:\n\n1. Arquivo 'index.html' gerado.\n2. Crie uma pasta chamada 'assets' e coloque seu arquivo PDF (ex: 'cardapio.pdf') dentro dela.\n3. Envie para o ESP32 conectando ao Wi-Fi dele e acessando http://192.168.4.1/upload (ou via Web Admin).\n";
+            const readme = "PROMOBEACON WI-FI BUNDLE INSTRUCTIONS:\n\n1. Place 'index.html' at root.\n2. Create a folder named 'assets' and place your PDF files (e.g., 'menu.pdf') inside.\n3. Upload to the ESP32 by connecting to its Wi-Fi and visiting http://192.168.4.1/upload (or via Web Admin).\n";
             const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'LEIA_ME_PACOTE_WIFI.txt';
+            a.download = 'README_WIFI_BUNDLE.txt';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1095,7 +1095,7 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
         function runLinterAudit() {
             const code = document.getElementById('linter-code-input').value.trim();
             if (!code) {
-                alert('Por favor, cole o código HTML ou selecione um arquivo para auditar.');
+                alert('Please paste HTML code or select a file to audit.');
                 return;
             }
 
@@ -1110,9 +1110,9 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
 
             // 1. Size Check
             if (bytes <= 32 * 1024) {
-                addAuditItem('pass', 'Tamanho do Arquivo', `Tamanho: ${kb} KB (<= 32 KB). Compatível tanto com transferência rápida via BLE quanto SPIFFS.`);
+                addAuditItem('pass', 'Payload File Size', `Size: ${kb} KB (<= 32 KB). Fully compatible with fast BLE transfer and SPIFFS.`);
             } else {
-                addAuditItem('warning', 'Tamanho Excede Cota BLE', `Tamanho: ${kb} KB (> 32 KB). Não poderá ser enviado por Bluetooth BLE sem compressão, mas funciona perfeitamente via partição SPIFFS por Wi-Fi.`);
+                addAuditItem('warning', 'Payload Exceeds BLE Quota', `Size: ${kb} KB (> 32 KB). Cannot be transferred via BLE without compression, but works natively via the 2.7MB SPIFFS partition over Wi-Fi.`);
             }
 
             // 2. External Resource Check (Images, Scripts, CSS)
@@ -1120,23 +1120,22 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
             let match;
             const externalUrls = [];
             while ((match = extRegex.exec(code)) !== null) {
-                // Ignore standard external link anchors <a href="..."> if they are social links, but flag media/scripts
                 externalUrls.push(match[1]);
             }
 
             if (externalUrls.length === 0) {
-                addAuditItem('pass', 'Recursos 100% Offline', 'Nenhuma dependência externa encontrada. O site não irá quebrar no portal captive.');
+                addAuditItem('pass', '100% Offline Resources', 'No external internet dependencies detected. The portal will render reliably offline.');
             } else {
                 hasErrors = true;
                 const sample = externalUrls.slice(0, 3).join(', ');
-                addAuditItem('fail', 'Dependências Externas Detectadas', `Foram encontrados links/recursos externos (${sample}). Portais captive offline não têm acesso à internet; imagens e scripts externos falharão ao carregar.`);
+                addAuditItem('fail', 'External Dependencies Detected', `Found external links/resources (${sample}). Offline captive portals have no WAN/internet connection; external media and scripts will fail to load.`);
             }
 
             // 3. Viewport Meta Check
             if (/<meta\s+name=["']viewport["']/i.test(code)) {
-                addAuditItem('pass', 'Meta Viewport Responsivo', 'A página declara configuração mobile para smartphones iOS e Android.');
+                addAuditItem('pass', 'Responsive Viewport Meta', 'Page declares mobile viewport configuration for iOS and Android smartphones.');
             } else {
-                addAuditItem('warning', 'Meta Viewport Ausente', 'Recomenda-se adicionar <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code> para correta renderização em celulares.');
+                addAuditItem('warning', 'Missing Viewport Meta', 'Recommended to add <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code> for proper mobile rendering.');
             }
 
             // 4. Relative Assets Link Check
@@ -1146,7 +1145,7 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
                 assetMatches.push(match[1]);
             }
             if (assetMatches.length > 0) {
-                addAuditItem('pass', 'Caminhos Locais (/assets/) Detectados', `Identificados ${assetMatches.length} arquivos locais vinculados (ex: ${assetMatches[0]}). Estes arquivos serão servidos diretamente da partição SPIFFS do ESP32.`);
+                addAuditItem('pass', 'Local Asset Paths (/assets/) Detected', `Identified ${assetMatches.length} linked local assets (e.g. ${assetMatches[0]}). These files will be served directly from the ESP32 2.7MB flash storage.`);
             }
 
             // Show Auto-fix button if errors were found
@@ -1160,16 +1159,16 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
 
             let icon = '✅';
             let badgeClass = 'badge-pass';
-            let badgeLabel = 'APROVADO';
+            let badgeLabel = 'PASSED';
 
             if (type === 'warning') {
                 icon = '⚠️';
                 badgeClass = 'badge-warning';
-                badgeLabel = 'ATENÇÃO';
+                badgeLabel = 'WARNING';
             } else if (type === 'fail') {
                 icon = '❌';
                 badgeClass = 'badge-fail';
-                badgeLabel = 'FALHA OFFLINE';
+                badgeLabel = 'OFFLINE FAIL';
             }
 
             item.innerHTML = `
@@ -1195,7 +1194,7 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
             // 2. Rewrite external image src to local /assets/ placeholder or SVG
             code = code.replace(/src=["']https?:\/\/[^"']+\/([^"']+)["']/gi, 'src="/assets/$1"');
             document.getElementById('linter-code-input').value = code;
-            alert('⚡ Auto-Correção aplicada! Links externos foram adaptados para caminhos locais /assets/ e o viewport responsivo foi garantido.');
+            alert('⚡ Auto-Fix applied! External URLs were adapted to local /assets/ paths and responsive viewport was ensured.');
             runLinterAudit();
         }
 

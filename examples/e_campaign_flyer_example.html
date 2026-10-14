@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Marcus Silva • #15.123 — Official Campaign Flyer</title>
+    <style>
+        :root {
+            --p: #2563eb;
+            --s: #10b981;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.9);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            padding: 32px 22px;
+            width: 100%;
+            max-width: 390px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(16px);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .badge-civic {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #34d399;
+            background: rgba(16, 185, 129, 0.15);
+            padding: 5px 14px;
+            border-radius: 999px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .avatar-wrap {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--p), var(--s));
+            padding: 3px;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+        }
+
+        .avatar-inner {
+            width: 100%;
+            height: 100%;
+            background: #1e293b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 1.65rem;
+            font-weight: 900;
+            margin-bottom: 4px;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .ballot-number {
+            display: inline-block;
+            font-size: 2.1rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            letter-spacing: 0.05em;
+        }
+
+        .role-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .slogan-box {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 16px;
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 20px;
+        }
+
+        .slogan {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 6px;
+        }
+
+        .summary-list {
+            text-align: left;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            list-style: none;
+            padding: 0 4px;
+        }
+
+        .summary-list li {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--p), #1d4ed8);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+            border: none;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+        }
+
+        .btn-outline:active {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .legal-footer {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 18px;
+            line-height: 1.4;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="badge-civic">
+            <span>🗳️</span> Official Campaign Flyer
+        </div>
+
+        <!-- Candidate Silhouette / Vector Avatar -->
+        <div class="avatar-wrap">
+            <div class="avatar-inner">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+        </div>
+
+        <h1>Dr. Marcus Silva</h1>
+        <div class="ballot-number">#15.123</div>
+        <div class="role-tag">Candidate for State Assembly • Democratic Renewal</div>
+
+        <!-- Policy Priorities Summary -->
+        <div class="slogan-box">
+            <div class="slogan">"Healthcare, Education and Real Community Progress"</div>
+            <ul class="summary-list">
+                <li>🏥 24/7 Neighborhood community clinics & medicine access</li>
+                <li>📚 Full-day STEM & robotics programs for local schools</li>
+                <li>💼 Streamlined permitting and tax relief for small businesses</li>
+            </ul>
+        </div>
+
+        <!-- Primary Action: Direct PDF download from ESP32 BigStorage -->
+        <a href="/assets/campaign_proposals.pdf" class="btn btn-primary" download="Policy_Proposals_Dr_Marcus_Silva.pdf">
+            📄 Download Policy Whitepaper (PDF)
+        </a>
+
+        <!-- Secondary Action: Save / Copy Ballot Number -->
+        <button class="btn btn-outline" onclick="copyBallot()">
+            📋 Copy Ballot Number (#15.123)
+        </button>
+        <script>
+            function copyBallot() {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText('15123').then(() => {
+                        alert('✅ Candidate ballot #15123 copied to clipboard!');
+                    }).catch(() => { alert('Candidate ballot number: 15123'); });
+                } else {
+                    alert('Candidate ballot number: 15123');
+                }
+            }
+        </script>
+
+        <!-- Mandatory Official Campaign Disclaimer -->
+        <div class="legal-footer">
+            General Election 2026 • Citizens for Renewal Coalition • ID: 12-345-6789<br>
+            Zero Paper Waste Campaign • Network: WiFi_DrMarcus_15123 • PromoBeacon
+        </div>
+    </div>
+</body>
+</html>

@@ -101,19 +101,19 @@ def test_browser_ui():
         print(f"  [OK] Flasher tab verified (Screenshot: {flasher_screenshot})")
         ui_results["flasher_tab"] = "PASS"
 
-        # 2. Test Criador No-Code Tab
-        page.locator("button.tab-btn:has-text('Criador No-Code')").click()
+        # 2. Test Criador No-Code Tab (Localized to English)
+        page.locator("button.tab-btn:has-text('No-Code Builder')").click()
         time.sleep(0.5)
         builder_header = page.locator("#tab-builder h2").inner_text()
-        assert "Criador de Portal" in builder_header, f"Builder header mismatch: {builder_header}"
+        assert "Captive Portal Creator" in builder_header, f"Builder header mismatch: {builder_header}"
 
-        # Click e-Santinho template chip
-        page.locator(".tpl-chip:has-text('e-Santinho')").click()
+        # Click e-Santinho / Campaign Flyer template chip
+        page.locator(".tpl-chip:has-text('Campaign Flyer')").click()
         time.sleep(0.5)
         cfg_title = page.locator("#cfg-title").input_value()
-        assert "Dr. Marcos Silva" in cfg_title, f"e-Santinho title mismatch: {cfg_title}"
+        assert "Dr. Marcus Silva" in cfg_title, f"Candidate title mismatch: {cfg_title}"
         cfg_pdf = page.locator("#cfg-btn1-url").input_value()
-        assert "/assets/plano_governo.pdf" in cfg_pdf, f"PDF link mismatch: {cfg_pdf}"
+        assert "/assets/campaign_proposals.pdf" in cfg_pdf, f"PDF link mismatch: {cfg_pdf}"
 
         # Verify live iframe inside phone mockup
         frame_box = page.frame_locator("#phone-preview-iframe")
@@ -121,29 +121,29 @@ def test_browser_ui():
         badge_text = frame_box.locator(".badge").inner_text()
         btn_url = frame_box.locator("a.btn").first.get_attribute("href")
 
-        assert "Dr. Marcos Silva" in h1_text, f"Candidate not found in preview: {h1_text}"
-        assert "E-SANTINHO" in badge_text.upper(), f"e-Santinho badge not found: {badge_text}"
-        assert "plano_governo.pdf" in btn_url, f"PDF link not in preview: {btn_url}"
+        assert "Dr. Marcus Silva" in h1_text, f"Candidate not found in preview: {h1_text}"
+        assert "CAMPAIGN FLYER" in badge_text.upper(), f"Campaign flyer badge not found: {badge_text}"
+        assert "campaign_proposals.pdf" in btn_url, f"PDF link not in preview: {btn_url}"
 
         # Check quota text
         quota_text = page.locator("#quota-text").inner_text()
-        print(f"  [OK] e-Santinho Live Preview verified: {quota_text}")
+        print(f"  [OK] Campaign Flyer Live Preview verified: {quota_text}")
         builder_screenshot = os.path.join(ARTIFACT_DIR, "test_builder_tab_esantinho.png")
         page.screenshot(path=builder_screenshot)
         ui_results["builder_tab_esantinho"] = "PASS"
 
-        # 3. Test Verificador & Linter Tab
-        page.locator("button.tab-btn:has-text('Verificador & Linter')").click()
+        # 3. Test Verifier & Linter Tab (Localized to English)
+        page.locator("button.tab-btn:has-text('Verifier & Linter')").click()
         time.sleep(0.5)
-        bad_html = "<html><body><h1>Loja Teste</h1><img src=\"https://example.com/banner.jpg\"><p>Sem viewport</p></body></html>"
+        bad_html = "<html><body><h1>Test Store</h1><img src=\"https://example.com/banner.jpg\"><p>No viewport</p></body></html>"
         page.locator("#linter-code-input").fill(bad_html)
-        page.locator("button.btn-primary:has-text('Analisar Conformidade')").click()
+        page.locator("button.btn-primary:has-text('Analyze Compliance')").click()
         time.sleep(0.5)
 
         # Check audit results
         audit_res = page.locator("#audit-items-container").inner_text()
-        assert "Dependências Externas Detectadas" in audit_res, "Linter failed to detect external URLs"
-        assert "Meta Viewport Ausente" in audit_res, "Linter failed to detect missing viewport"
+        assert "External Dependencies Detected" in audit_res, "Linter failed to detect external URLs"
+        assert "Missing Viewport Meta" in audit_res, "Linter failed to detect missing viewport"
 
         # Check auto-fix button
         autofix_btn = page.locator("#autofix-btn")
