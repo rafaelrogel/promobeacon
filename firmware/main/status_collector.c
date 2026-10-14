@@ -118,7 +118,7 @@ void init_status_collector(void)
  */
 void update_status(void)
 {
-    uint32_t current_time = xTaskGetTickCount() * portTICK_PERIOD_MS / 1000;
+    uint32_t current_time = (uint32_t)(esp_timer_get_time() / 1000000ULL);
     uint32_t session_seconds;
     if (current_time >= session_start_time) {
         session_seconds = current_time - session_start_time;
