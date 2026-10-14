@@ -135,6 +135,66 @@ def run_swe_lqa_debate():
             "recommendation": "Broaden international political keywords: /campaign|candidate|election|vote|ballot|senator|mayor|council|office|party/i."
         })
 
+    # -------------------------------------------------------------
+    # 9. SWE AUDIT: Retail Sector Branch Coverage
+    # -------------------------------------------------------------
+    has_retail_branch = "retail" in html and "Retail & Store Specials" in html
+    if not has_retail_branch:
+        findings_swe.append({
+            "id": "SWE-BUG-005",
+            "severity": "LOW",
+            "title": "Missing Retail Sector Badge Branch",
+            "evidence": "Retail template falls back to generic badge instead of dedicated retail badge.",
+            "impact": "Users selecting Retail template receive generic 'PromoBeacon Official' badge.",
+            "recommendation": "Add dedicated branch for retail sector."
+        })
+
+    # -------------------------------------------------------------
+    # 10. SWE AUDIT: Multi-File Download Staggering
+    # -------------------------------------------------------------
+    has_download_stagger = "setTimeout" in html and "README_WIFI_BUNDLE" in html
+    if not has_download_stagger:
+        findings_swe.append({
+            "id": "SWE-BUG-006",
+            "severity": "MEDIUM",
+            "title": "Synchronous Multi-File Download Blocked by Browser Security",
+            "evidence": "downloadWiFiPackage triggers two downloads simultaneously.",
+            "impact": "Chrome blocks second download or displays permission prompt.",
+            "recommendation": "Stagger downloads with setTimeout."
+        })
+
+    # -------------------------------------------------------------
+    # 11. SWE AUDIT: Responsive Mobile Layout & Viewport Overflow
+    # -------------------------------------------------------------
+    has_mobile_tabs = "overflow-x: auto" in html and "-webkit-overflow-scrolling" in html
+    has_phone_center = "margin: 32px auto 0" in html or "margin: 0 auto" in html
+    if not (has_mobile_tabs and has_phone_center):
+        findings_swe.append({
+            "id": "SWE-BUG-007",
+            "severity": "LOW",
+            "title": "Mobile Viewport Overflow on Small Smartphone Screens",
+            "evidence": "Tabs or phone mockup overflow viewport on mobile devices.",
+            "impact": "Layout breaks on screens narrower than 480px.",
+            "recommendation": "Add overflow-x to tabs and center phone mockup on mobile."
+        })
+
+    # -------------------------------------------------------------
+    # 12. LQA AUDIT: Campaign Example Ballot Number Format
+    # -------------------------------------------------------------
+    example_path = os.path.join(os.path.dirname(__file__), "..", "examples", "e_campaign_flyer_example.html")
+    if os.path.exists(example_path):
+        with open(example_path, "r", encoding="utf-8") as f:
+            ex_html = f.read()
+        if "#15.123" in ex_html:
+            findings_lqa.append({
+                "id": "LQA-ISSUE-005",
+                "severity": "LOW",
+                "title": "Brazilian Dot Notation #15.123 in English Example Flyer",
+                "evidence": "e_campaign_flyer_example.html contains #15.123",
+                "impact": "UI displays Brazilian dot format while script copies 15123.",
+                "recommendation": "Update to #15123."
+            })
+
     # Output Summary
     print("=" * 70)
     print("PROMOBEACON DEEP SWE vs LQA AUDIT — JEV EVALUATION")

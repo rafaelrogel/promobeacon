@@ -88,6 +88,21 @@
             border: 1px solid var(--card-border);
             margin-bottom: 32px;
             gap: 4px;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tabs-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .tab-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
         }
 
         .tab-btn {
@@ -207,6 +222,10 @@
         @media (max-width: 900px) {
             .builder-grid {
                 grid-template-columns: 1fr;
+            }
+            .phone-mockup {
+                position: static;
+                margin: 32px auto 0;
             }
         }
 
@@ -967,6 +986,9 @@
             if (/campaign|candidate|election|vote|ballot|senator|mayor|council|office|party|santinho|silva|marcus/i.test(textAll)) {
                 badgeLabel = "🗳️ Official Campaign Flyer";
                 secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${safeTitle}').then(()=>alert('Candidate details copied to clipboard!'))}else{alert('${safeTitle}')}">📋 Copy Candidate Info</button>`;
+            } else if (/retail|boutique|store|shop|sale|coupon|discount|lookbook|catalogue|fashion/i.test(textAll)) {
+                badgeLabel = "🛍️ Retail & Store Specials";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Show this screen at the checkout counter to claim your discount!')">🏷️ Redeem In-Store</button>`;
             } else if (/church|parish|liturgy|hymn|prayer|worship|pastor|priest/i.test(textAll)) {
                 badgeLabel = "⛪ Community & Liturgy";
                 const churchDonation = escJs("giving@stjosephcommunity.org (Zelle / PayPal)");
@@ -1093,16 +1115,18 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
         // Download Wi-Fi Package Instructions
         function downloadWiFiPackage() {
             downloadHtmlFile();
-            const readme = "PROMOBEACON WI-FI BUNDLE INSTRUCTIONS:\n\n1. Place 'index.html' at root.\n2. Create a folder named 'assets' and place your PDF files (e.g., 'menu.pdf') inside.\n3. Upload to the ESP32 by connecting to its Wi-Fi and visiting http://192.168.4.1/upload (or via Web Admin).\n";
-            const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'README_WIFI_BUNDLE.txt';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            setTimeout(() => {
+                const readme = "PROMOBEACON WI-FI BUNDLE INSTRUCTIONS:\n\n1. Place 'index.html' at root of ESP32 storage.\n2. Create a folder named 'assets' and place your PDF/media files (e.g., 'menu.pdf') inside.\n3. Upload to the ESP32 by connecting to its Wi-Fi and visiting http://192.168.4.1/upload (or via Web Admin).\n";
+                const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'README_WIFI_BUNDLE.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 300);
         }
 
         // TAB 3: Linter & Auditor Logic
