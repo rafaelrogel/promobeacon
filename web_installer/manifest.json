@@ -1,6 +1,6 @@
 {
   "name": "PromoBeacon",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "new_install_prompt_erase": true,
   "builds": [
     {
@@ -8,7 +8,6 @@
       "parts": [
         { "path": "bootloader_c3.bin", "offset": 0 },
         { "path": "partitions_c3.bin", "offset": 32768 },
-        { "path": "ota_data_initial_c3.bin", "offset": 69632 },
         { "path": "firmware_c3.bin", "offset": 131072 }
       ]
     },
@@ -17,7 +16,6 @@
       "parts": [
         { "path": "bootloader_classic.bin", "offset": 4096 },
         { "path": "partitions_classic.bin", "offset": 32768 },
-        { "path": "ota_data_initial_classic.bin", "offset": 69632 },
         { "path": "firmware_classic.bin", "offset": 131072 }
       ]
     }
