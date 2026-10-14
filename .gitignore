@@ -32,3 +32,9 @@ Thumbs.db
 adws/adw_data/sessions/
 adws/adw_data/sssf.db*
 adws/adw_data/access_state.json
+
+# Hardware Security Keys (Do not commit to public repositories)
+*.pem
+*.key
+firmware/secure_boot_signing_key.pem
+firmware/secure_boot_digest.bin

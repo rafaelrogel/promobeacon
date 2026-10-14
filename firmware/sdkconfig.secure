@@ -1,0 +1,23 @@
+# ==============================================================================
+# PromoBeacon ESP32 — Production Hardware Security Overlay
+# Enables Secure Boot v2 (RSA-3072) and Transparent Flash Encryption (AES-256)
+# ==============================================================================
+
+# --- Secure Boot v2 ---
+CONFIG_SECURE_BOOT=y
+CONFIG_SECURE_BOOT_V2_ENABLED=y
+CONFIG_SECURE_BOOT_BUILD_SIGNED_BINARIES=y
+CONFIG_SECURE_BOOT_SIGNING_KEY="secure_boot_signing_key.pem"
+
+# --- Flash Encryption ---
+CONFIG_SECURE_FLASH_ENC_ENABLED=y
+# Development mode allows testing and re-flashing via UART bootloader.
+# For final tamper-proof lock on mass production, set to CONFIG_SECURE_FLASH_ENCRYPTION_MODE_RELEASE=y
+CONFIG_SECURE_FLASH_ENCRYPTION_MODE_DEVELOPMENT=y
+CONFIG_SECURE_FLASH_CHECK_ENC_EN_IN_APP=y
+CONFIG_SECURE_FLASH_UART_BOOTLOADER_ALLOW_ENC=y
+CONFIG_SECURE_FLASH_UART_BOOTLOADER_ALLOW_DEC=y
+CONFIG_SECURE_FLASH_UART_BOOTLOADER_ALLOW_CACHE=y
+
+# --- NVS Encryption ---
+CONFIG_NVS_ENCRYPTION=y
