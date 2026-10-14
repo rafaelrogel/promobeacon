@@ -167,12 +167,20 @@ Success criteria:
 - `SELFTEST: ALL PASSED (baseline 79/79)`
 
 ### Mobile Application Unit Tests
-Executes the comprehensive unit test suite (54 tests) for the Android unified app:
+Executes the comprehensive unit test suite (57 tests) for the Android unified app:
 ```bash
 cd mobile_app_unified
 ./gradlew :app:testDebugUnitTest
 ```
 *(Note: Gradle distribution is downloaded automatically on the first run).*
+
+### App-Device BLE Integration Test (Simulated)
+Runs an intense end-to-end protocol test between the Android app side (faithful port of `BleClient.kt`) and the ESP32 device side (contract from `ble_manager.c`/`sim_esp32_ble.py`) over a simulated in-process BLE link — no radio required. Covers auth (success/failure/logout), protected-write enforcement, mode/config churn, portal uploads with CRC32 chunk integrity (1KB-64KB), chunk-loss and abort recovery, reconnect storms, concurrent multi-client traffic, malformed writes, and a 1000-op soak:
+```bash
+python3 ble_integration_test.py [--latency-ms 3]
+```
+Success criteria:
+- `RESULTADO: 47/47 checks PASS, 0 FAIL` and exit code 0.
 
 ## Configuration
 
