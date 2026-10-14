@@ -32,11 +32,11 @@ The configuration manager module provides persistent storage for device settings
 
 ### Mobile Application
 
-The companion mobile application is built with Flutter, enabling a single codebase to target both iOS and Android platforms. The application uses the flutter_blue_plus library for BLE communication and the Provider pattern for state management.
+The companion mobile application is a native Android application built with Kotlin, enabling control of PromoBeacon devices over BLE. The application uses the Android BLE API for device communication and follows clean architecture with the MVVM pattern.
 
-The application provides device discovery through BLE scanning with service UUID filtering, ensuring only PromoBeacon devices appear in the scan results. Once connected, users can view real-time device status metrics, switch between G and E modes, and update the promotion text through a streamlined interface.
+The application provides device discovery through BLE scanning, mode control (switching between G and E modes), configuration management (WiFi SSID, password, promotion text, beacon parameters), real-time status monitoring (connected clients, uptime, RSSI, battery), and device operations such as restart and factory reset.
 
-The application architecture follows clean architecture principles with separation between presentation, domain, and data layers. The presentation layer handles UI components and user interactions using Flutter's widget system. The domain layer contains business logic for device management and configuration parsing. The data layer manages BLE communication, persistent storage, and device state synchronization.
+The application architecture follows clean architecture principles with separation between presentation, domain, and data layers. The presentation layer is built with Jetpack Compose and Material Design 3. The domain layer contains business logic and use cases. The data layer manages BLE communication through a repository pattern, with Hilt for dependency injection and Kotlin Coroutines/Flow for asynchronous operations.
 
 ## Project Structure
 
@@ -70,20 +70,17 @@ promobeacon-esp32/
 │   ├── partitions.csv                # Flash partition table
 │   └── README.md                     # Firmware documentation
 │
-├── mobile_app/
-│   ├── lib/
-│   │   ├── main.dart                 # Application entry point
-│   │   ├── providers/
-│   │   │   └── device_provider.dart  # Device state management
-│   │   ├── screens/
-│   │   │   ├── scanner_screen.dart   # Device discovery UI
-│   │   │   ├── dashboard_screen.dart # Main dashboard UI
-│   │   │   ├── device_detail_screen.dart # Device detail UI
-│   │   │   └── settings_screen.dart  # App settings UI
-│   │   └── utils/
-│   │       └── constants.dart        # Application constants
-│   ├── pubspec.yaml                  # Flutter dependencies
-│   └── README.md                     # Mobile app documentation
+├── mobile_app_unified/
+│   ├── app/
+│   │   └── src/main/java/com/promobeacon/manager/
+│   │       ├── MainActivity.kt         # Application entry point
+│   │       ├── data/                   # BLE client, repositories, mappers
+│   │       ├── domain/                 # Models, repository interfaces, use cases
+│   │       ├── di/                     # Hilt dependency injection modules
+│   │       └── ui/                     # Compose screens, theme, components
+│   ├── build.gradle.kts                # App module build configuration
+│   ├── settings.gradle.kts             # Gradle project settings
+│   └── README.md                       # Mobile app documentation
 │
 └── README.md                         # Project documentation
 ```
@@ -127,42 +124,21 @@ The project includes a custom partition table optimized for the promotional plat
 
 ### Prerequisites
 
-The mobile application requires Flutter 3.0 or later with support for iOS and Android platforms. Install Flutter by following the official installation guide for your operating system. Ensure that both iOS and Android toolchains are configured by running `flutter doctor`.
+The mobile application requires an Android SDK with platform API 34 and JDK 17. Set the SDK location via the `ANDROID_HOME` environment variable or `local.properties` (`sdk.dir=...`). Gradle downloads its own distribution and dependencies on the first run.
 
-### Dependencies
+### Build And Test
 
-Navigate to the mobile application directory and fetch the required dependencies using Flutter's package manager.
+From the `mobile_app_unified` directory, run the unit test suite or generate a debug APK.
 
 ```bash
-cd mobile_app
-flutter pub get
+cd mobile_app_unified
+./gradlew :app:testDebugUnitTest   # unit tests
+./gradlew :app:assembleDebug      # debug APK at app/build/outputs/apk/debug/
 ```
 
 ### Platform-Specific Setup
 
-For iOS deployment, configure the iOS project with the necessary permissions for Bluetooth access. Update the `Info.plist` file to include the Bluetooth privacy description and the background modes required for BLE communication.
-
-For Android deployment, ensure that the minimum SDK version is set to API 21 or higher in the `android/app/build.gradle` file. Update the AndroidManifest.xml to include the Bluetooth permissions required for BLE communication.
-
-### Running on Device
-
-Connect a physical device (emulators do not support BLE communication) and run the application using Flutter's development tooling.
-
-```bash
-flutter run
-```
-
-### Building Release Packages
-
-Generate a release build for distribution to end users. For iOS, this produces an `.ipa` archive file suitable for App Store submission. For Android, this produces an `.apk` or `.aab` bundle suitable for Play Store distribution.
-
-```bash
-# iOS release build
-flutter build ipa
-
-# Android release build
-flutter build apk
-```
+The application requires Bluetooth permissions, which are declared in `AndroidManifest.xml`. On Android 12+ the app requests `BLUETOOTH_SCAN` and `BLUETOOTH_CONNECT` at runtime; location permission is required for BLE scanning on older Android versions.
 
 ## Testing
 

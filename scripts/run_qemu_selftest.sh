@@ -77,13 +77,40 @@ fi
   0x20000 "$BUILD/firmware.bin" || { echo "ERRO: merge falhou"; exit 1; }
 # QEMU exige imagem de 2/4/8/16MB — pad até 4MB
 truncate -s 4M "$MERGED"
-echo "pad 4MB OK ($(stat -c%s "$MERGED") bytes)"
+echo "pad 4MB OK ($(wc -c < "$MERGED" | tr -d ' ') bytes)"
 
 # 3) Roda QEMU (bounded pelo timeout de qemu; captura só linhas relevantes)
 echo "== QEMU SELFTEST ($ENV) =="
 rm -f "$OUT"
-timeout 120 "$QEMU" -machine esp32c3 -nographic -no-reboot \
-  -drive file="$MERGED",if=mtd,format=raw 2>&1 | grep -E "SELFTEST|ALL PASSED|FAIL|panic|abort" > "$OUT"
+run_qemu() {
+  if command -v timeout >/dev/null 2>&1; then
+    timeout 120 "$QEMU" -machine esp32c3 -nographic -no-reboot \
+      -drive file="$MERGED",if=mtd,format=raw
+  elif command -v python3 >/dev/null 2>&1; then
+    python3 -c '
+import subprocess, sys
+try:
+    sys.exit(subprocess.run(sys.argv[1:], timeout=120).returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+' "$QEMU" -machine esp32c3 -nographic -no-reboot \
+  -drive file="$MERGED",if=mtd,format=raw
+  else
+    # Fallback portátil (macOS/BSD): watchdog com sleep+kill
+    "$QEMU" -machine esp32c3 -nographic -no-reboot \
+      -drive file="$MERGED",if=mtd,format=raw &
+    local qemu_pid=$!
+    (
+      sleep 120
+      kill -9 "$qemu_pid" 2>/dev/null
+    ) &
+    local watchdog_pid=$!
+    wait "$qemu_pid" 2>/dev/null
+    kill "$watchdog_pid" 2>/dev/null
+    wait "$watchdog_pid" 2>/dev/null
+  fi
+}
+run_qemu 2>&1 | grep -E "SELFTEST|ALL PASSED|FAIL|panic|abort" > "$OUT"
 
 # 4) Resumo
 echo "--- linhas SELFTEST ($(wc -l < "$OUT")) ---"
