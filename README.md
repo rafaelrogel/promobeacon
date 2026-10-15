@@ -167,7 +167,7 @@ Success criteria:
 - `SELFTEST: ALL PASSED (baseline 79/79)`
 
 ### Mobile Application Unit Tests
-Executes the comprehensive unit test suite (57 tests) for the Android unified app:
+Executes the comprehensive unit test suite (63 tests) for the Android unified app:
 ```bash
 cd mobile_app_unified
 ./gradlew :app:testDebugUnitTest
