@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-15T14:05:25.859264+00:00",
+  "timestamp": "2026-10-15T17:27:43.180764+00:00",
   "devices_simulated": 1000,
   "hours_per_device": 100,
   "total_hours": 100000,
@@ -52,7 +52,7 @@
     }
   },
   "jev_verdicts": {
-    "robustness_score": "2.97",
+    "robustness_score": "2.98",
     "commercial_verdict": "HARDENING_REQUIRED"
   },
   "devices": [
