@@ -1,0 +1,38 @@
+[
+  {
+    "id": "N1-BLOCKING",
+    "decision": "ACCEPT_AND_EXECUTE",
+    "urgency": 0.95,
+    "action": "Require X-Admin-Pwd matching verify_admin_password(), sanitize filename (forbid '/' and '..'), and update upload_get_handler UI with a password field."
+  },
+  {
+    "id": "N2-BLOCKING",
+    "decision": "ACCEPT_AND_EXECUTE",
+    "urgency": 0.88,
+    "action": "Vendor all dist/web files from esp-web-tools 10.4.0 into web_installer/ so that all lazy imports resolve locally without network access."
+  },
+  {
+    "id": "N3-ADVISORY",
+    "decision": "ACCEPT_REFACTOR",
+    "urgency": 0.35,
+    "action": "Replace 'python' with sys.executable in master_session_omniverse_simulation_jev.py."
+  },
+  {
+    "id": "N4-ADVISORY",
+    "decision": "ACCEPT_REFACTOR",
+    "urgency": 0.35,
+    "action": "Add Admin Password input and setRequestHeader('X-Admin-Pwd', pwd) in upload_get_handler."
+  },
+  {
+    "id": "N5-ADVISORY",
+    "decision": "ACCEPT_REFACTOR",
+    "urgency": 0.35,
+    "action": "Remove redundant partitions_bigstorage.bin and legacy temp_bins/."
+  },
+  {
+    "id": "N6-ADVISORY",
+    "decision": "ACCEPT_REFACTOR",
+    "urgency": 0.35,
+    "action": "Clean up the mkdir call and note SPIFFS flat namespace in comments."
+  }
+]

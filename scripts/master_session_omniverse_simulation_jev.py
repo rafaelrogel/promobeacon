@@ -141,7 +141,7 @@ def sim_domain_4_silicon_catalog():
 # -------------------------------------------------------------
 def sim_domain_5_ble_gatt():
     # Run the real ble_integration_test.py
-    cmd = ["python", "ble_integration_test.py"]
+    cmd = [sys.executable, "ble_integration_test.py"]
     res = subprocess.run(cmd, capture_output=True, text=True)
     success = (res.returncode == 0)
     
@@ -184,7 +184,7 @@ def sim_domain_6_android_app():
 # DOMAIN 7: BigStorage 2.7MB Flash Architecture & SPIFFS
 # -------------------------------------------------------------
 def sim_domain_7_bigstorage():
-    cmd = ["python", "scripts/test_new_partition_layout.py"]
+    cmd = [sys.executable, "scripts/test_new_partition_layout.py"]
     res = subprocess.run(cmd, capture_output=True, text=True)
     success = (res.returncode == 0)
     
@@ -213,11 +213,11 @@ def sim_domain_8_web_installer():
     
     checks = {
         "esp_web_tools_present": "esp-web-install-button" in content,
-        "no_code_builder_present": "Criador de Portal Captive" in content,
+        "no_code_builder_present": ("Captive Portal Creator" in content or "Criador de Portal Captive" in content),
         "phone_mockup_simulator_present": "phone-mockup" in content,
-        "offline_linter_present": "Verificador & Auditor de Sites Offline" in content,
-        "e_santinho_template_present": "e_santinho" in content and "Dr. Marcos Silva" in content,
-        "bigstorage_badge_present": "Arquitetura BigStorage: 2.7 MB" in content,
+        "offline_linter_present": ("Verifier & Linter" in content or "Verificador & Auditor" in content),
+        "e_santinho_template_present": "e_santinho" in content and ("Dr. Marcus Silva" in content or "Dr. Marcos Silva" in content),
+        "bigstorage_badge_present": ("BigStorage Architecture: 2.7 MB" in content or "Arquitetura BigStorage: 2.7 MB" in content),
         "autofix_engine_present": "autoFixHtml" in content
     }
     

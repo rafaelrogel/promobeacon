@@ -617,6 +617,7 @@ static esp_err_t upload_get_handler(httpd_req_t *req)
         "<input type=\"file\" id=\"file_input\" onchange=\"fileChosen()\">"
         "</div>"
         "<input type=\"text\" id=\"file_name\" placeholder=\"Filename on ESP32 (e.g. menu.pdf)\">"
+        "<input type=\"password\" id=\"admin_pwd\" placeholder=\"Admin Password (e.g. 12345)\" style=\"width:100%;padding:0.75rem;margin-bottom:1rem;background:#0f172a;border:1px solid #334155;border-radius:0.5rem;color:white;box-sizing:border-box;font-size:0.9rem;\">"
         "<button class=\"btn\" onclick=\"uploadFile()\">🚀 Upload to ESP32 Storage</button>"
         "<div id=\"upload_status\" class=\"status\"></div>"
         "<script>"
@@ -628,14 +629,18 @@ static esp_err_t upload_get_handler(httpd_req_t *req)
         "function uploadFile(){"
         "  const f=document.getElementById('file_input').files[0];"
         "  let name=document.getElementById('file_name').value.trim();"
+        "  const pwd=document.getElementById('admin_pwd').value.trim();"
         "  if(!f) return alert('Please select a file.');"
+        "  if(!pwd) return alert('Admin Password is required.');"
         "  if(!name) name=f.name;"
         "  const st=document.getElementById('upload_status');"
         "  st.style.color='#818cf8'; st.innerText='Uploading '+Math.round(f.size/1024)+' KB...';"
         "  const xhr=new XMLHttpRequest();"
         "  xhr.open('POST', '/upload?name='+encodeURIComponent(name));"
+        "  xhr.setRequestHeader('X-Admin-Pwd', pwd);"
         "  xhr.onload=()=>{"
         "    if(xhr.status==200){st.style.color='#34d399'; st.innerHTML='✅ Saved to <b>/assets/'+name+'</b>!';}"
+        "    else if(xhr.status==401){st.style.color='#ef4444'; st.innerText='❌ Unauthorized: Invalid Admin Password!';}"
         "    else{st.style.color='#ef4444'; st.innerText='Upload failed: '+xhr.status;}"
         "  };"
         "  xhr.send(f);"
@@ -648,6 +653,14 @@ static esp_err_t upload_get_handler(httpd_req_t *req)
  */
 static esp_err_t upload_post_handler(httpd_req_t *req)
 {
+    /* Require admin authentication header (N1 security fix) */
+    char pwd_header[64] = {0};
+    if (httpd_req_get_hdr_value_str(req, "X-Admin-Pwd", pwd_header, sizeof(pwd_header)) != ESP_OK ||
+        !verify_admin_password(pwd_header)) {
+        httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Password required or invalid");
+        return ESP_FAIL;
+    }
+
     char filename[64] = "asset.bin";
     char query[128] = {0};
     if (httpd_req_get_url_query_str(req, query, sizeof(query)) == ESP_OK) {
@@ -655,9 +668,14 @@ static esp_err_t upload_post_handler(httpd_req_t *req)
         urldecode_in_place(filename);
     }
 
-    /* Ensure storage/assets directory exists */
-    mkdir("/storage/assets", 0777);
+    /* Path Traversal & Sanitization Protection */
+    if (strstr(filename, "..") != NULL || strchr(filename, '/') != NULL || strchr(filename, '\\') != NULL || strlen(filename) == 0) {
+        ESP_LOGW(TAG, "Rejected unsafe or malformed asset filename: %s", filename);
+        httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Invalid filename");
+        return ESP_FAIL;
+    }
 
+    /* SPIFFS has a flat namespace with path prefixes; /storage/assets/<filename> creates the object directly */
     char filepath[128];
     snprintf(filepath, sizeof(filepath), "/storage/assets/%s", filename);
 
