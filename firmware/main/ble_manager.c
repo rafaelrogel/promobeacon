@@ -66,6 +66,13 @@ static uint16_t g_conn_handle = 0;
 static uint32_t g_last_ble_activity = 0;
 static bool g_is_authenticated = false;
 static uint8_t g_auth_status = AUTH_STATUS_REQUIRED;
+
+/* BLE Authentication Security Lockout (Brute-Force Protection) */
+#define BLE_AUTH_MAX_FAILED_ATTEMPTS  5
+#define BLE_AUTH_LOCKOUT_DURATION_US  (5 * 60 * 1000000LL) /* 5 minutes */
+
+static uint8_t s_failed_auth_attempts = 0;
+static int64_t s_auth_locked_until_us = 0;
 static char g_device_name[MAX_DEVICE_NAME_LENGTH + 1] = "PromoBeacon";
 static char g_message_value[MAX_MESSAGE_LENGTH + 1] = "WELCOME";
 static char g_promo_text_value[MAX_PROMO_TEXT_LENGTH + 1] = "PromoBeacon";
@@ -275,7 +282,11 @@ static void ble_on_reset(int reason)
     g_conn_state = CONN_STATE_DISCONNECTED;
     g_conn_handle = 0;
     g_is_authenticated = false;
-    g_auth_status = AUTH_STATUS_REQUIRED;
+    if (s_auth_locked_until_us > 0 && esp_timer_get_time() < s_auth_locked_until_us) {
+        g_auth_status = AUTH_STATUS_LOCKED;
+    } else {
+        g_auth_status = AUTH_STATUS_REQUIRED;
+    }
 }
 
 static void deferred_work_task(void *param)
@@ -434,14 +445,54 @@ esp_err_t ble_authenticate(const char *password)
 {
     if (!password) return ESP_ERR_INVALID_ARG;
     
-    if (verify_admin_password(password) || strcmp(password, "12345") == 0) {
+    int64_t now_us = esp_timer_get_time();
+    
+    /* 1. Check if security lockout is currently active */
+    if (s_auth_locked_until_us > 0) {
+        if (now_us < s_auth_locked_until_us) {
+            g_is_authenticated = false;
+            g_auth_status = AUTH_STATUS_LOCKED;
+            int64_t remaining_sec = (s_auth_locked_until_us - now_us) / 1000000LL;
+            ESP_LOGW(TAG, "Authentication REJECTED: BLE auth is LOCKED for another %lld sec", remaining_sec);
+            ble_gatts_chr_updated(h_auth_status);
+            ble_gatts_chr_updated(h_status);
+            return ESP_FAIL;
+        } else {
+            /* Lockout expired, reset counters */
+            s_auth_locked_until_us = 0;
+            s_failed_auth_attempts = 0;
+            ESP_LOGI(TAG, "BLE auth lockout expired. Accepting attempts again.");
+        }
+    }
+    
+    /* 2. Validate password against NVS or default build fallback */
+    bool valid = verify_admin_password(password);
+#ifndef PROMOBEACON_SECURE_BUILD
+    if (!valid && strcmp(password, "12345") == 0) {
+        valid = true;
+    }
+#endif
+
+    if (valid) {
         g_is_authenticated = true;
         g_auth_status = AUTH_STATUS_SUCCESS;
+        s_failed_auth_attempts = 0;
+        s_auth_locked_until_us = 0;
         ESP_LOGI(TAG, "Authentication SUCCESS");
     } else {
         g_is_authenticated = false;
-        g_auth_status = AUTH_STATUS_FAILED;
-        ESP_LOGW(TAG, "Authentication FAILED");
+        s_failed_auth_attempts++;
+        ESP_LOGW(TAG, "Authentication FAILED (Attempt %d/%d)",
+                 s_failed_auth_attempts, BLE_AUTH_MAX_FAILED_ATTEMPTS);
+                 
+        if (s_failed_auth_attempts >= BLE_AUTH_MAX_FAILED_ATTEMPTS) {
+            s_auth_locked_until_us = now_us + BLE_AUTH_LOCKOUT_DURATION_US;
+            g_auth_status = AUTH_STATUS_LOCKED;
+            ESP_LOGE(TAG, "SECURITY LOCKOUT ACTIVATED: %d consecutive failed attempts. Locked for 5 minutes!",
+                     s_failed_auth_attempts);
+        } else {
+            g_auth_status = AUTH_STATUS_FAILED;
+        }
     }
     
     ble_gatts_chr_updated(h_auth_status);
@@ -546,8 +597,14 @@ esp_err_t ble_get_device_name(char* buffer, size_t buffer_size) {
 }
 esp_err_t ble_set_admin_password(const char* password) { return ESP_OK; }
 bool ble_is_authentication_required(void) { return true; }
-bool ble_is_authenticated(void) { return g_is_authenticated; }
-void ble_clear_authentication(void) { g_is_authenticated = false; g_auth_status = AUTH_STATUS_REQUIRED; }
+void ble_clear_authentication(void) {
+    g_is_authenticated = false;
+    if (s_auth_locked_until_us > 0 && esp_timer_get_time() < s_auth_locked_until_us) {
+        g_auth_status = AUTH_STATUS_LOCKED;
+    } else {
+        g_auth_status = AUTH_STATUS_REQUIRED;
+    }
+}
 esp_err_t ble_portal_start_transfer(uint32_t total_size, uint32_t crc32) { return portal_transfer_start(total_size, crc32); }
 esp_err_t ble_portal_process_chunk(uint16_t seq_num, const uint8_t* data, uint16_t data_len) { return portal_transfer_process_chunk(seq_num, data, data_len); }
 esp_err_t ble_portal_complete_transfer(void) { return portal_transfer_complete(); }
@@ -671,6 +728,17 @@ static int ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, stru
 
     if (attr_handle == h_auth_status) {
         if (ctxt->op == BLE_GATT_ACCESS_OP_READ_CHR) {
+            if (s_auth_locked_until_us > 0) {
+                if (esp_timer_get_time() < s_auth_locked_until_us) {
+                    g_auth_status = AUTH_STATUS_LOCKED;
+                } else {
+                    s_auth_locked_until_us = 0;
+                    s_failed_auth_attempts = 0;
+                    if (!g_is_authenticated) {
+                        g_auth_status = AUTH_STATUS_REQUIRED;
+                    }
+                }
+            }
             uint8_t status = g_auth_status;
             rc = os_mbuf_append(ctxt->om, &status, sizeof(status));
             return rc == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
@@ -827,7 +895,11 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
             g_conn_handle = 0;
             g_last_ble_activity = 0;
             g_is_authenticated = false;
-            g_auth_status = AUTH_STATUS_REQUIRED;
+            if (s_auth_locked_until_us > 0 && esp_timer_get_time() < s_auth_locked_until_us) {
+                g_auth_status = AUTH_STATUS_LOCKED;
+            } else {
+                g_auth_status = AUTH_STATUS_REQUIRED;
+            }
             ble_advertise();
             break;
 
