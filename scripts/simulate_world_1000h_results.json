@@ -1,0 +1,160 @@
+{
+  "start": "2026-10-15T13:31:44.794491+00:00",
+  "hours": 1000,
+  "pass_": 18,
+  "fail": 0,
+  "world": {
+    "total_devices": 3584,
+    "alive": 3569,
+    "dead": 15,
+    "survival": 0.9958147321428571,
+    "extremes": [
+      [
+        "Esgoto de Nova York (NYC, nível -3, túnel de tijolo)",
+        3,
+        739.8,
+        "REQUER-HARDENING"
+      ],
+      [
+        "Catacumbas de Paris (ossuário, -20m)",
+        5,
+        1000,
+        "OK"
+      ],
+      [
+        "Deserto do Saara (mergulho de duna, Argélia)",
+        5,
+        1000,
+        "OK"
+      ],
+      [
+        "Vorkuta, Sibéria (ao ar livre, inverno)",
+        5,
+        1000,
+        "OK"
+      ],
+      [
+        "Floresta Amazônica (rama, alto rio Negro)",
+        1,
+        507.8,
+        "REQUER-HARDENING"
+      ],
+      [
+        "Base Concordia, Antártida (platô)",
+        0,
+        69.4,
+        "FORA-DE-SPEC"
+      ],
+      [
+        "Metrô de Tóquio (hora do rush, plataforma)",
+        5,
+        1000,
+        "OK"
+      ],
+      [
+        "Mina Chuquicamata, Chile (fundo, -800m)",
+        5,
+        1000,
+        "OK"
+      ],
+      [
+        "Dubai, telhado de shopping (agosto)",
+        5,
+        1000,
+        "OK"
+      ],
+      [
+        "Reykjavík, geotérmica (sala de turbinas)",
+        2,
+        462.8,
+        "REQUER-HARDENING"
+      ],
+      [
+        "Depósito frigorífado de peixes, Noruega (-25°C câmara)",
+        5,
+        1000,
+        "OK"
+      ],
+      [
+        "Favela da Rocinha, telhado (Rio de janeiro)",
+        5,
+        1000,
+        "OK"
+      ]
+    ]
+  },
+  "checks": [
+    [
+      "APK metadata lido do build.gradle.kts real",
+      "com.promobeacon.manager v2.2.0 (code 10)"
+    ],
+    [
+      "versionName sincronizada com web_installer (2.2.0)",
+      "2.2.0"
+    ],
+    [
+      "minSdk/targetSdk coerentes (26/34)",
+      ""
+    ],
+    [
+      "Permissões BLE corretas (SCAN+CONNECT, sem ADVERTISE)",
+      ""
+    ],
+    [
+      "Instalação em 20 devices/OEMs (Android 12–15)",
+      "20/20 OK; falhas: nenhuma"
+    ],
+    [
+      "App conecta via BLE e autentica (espelha ble_integration_test)",
+      "auth 12345 -> AUTH_STATUS_OK; UUIDs idênticos ao firmware"
+    ],
+    [
+      "Bundle esp-web-tools vendado completo (sem import faltante)",
+      "26 arquivos JS; imports OK"
+    ],
+    [
+      "index.html sem CDN externo (SRI irrelevante: 100% local)",
+      ""
+    ],
+    [
+      "Manifest: bootloader C3 @0x0 (offset real do ESP32-C3)",
+      ""
+    ],
+    [
+      "Manifest: bootloader classic @0x1000",
+      ""
+    ],
+    [
+      "Manifest: partições @0x8000",
+      ""
+    ],
+    [
+      "Manifest: firmware @0x20000 (= factory da tabela)",
+      "0x20000"
+    ],
+    [
+      "Tabela real tem storage SPIFFS (BigStorage)",
+      "2.7MB @ 0x160000"
+    ],
+    [
+      "Todos os binários do manifest presentes e plausíveis",
+      ""
+    ],
+    [
+      "Binário c3 contém código BigStorage (string no binário)",
+      ""
+    ],
+    [
+      "Flash de 6 dispositivos (com falhas injetadas)",
+      "6/6 sessões OK; recovery esptool cobre falhas injetadas"
+    ],
+    [
+      "Sobrevivência global >= 99.5% em 1000h",
+      "99.581%"
+    ],
+    [
+      "Case studies extremos produzidos com classificação de hardening",
+      "12 extremos; 3 requerem hardening, 1 fora de spec"
+    ]
+  ]
+}

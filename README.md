@@ -24,7 +24,7 @@ The WiFi manager module handles Access Point configuration and client connection
 
 The BLE manager module implements advertising and GATT services for mobile device communication. The advertising component broadcasts the promotion message as the device name, enabling customers to discover the device without joining the WiFi network. The GATT service exposes characteristics for mode control, status reporting, and configuration updates, all accessible through the companion mobile application.
 
-The web server module serves the captive portal HTML content and handles form submissions from connected clients. The server implements a minimalist HTTP protocol stack optimized for the embedded environment, processing requests synchronously within the main event loop to avoid the complexity of multi-threaded operation.
+The web server module serves the captive portal HTML content and handles form submissions from connected clients. The server is built on the ESP-IDF `httpd` HTTP server with wildcard URI matching, streaming static assets (PDFs, images) from the 2.7MB BigStorage SPIFFS partition, an authenticated asset upload endpoint, and captive-portal connectivity probes.
 
 The status collector module tracks device metrics including connected client count, session duration, portal engagement time, and battery level. The module updates status fields passively during normal operation and packs the metrics into a 6-byte binary format for efficient BLE transmission.
 
@@ -43,32 +43,37 @@ The application architecture follows clean architecture principles with separati
 The project is organized into two main directories corresponding to the firmware and mobile application components.
 
 ```
-promobeacon-esp32/
+promobeacon/
 ├── firmware/
-│   ├── main/
-│   │   └── main.c                    # Application entry point
+│   ├── main/                         # Implementation sources (all modules)
+│   │   ├── main.c                    # Application entry point (heap canary, SPIFFS init)
+│   │   ├── g_mode.c                  # G mode logic & auto-start services
+│   │   ├── ble_manager.c             # BLE advertising + GATT (auth, config)
+│   │   ├── wifi_manager.c            # WiFi AP, DNS wildcard, DHCP
+│   │   ├── web_server.c              # httpd captive portal + BigStorage assets
+│   │   ├── status_collector.c        # Status metrics (64-bit timers)
+│   │   ├── config_manager.c          # NVS settings
+│   │   ├── client_tracker.c          # Client tracking (dirty-flag NVS saves)
+│   │   ├── portal_content.c          # BLE-pushed portal HTML (NVS, CRC32)
+│   │   ├── ota_update.c              # OTA subsystem (graceful without slots)
+│   │   └── qemu_selftest.c           # QEMU-only self-test battery
 │   ├── include/
 │   │   ├── g_mode.h                  # G mode interface
-│   │   ├── e_mode.h                  # E mode interface
 │   │   ├── ble_manager.h             # BLE interface
 │   │   ├── wifi_manager.h            # WiFi interface
 │   │   ├── web_server.h              # HTTP server interface
 │   │   ├── status_collector.h        # Status interface
-│   │   └── config_manager.h          # Configuration interface
-│   ├── src/
-│   │   ├── g_mode.c                  # G mode implementation
-│   │   ├── e_mode.c                  # E mode implementation
-│   │   ├── ble_manager.c             # BLE implementation
-│   │   ├── wifi_manager.c            # WiFi implementation
-│   │   ├── web_server.c              # HTTP server implementation
-│   │   ├── status_collector.c        # Status implementation
-│   │   └── config_manager.c          # Configuration implementation
+│   │   ├── config_manager.h          # Configuration interface
+│   │   ├── portal_content.h          # Portal content interface
+│   │   ├── ota_update.h              # OTA interface
+│   │   ├── client_tracker.h          # Tracker interface
+│   │   └── qemu_selftest.h           # QEMU self-test interface
 │   ├── data/
-│   │   ├── index.html                # Default portal HTML
-│   │   └── styles.css                # Portal styles
-│   ├── platformio.ini                # Build configuration
-│   ├── partitions.csv                # Flash partition table
-│   └── README.md                     # Firmware documentation
+│   │   └── index.html                # Default portal HTML
+│   ├── examples/                     # Integration examples (GDPR)
+│   ├── platformio.ini                # Build configuration (6 environments incl. secure)
+│   ├── partitions.csv                # Flash partition table (BigStorage 2.7MB)
+│   └── sdkconfig.*                   # Per-environment SDK configurations
 │
 ├── mobile_app_unified/
 │   ├── app/
@@ -248,4 +253,4 @@ This project is provided as-is for educational and commercial use. The firmware 
 
 ## Author
 
-Developed by MiniMax Agent as a production-grade embedded systems solution for retail promotional applications.
+Developed as a production-grade embedded systems solution for retail promotional applications.
