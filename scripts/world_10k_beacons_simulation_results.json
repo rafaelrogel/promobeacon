@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-10-15T17:12:36.338085+00:00",
+  "devices_simulated": 10000,
+  "hours_per_device": 100,
+  "total_device_hours": 1000000,
+  "countries_count": 194,
+  "survival_rate_pct": 97.0,
+  "global_stats": {
+    "alive_nodes": 9700,
+    "failed_nodes": 300,
+    "thermal_destructions": 227,
+    "corrosion_destructions": 6,
+    "conductive_dust_shorts": 0,
+    "total_clients_detected": 108194677,
+    "total_portal_sessions": 39673258,
+    "total_bytes_served_mb": 17639069.31000003,
+    "total_brownouts_handled": 137771,
+    "total_heap_canary_recycles": 11940,
+    "total_unauthorized_upload_attempts_blocked": 669117,
+    "total_ble_bruteforce_lockouts_triggered": 5865,
+    "total_ble_lockout_bypass_attempts": 14784,
+    "total_ble_lockout_bypasses_succeeded": 0,
+    "total_portal_chunk_transfers": 48497,
+    "total_portal_crc_mismatches_recovered": 2390,
+    "total_nvs_dirty_flag_recoveries": 137771,
+    "residual_firmware_bugs_detected": 0
+  },
+  "vector_breakdown": {
+    "INTERNO": {
+      "total": 4000,
+      "alive": 3773,
+      "clients": 36866721,
+      "sessions": 13526057,
+      "brownouts": 42364,
+      "lockouts": 2326
+    },
+    "EXTERNO": {
+      "total": 3000,
+      "alive": 2998,
+      "clients": 41155931,
+      "sessions": 15106687,
+      "brownouts": 55800,
+      "lockouts": 1738
+    },
+    "SUBTERRANEO": {
+      "total": 1500,
+      "alive": 1496,
+      "clients": 27737150,
+      "sessions": 10145670,
+      "brownouts": 19214,
+      "lockouts": 900
+    },
+    "AEREO": {
+      "total": 1500,
+      "alive": 1433,
+      "clients": 2434875,
+      "sessions": 894844,
+      "brownouts": 20393,
+      "lockouts": 901
+    }
+  },
+  "jev_verdicts": {
+    "firmware_bug_status": "ZERO_BUGS_FOUND",
+    "robustness_score": "3.38",
+    "commercial_verdict": "HARDENING_FOR_INDUSTRIAL_EXTREMES",
+    "ble_lockout_efficacy_pct": 99.0
+  }
+}
