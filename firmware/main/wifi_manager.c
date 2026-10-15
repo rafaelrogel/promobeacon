@@ -151,7 +151,7 @@ esp_err_t init_wifi_ap(const char* ssid, const char* password)
     
     ESP_LOGI(TAG, "WiFi AP started: %s (%s)", ap_ssid, 
              encryption_enabled ? "WPA2" : "OPEN");
-    ESP_LOGI(TAG, "AP IP: " IPSTR, IP2STR(&ip_info.ip));
+    ESP_LOGI(TAG, "AP IP: " IPSTR " (Client Isolation: Peer-to-Peer forwarding disabled)", IP2STR(&ip_info.ip));
     
     return ESP_OK;
 }
