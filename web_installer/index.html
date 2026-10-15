@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob: https://unpkg.com; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://unpkg.com data: blob:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' data: blob:;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PromoBeacon Suite — Firmware Flasher, No-Code Portal Creator & Offline Linter</title>
-    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js"
-        onerror="import('./install-button.js')">
-    </script>
+    <script type="module" src="install-button.js"></script>
     <style>
         :root {
             --bg-color: #0b0f19;

@@ -32,7 +32,7 @@ extern "C" {
 /* Configuration limits */
 #define MAX_PROMO_TEXT_LENGTH     32
 #define MAX_SSID_LENGTH           32
-#define MAX_PORTAL_HTML_SIZE      8192
+#define MAX_PORTAL_HTML_SIZE      32768
 #define MAX_PASSWORD_LENGTH       64
 #define MAX_DEVICE_NAME_LENGTH    32
 #define MIN_ADMIN_PASSWORD_LENGTH 4

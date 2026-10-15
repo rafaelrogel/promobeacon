@@ -27,6 +27,9 @@
 #include <netinet/in.h>
 #include "lwip/sockets.h"
 #include "freertos/semphr.h"
+#include "esp_spiffs.h"
+#include <sys/stat.h>
+#include <unistd.h>
 
 static const char* TAG = "WEB_SVR";
 
@@ -38,6 +41,9 @@ static form_submit_callback_t form_callback = NULL;
 /* Portal content caching - no longer used linearly, we pull from manager */
 static char* local_content_cache = NULL;
 static size_t local_content_len = 0;
+
+/* Forward declarations */
+static esp_err_t captive_portal_redirect_handler(httpd_req_t *req, httpd_err_code_t error);
 
 /* Client authentication tracking (IP-based) */
 #define MAX_AUTH_CLIENTS 32
@@ -161,7 +167,23 @@ static esp_err_t root_get_handler(httpd_req_t *req)
     /* Device is configured, serve promotion index */
     httpd_resp_set_type(req, "text/html");
     
-    /* Dynamic content sync: always check for custom content first */
+    /* 1. Check if custom index.html exists in BigStorage SPIFFS (/storage/index.html) */
+    FILE *spiffs_index = fopen("/storage/index.html", "r");
+    if (spiffs_index) {
+        char chunk[2048];
+        size_t bytes_read;
+        while ((bytes_read = fread(chunk, 1, sizeof(chunk), spiffs_index)) > 0) {
+            if (httpd_resp_send_chunk(req, chunk, bytes_read) != ESP_OK) {
+                fclose(spiffs_index);
+                return ESP_FAIL;
+            }
+        }
+        fclose(spiffs_index);
+        httpd_resp_send_chunk(req, NULL, 0);
+        return ESP_OK;
+    }
+
+    /* 2. Fallback to custom HTML stored via BLE in NVS */
     const char* custom_html = portal_content_get();
     if (custom_html) {
         httpd_resp_send(req, custom_html, portal_content_get_size());
@@ -513,6 +535,170 @@ esp_err_t stats_csv_get_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+/**
+ * @brief GET /assets/... - Static file streaming from BigStorage SPIFFS (/storage)
+ */
+static esp_err_t asset_get_handler(httpd_req_t *req)
+{
+    char filepath[128];
+    snprintf(filepath, sizeof(filepath), "/storage%s", req->uri);
+
+    FILE *f = fopen(filepath, "r");
+    if (!f) {
+        /* Fallback: try without /assets/ prefix */
+        if (strncmp(req->uri, "/assets/", 8) == 0) {
+            snprintf(filepath, sizeof(filepath), "/storage/%s", req->uri + 8);
+            f = fopen(filepath, "r");
+        }
+    }
+
+    if (!f) {
+        ESP_LOGD(TAG, "Asset not found: %s", req->uri);
+        return captive_portal_redirect_handler(req, HTTPD_404_NOT_FOUND);
+    }
+
+    /* Detect MIME Type */
+    if (strstr(req->uri, ".pdf")) {
+        httpd_resp_set_type(req, "application/pdf");
+    } else if (strstr(req->uri, ".jpg") || strstr(req->uri, ".jpeg")) {
+        httpd_resp_set_type(req, "image/jpeg");
+    } else if (strstr(req->uri, ".png")) {
+        httpd_resp_set_type(req, "image/png");
+    } else if (strstr(req->uri, ".webp")) {
+        httpd_resp_set_type(req, "image/webp");
+    } else if (strstr(req->uri, ".svg")) {
+        httpd_resp_set_type(req, "image/svg+xml");
+    } else if (strstr(req->uri, ".css")) {
+        httpd_resp_set_type(req, "text/css");
+    } else if (strstr(req->uri, ".js")) {
+        httpd_resp_set_type(req, "application/javascript");
+    } else {
+        httpd_resp_set_type(req, "application/octet-stream");
+    }
+
+    char chunk[2048];
+    size_t bytes_read;
+    while ((bytes_read = fread(chunk, 1, sizeof(chunk), f)) > 0) {
+        if (httpd_resp_send_chunk(req, chunk, bytes_read) != ESP_OK) {
+            fclose(f);
+            return ESP_FAIL;
+        }
+    }
+    fclose(f);
+    httpd_resp_send_chunk(req, NULL, 0);
+    return ESP_OK;
+}
+
+/**
+ * @brief GET /upload - Web Asset Upload Interface
+ */
+static esp_err_t upload_get_handler(httpd_req_t *req)
+{
+    const char* html =
+        "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">"
+        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+        "<title>PromoBeacon BigStorage Upload</title>"
+        "<style>"
+        "body{font-family:'Segoe UI',sans-serif;margin:0;background:#0f172a;color:white;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px;}"
+        ".card{width:100%;max-width:440px;background:rgba(30,41,59,0.85);backdrop-filter:blur(16px);padding:2rem;border-radius:1.25rem;border:1px solid rgba(255,255,255,0.12);box-shadow:0 20px 40px rgba(0,0,0,0.5);text-align:center;}"
+        "h1{font-size:1.35rem;margin-bottom:0.5rem;color:#818cf8;}"
+        "p{font-size:0.85rem;color:#94a3b8;margin-bottom:1.5rem;line-height:1.4;}"
+        ".drop-area{border:2px dashed #475569;border-radius:0.75rem;padding:1.5rem;background:#1e293b;cursor:pointer;margin-bottom:1rem;transition:border-color 0.2s;}"
+        ".drop-area:hover{border-color:#818cf8;}"
+        "input[type=file]{display:none;}"
+        "input[type=text]{width:100%;padding:0.75rem;margin-bottom:1rem;background:#0f172a;border:1px solid #334155;border-radius:0.5rem;color:white;box-sizing:border-box;font-size:0.9rem;}"
+        ".btn{width:100%;padding:0.85rem;background:linear-gradient(135deg,#6366f1,#818cf8);color:white;border:none;border-radius:0.75rem;font-weight:700;font-size:0.95rem;cursor:pointer;box-shadow:0 4px 15px rgba(99,102,241,0.35);}"
+        ".status{margin-top:1rem;font-size:0.85rem;color:#34d399;}"
+        "</style></head><body><div class=\"card\">"
+        "<h1>📦 BigStorage Asset Manager</h1>"
+        "<p>Upload PDF menus, lookbooks, or high-res images to the ESP32 2.7MB flash storage.</p>"
+        "<div class=\"drop-area\" onclick=\"document.getElementById('file_input').click()\">"
+        "<span id=\"file_label\">📁 Click to select file (e.g. menu.pdf)</span>"
+        "<input type=\"file\" id=\"file_input\" onchange=\"fileChosen()\">"
+        "</div>"
+        "<input type=\"text\" id=\"file_name\" placeholder=\"Filename on ESP32 (e.g. menu.pdf)\">"
+        "<button class=\"btn\" onclick=\"uploadFile()\">🚀 Upload to ESP32 Storage</button>"
+        "<div id=\"upload_status\" class=\"status\"></div>"
+        "<script>"
+        "function fileChosen(){"
+        "  const f=document.getElementById('file_input').files[0];"
+        "  if(f){document.getElementById('file_label').innerText='✅ Selected: '+f.name+' ('+Math.round(f.size/1024)+' KB)';"
+        "    if(!document.getElementById('file_name').value) document.getElementById('file_name').value=f.name;}"
+        "}"
+        "function uploadFile(){"
+        "  const f=document.getElementById('file_input').files[0];"
+        "  let name=document.getElementById('file_name').value.trim();"
+        "  if(!f) return alert('Please select a file.');"
+        "  if(!name) name=f.name;"
+        "  const st=document.getElementById('upload_status');"
+        "  st.style.color='#818cf8'; st.innerText='Uploading '+Math.round(f.size/1024)+' KB...';"
+        "  const xhr=new XMLHttpRequest();"
+        "  xhr.open('POST', '/upload?name='+encodeURIComponent(name));"
+        "  xhr.onload=()=>{"
+        "    if(xhr.status==200){st.style.color='#34d399'; st.innerHTML='✅ Saved to <b>/assets/'+name+'</b>!';}"
+        "    else{st.style.color='#ef4444'; st.innerText='Upload failed: '+xhr.status;}"
+        "  };"
+        "  xhr.send(f);"
+        "}</script></div></body></html>";
+    return httpd_resp_send(req, html, -1);
+}
+
+/**
+ * @brief POST /upload - Receive asset binary and save to BigStorage SPIFFS (/storage/assets/...)
+ */
+static esp_err_t upload_post_handler(httpd_req_t *req)
+{
+    char filename[64] = "asset.bin";
+    char query[128] = {0};
+    if (httpd_req_get_url_query_str(req, query, sizeof(query)) == ESP_OK) {
+        httpd_query_key_value(query, "name", filename, sizeof(filename));
+        urldecode_in_place(filename);
+    }
+
+    /* Ensure storage/assets directory exists */
+    mkdir("/storage/assets", 0777);
+
+    char filepath[128];
+    snprintf(filepath, sizeof(filepath), "/storage/assets/%s", filename);
+
+    FILE *f = fopen(filepath, "w");
+    if (!f) {
+        ESP_LOGE(TAG, "Failed to open file for writing: %s", filepath);
+        httpd_resp_send_500(req);
+        return ESP_FAIL;
+    }
+
+    char buf[1024];
+    size_t remaining = req->content_len;
+    ESP_LOGI(TAG, "Receiving asset upload: %s (%zu bytes)", filepath, remaining);
+
+    while (remaining > 0) {
+        int recv_len = httpd_req_recv(req, buf, MIN(remaining, sizeof(buf)));
+        if (recv_len <= 0) {
+            if (recv_len == HTTPD_SOCK_ERR_TIMEOUT) continue;
+            fclose(f);
+            unlink(filepath);
+            httpd_resp_send_500(req);
+            return ESP_FAIL;
+        }
+
+        if (fwrite(buf, 1, recv_len, f) != (size_t)recv_len) {
+            ESP_LOGE(TAG, "Failed to write to file: %s", filepath);
+            fclose(f);
+            unlink(filepath);
+            httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Disk write failed");
+            return ESP_FAIL;
+        }
+
+        remaining -= recv_len;
+    }
+
+    fclose(f);
+    ESP_LOGI(TAG, "Asset upload completed successfully: %s", filepath);
+    httpd_resp_send(req, "OK", 2);
+    return ESP_OK;
+}
+
 /* URI definitions */
 static const httpd_uri_t stats_csv = { .uri = "/stats.csv", .method = HTTP_GET, .handler = stats_csv_get_handler };
 static const httpd_uri_t root = { .uri = "/", .method = HTTP_GET, .handler = root_get_handler };
@@ -521,6 +707,9 @@ static const httpd_uri_t update_get = { .uri = "/update", .method = HTTP_GET, .h
 static const httpd_uri_t update_post = { .uri = "/update", .method = HTTP_POST, .handler = update_post_handler };
 static const httpd_uri_t favicon = { .uri = "/favicon.ico", .method = HTTP_GET, .handler = favicon_get_handler };
 static const httpd_uri_t connect_uri = { .uri = "/connect", .method = HTTP_GET, .handler = connect_get_handler };
+static const httpd_uri_t asset_uri = { .uri = "/assets/*", .method = HTTP_GET, .handler = asset_get_handler };
+static const httpd_uri_t upload_get = { .uri = "/upload", .method = HTTP_GET, .handler = upload_get_handler };
+static const httpd_uri_t upload_post = { .uri = "/upload", .method = HTTP_POST, .handler = upload_post_handler };
 
 /**
  * @brief Unified handler for connectivity check probes (Android, iOS, Windows)
@@ -592,12 +781,13 @@ esp_err_t init_http_server(void)
     if (http_server_active) return ESP_OK;
 
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
-    config.max_uri_handlers = 12;
+    config.max_uri_handlers = 16;
     config.stack_size = 15360;
     config.lru_purge_enable = true;
+    config.uri_match_fn = httpd_uri_match_wildcard;
 
     /* Dynamic serving used now - no static initialization needed here */
-    ESP_LOGI(TAG, "Content sync manager active");
+    ESP_LOGI(TAG, "Content sync manager active (BigStorage + NVS)");
 
     ESP_LOGI(TAG, "Starting HTTP Server on port %d", config.server_port);
     if (httpd_start(&server, &config) == ESP_OK) {
@@ -608,6 +798,9 @@ esp_err_t init_http_server(void)
         httpd_register_uri_handler(server, &favicon);
         httpd_register_uri_handler(server, &connect_uri);
         httpd_register_uri_handler(server, &stats_csv);
+        httpd_register_uri_handler(server, &asset_uri);
+        httpd_register_uri_handler(server, &upload_get);
+        httpd_register_uri_handler(server, &upload_post);
         
         /* Register connectivity check probes */
         httpd_register_uri_handler(server, &probe_android);

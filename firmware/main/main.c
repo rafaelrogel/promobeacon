@@ -32,6 +32,7 @@
 #include "esp_netif.h"
 #include "esp_ota_ops.h"
 #include "esp_partition.h"
+#include "esp_spiffs.h"
 #include "driver/gpio.h"
 
 #include "g_mode.h"
@@ -143,6 +144,37 @@ uint8_t get_battery_percent(void)
     return get_battery_level();
 }
 
+#ifndef PROMOBEACON_QEMU
+/**
+ * @brief Initialize BigStorage 2.7MB SPIFFS filesystem for offline assets (PDFs, images)
+ */
+static void init_spiffs_storage(void)
+{
+    esp_vfs_spiffs_conf_t conf = {
+        .base_path = "/storage",
+        .partition_label = "storage",
+        .max_files = 8,
+        .format_if_mount_failed = true
+    };
+    esp_err_t ret = esp_vfs_spiffs_register(&conf);
+    if (ret != ESP_OK) {
+        if (ret == ESP_FAIL) {
+            ESP_LOGE(TAG, "Failed to mount or format SPIFFS filesystem");
+        } else if (ret == ESP_ERR_NOT_FOUND) {
+            ESP_LOGW(TAG, "Failed to find 'storage' partition (running with NVS fallback)");
+        } else {
+            ESP_LOGE(TAG, "Failed to initialize SPIFFS (%s)", esp_err_to_name(ret));
+        }
+        return;
+    }
+    size_t total = 0, used = 0;
+    ret = esp_spiffs_info("storage", &total, &used);
+    if (ret == ESP_OK) {
+        ESP_LOGI(TAG, "BigStorage SPIFFS mounted: total=%zu KB, used=%zu KB", total / 1024, used / 1024);
+    }
+}
+#endif
+
 /**
  * @brief Main application entry point
  */
@@ -243,6 +275,9 @@ void app_main(void)
     /* Register callbacks with ble_manager */
     ble_register_mode_change_callback(on_mode_change);
     ble_register_status_callback(on_status_update);
+
+    /* Initialize BigStorage 2.7MB SPIFFS filesystem for offline assets (PDFs, images) */
+    init_spiffs_storage();
 
     /* Initialize G-Mode modules and START services automatically */
     /* BLE must be up first so g_mode can update advertising name */

@@ -33,8 +33,9 @@ if hasattr(sys.stdout, "reconfigure"):
         pass
 
 load_dotenv(Path("C:/Users/rafae/.gemini/config/skills/typesafe/.env"))
-JEV_API_KEY = os.getenv("JEV_API_KEY") or os.getenv("TYPESAFE_API_KEY")
-os.environ["TYPESAFE_API_KEY"] = JEV_API_KEY
+JEV_API_KEY = os.getenv("JEV_API_KEY") or os.getenv("TYPESAFE_API_KEY") or ""
+if JEV_API_KEY:
+    os.environ["TYPESAFE_API_KEY"] = JEV_API_KEY
 
 from typesafe_sdk import TypeSafeClient, Choice, Score, Noul
 client = TypeSafeClient()

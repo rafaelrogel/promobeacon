@@ -4,6 +4,7 @@ Test and validate the high-capacity 2.7MB storage partition table layout for Pro
 """
 import subprocess
 import os
+import sys
 
 NEW_PARTITIONS = """# Name,   Type, SubType, Offset,  Size, Flags
 nvs,      data, nvs,     0x9000,  0x10000,
@@ -19,7 +20,7 @@ def test_partition_generation():
         f.write(NEW_PARTITIONS)
 
     tool = r"C:\Users\rafae\.platformio\packages\framework-espidf\components\partition_table\gen_esp32part.py"
-    cmd = ["python", tool, "--verify", "--offset", "0x8000", test_csv, test_bin]
+    cmd = [sys.executable, tool, "--verify", "--offset", "0x8000", test_csv, test_bin]
     result = subprocess.run(cmd, capture_output=True, text=True)
     print("STDOUT:", result.stdout)
     print("STDERR:", result.stderr)
