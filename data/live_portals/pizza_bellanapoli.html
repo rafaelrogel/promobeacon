@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pizzaria Bella Napoli — Wi-Fi Cortesia</title>
+<style>
+:root { --primary: #dc2626; --accent: #f59e0b; --bg: #18181b; --card: #27272a; --text: #fafafa; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-user-select: none; user-select: none; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+body { background: var(--bg); color: var(--text); padding: 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+.container { max-width: 480px; width: 100%; }
+.badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(220, 38, 38, 0.2); border: 1px solid var(--primary); color: #fca5a5; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; margin-bottom: 12px; }
+.header { text-align: center; margin-bottom: 20px; }
+.logo-icon { font-size: 42px; margin-bottom: 8px; }
+h1 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 6px; letter-spacing: -0.5px; }
+.subtitle { font-size: 14px; color: #a1a1aa; line-height: 1.4; }
+.card { background: var(--card); border-radius: 16px; padding: 18px; margin-bottom: 16px; border: 1px solid #3f3f46; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+.promo-title { font-size: 17px; font-weight: 700; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.promo-desc { font-size: 13.5px; color: #d4d4d8; line-height: 1.5; margin-bottom: 14px; }
+.timer { background: #09090b; padding: 10px; border-radius: 10px; text-align: center; font-size: 13px; color: #fbbf24; font-weight: 600; margin-bottom: 14px; border: 1px dashed #78350f; }
+.coupon-box { display: flex; justify-content: space-between; align-items: center; background: #09090b; border: 2px dashed var(--primary); padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; }
+.coupon-code { font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #f87171; font-family: monospace; }
+.btn-copy { background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+.btn-copy:active { transform: scale(0.96); }
+.menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.menu-item { background: #1f1f23; border: 1px solid #333; padding: 12px; border-radius: 10px; text-align: center; }
+.menu-item span { display: block; font-size: 22px; margin-bottom: 4px; }
+.menu-item strong { display: block; font-size: 13px; color: #fff; margin-bottom: 2px; }
+.menu-item p { font-size: 11px; color: #a1a1aa; }
+.btn-main { width: 100%; background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; box-shadow: 0 4px 14px rgba(220,38,38,0.4); }
+.btn-sec { width: 100%; background: transparent; color: #d4d4d8; border: 1px solid #52525b; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: block; }
+.footer { text-align: center; margin-top: 16px; font-size: 11px; color: #71717a; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo-icon">🍕</div>
+    <div class="badge">📡 Wi-Fi Cortesia PromoBeacon</div>
+    <h1>Pizzaria Bella Napoli</h1>
+    <p class="subtitle">Tradição artesanal em forno a lenha desde 1984</p>
+  </div>
+
+  <div class="card">
+    <div class="promo-title">🔥 Oferta Exclusiva na Mesa</div>
+    <p class="promo-desc">Peça 1 Pizza Grande da casa e ganhe <strong>1 Pizza Doce Broto (Nutella ou Banana) + 1 Refrigerante 2L</strong>!</p>
+    
+    <div class="timer">⏳ Oferta ativa: Válida para pedidos hoje no salão</div>
+
+    <div class="coupon-box">
+      <div>
+        <div style="font-size:10px; color:#a1a1aa; text-transform:uppercase;">Cupom Garçom:</div>
+        <div class="coupon-code" id="cpn">NAPOLI50</div>
+      </div>
+      <button class="btn-copy" onclick="copyCoupon()">COPIAR</button>
+    </div>
+
+    <button class="btn-main" onclick="claimOffer()">
+      <span>📲 Chamar Garçom / Validar Cupom</span>
+    </button>
+    <a href="#cardapio" class="btn-sec" onclick="alert('Cardápio Completo: 35 sabores de pizzas napolitanas e vinhos importados!')">📄 Ver Cardápio Completo</a>
+    <div id="statusToast" style="display:none; margin-top:14px; background:#15803d; color:#fff; padding:14px; border-radius:12px; text-align:center; font-weight:700; box-shadow:0 4px 15px rgba(21,128,61,0.5); animation:fadeIn 0.3s ease;">
+      🎉 OFERTA ATIVADA COM SUCESSO!<br>
+      <span style="font-size:12px; font-weight:400; opacity:0.9;">Garçom chamado para a Mesa. Apresente o código NAPOLI50.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="promo-title">⭐ Favoritos dos Clientes</div>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <span>🧀</span>
+        <strong>Margherita D.O.P</strong>
+        <p>Pomodoro, búfala e manjericão</p>
+      </div>
+      <div class="menu-item">
+        <span>🌶️</span>
+        <strong>Diavola Speciale</strong>
+        <p>Salame picante artesanal</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Powered by PromoBeacon Local Beacon • Conexão 100% Offline</p>
+    <p>Rua das Flores, 120 • Aberto até 23:30</p>
+  </div>
+</div>
+
+<script>
+function copyCoupon() {
+  document.getElementById('statusToast').style.display = 'block';
+  document.getElementById('statusToast').innerHTML = '📋 CÓDIGO NAPOLI50 COPIADO!<br><span style="font-size:12px;font-weight:400;">Apresente ao garçom no fechamento da conta.</span>';
+}
+function claimOffer() {
+  document.getElementById('statusToast').style.display = 'block';
+  document.getElementById('statusToast').innerHTML = '✅ GARÇOM CHAMADO COM SUCESSO!<br><span style="font-size:12px;font-weight:400;">Pizza Broto Cortesia adicionada ao pedido da mesa.</span>';
+}
+</script>
+</body>
+</html>

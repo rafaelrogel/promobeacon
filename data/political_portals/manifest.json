@@ -1,0 +1,122 @@
+[
+  {
+    "id": "lula",
+    "name": "Lula • O Brasil do Futuro",
+    "file": "data/political_portals/lula.html",
+    "size_bytes": 3995
+  },
+  {
+    "id": "bolsonaro",
+    "name": "Jair Bolsonaro • Brasil Acima de Tudo",
+    "file": "data/political_portals/bolsonaro.html",
+    "size_bytes": 4016
+  },
+  {
+    "id": "eneas",
+    "name": "Dr. Enéas Carneiro • PRONA 56",
+    "file": "data/political_portals/eneas.html",
+    "size_bytes": 4004
+  },
+  {
+    "id": "dom_pedro_ii",
+    "name": "Dom Pedro II • Império do Brasil",
+    "file": "data/political_portals/dom_pedro_ii.html",
+    "size_bytes": 4015
+  },
+  {
+    "id": "marcal",
+    "name": "Pablo Marçal • Desbloqueie sua Mente",
+    "file": "data/political_portals/marcal.html",
+    "size_bytes": 4015
+  },
+  {
+    "id": "renan_santos",
+    "name": "Renan Santos • Missão MBL",
+    "file": "data/political_portals/renan_santos.html",
+    "size_bytes": 4034
+  },
+  {
+    "id": "maluf",
+    "name": "Paulo Maluf • Maluf Faz!",
+    "file": "data/political_portals/maluf.html",
+    "size_bytes": 3987
+  },
+  {
+    "id": "ciro_gomes",
+    "name": "Ciro Gomes • Projeto Nacional (PND)",
+    "file": "data/political_portals/ciro_gomes.html",
+    "size_bytes": 4017
+  },
+  {
+    "id": "getulio_vargas",
+    "name": "Getúlio Vargas • Pai dos Pobres",
+    "file": "data/political_portals/getulio_vargas.html",
+    "size_bytes": 4037
+  },
+  {
+    "id": "jk",
+    "name": "Juscelino Kubitschek • 50 Anos em 5",
+    "file": "data/political_portals/jk.html",
+    "size_bytes": 4031
+  },
+  {
+    "id": "marina_silva",
+    "name": "Marina Silva • Justiça Climática",
+    "file": "data/political_portals/marina_silva.html",
+    "size_bytes": 4024
+  },
+  {
+    "id": "daciolo",
+    "name": "Cabo Daciolo • Glória a Deus",
+    "file": "data/political_portals/daciolo.html",
+    "size_bytes": 4044
+  },
+  {
+    "id": "eduardo_jorge",
+    "name": "Eduardo Jorge • Vida & Bicicleta",
+    "file": "data/political_portals/eduardo_jorge.html",
+    "size_bytes": 4025
+  },
+  {
+    "id": "fhc",
+    "name": "Fernando Henrique • Estabilidade Real",
+    "file": "data/political_portals/fhc.html",
+    "size_bytes": 4025
+  },
+  {
+    "id": "brizola",
+    "name": "Leonel Brizola • CIEPs e Legalidade",
+    "file": "data/political_portals/brizola.html",
+    "size_bytes": 4028
+  },
+  {
+    "id": "mamefalei",
+    "name": "Arthur do Val • Cortando Privilégios",
+    "file": "data/political_portals/mamefalei.html",
+    "size_bytes": 4087
+  },
+  {
+    "id": "tancredo_neves",
+    "name": "Tancredo Neves • Nova República",
+    "file": "data/political_portals/tancredo_neves.html",
+    "size_bytes": 4039
+  },
+  {
+    "id": "plinio",
+    "name": "Plínio de Arruda Sampaio • Sem Medo",
+    "file": "data/political_portals/plinio.html",
+    "size_bytes": 4075
+  },
+  {
+    "id": "alckmin",
+    "name": "Geraldo Alckmin • Picolé de Chuchu",
+    "file": "data/political_portals/alckmin.html",
+    "size_bytes": 4038
+  },
+  {
+    "id": "padre_kelmon",
+    "name": "Padre Kelmon • Candidato Padre",
+    "file": "data/political_portals/padre_kelmon.html",
+    "size_bytes": 4066
+  }
+]

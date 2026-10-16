@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Barbearia Vintage Club — Wi-Fi Lounge</title>
+<style>
+:root { --primary: #d97706; --accent: #78350f; --bg: #1c1917; --card: #292524; --text: #f5f5f4; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+body { background: var(--bg); color: var(--text); padding: 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+.container { max-width: 480px; width: 100%; }
+.badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(217, 119, 6, 0.15); border: 1px solid var(--primary); color: #fbbf24; font-size: 11.5px; font-weight: 600; padding: 4px 12px; border-radius: 999px; margin-bottom: 12px; }
+.header { text-align: center; margin-bottom: 18px; }
+.logo-icon { font-size: 42px; margin-bottom: 6px; }
+h1 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.subtitle { font-size: 13.5px; color: #a8a29e; }
+.card { background: var(--card); border-radius: 16px; padding: 18px; margin-bottom: 16px; border: 1px solid #44403c; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+.promo-title { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.loyalty-card { background: #1c1917; border: 1px dashed #78350f; border-radius: 12px; padding: 14px; text-align: center; margin-bottom: 14px; }
+.stamps { display: flex; justify-content: center; gap: 8px; margin: 10px 0; }
+.stamp { width: 34px; height: 34px; border-radius: 50%; border: 2px dashed #78350f; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #78350f; font-weight: 700; }
+.stamp.checked { background: var(--primary); border-color: var(--primary); color: #fff; }
+.btn-main { width: 100%; background: linear-gradient(135deg, #d97706, #b45309); color: white; border: none; padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; box-shadow: 0 4px 14px rgba(217,119,6,0.3); }
+.services-list { display: flex; flex-direction: column; gap: 8px; }
+.service-item { display: flex; justify-content: space-between; align-items: center; background: #1c1917; padding: 10px 14px; border-radius: 8px; font-size: 13px; }
+.service-item strong { color: #f5f5f4; }
+.service-item span { color: #fbbf24; font-weight: 700; }
+.footer { text-align: center; margin-top: 14px; font-size: 11px; color: #78716c; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo-icon">💈</div>
+    <div class="badge">☕ Wi-Fi Lounge & Cerveja Cortesia</div>
+    <h1>Barbearia Vintage Club</h1>
+    <p class="subtitle">Cortes Clássicos, Barboterapia & Cuidados Masculinos</p>
+  </div>
+
+  <div class="card">
+    <div class="promo-title">⭐ Cartão Fidelidade Digital</div>
+    <div class="loyalty-card">
+      <p style="font-size:12.5px; color:#d6d3d1;">Você está conectado na nossa cadeira! A cada 4 serviços, o 5º corte é 100% grátis.</p>
+      <div class="stamps">
+        <div class="stamp checked">✂️</div>
+        <div class="stamp checked">✂️</div>
+        <div class="stamp checked">✂️</div>
+        <div class="stamp">4</div>
+        <div class="stamp">🎁</div>
+      </div>
+      <p style="font-size:11px; color:#fbbf24; font-weight:600;">Falta apenas 1 carimbo para seu corte gratuito!</p>
+    </div>
+
+    <button class="btn-main" onclick="alert('🍺 Chopp Solicitado! O barbeiro trará um chopp artesanal bem gelado enquanto você aguarda.')">
+      <span>🍺 Pedir Chopp Artesanal Cortesia</span>
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="promo-title">✂️ Serviços & Tabela</div>
+    <div class="services-list">
+      <div class="service-item">
+        <strong>Corte Degradê / Fade</strong>
+        <span>R$ 55,00</span>
+      </div>
+      <div class="service-item">
+        <strong>Barboterapia com Toalha Quente</strong>
+        <span>R$ 45,00</span>
+      </div>
+      <div class="service-item">
+        <strong>Combo Completo (Cabelo + Barba)</strong>
+        <span>R$ 85,00</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>PromoBeacon Lounge Beacon • Wi-Fi 5GHz de Alta Velocidade</p>
+    <p>Agendamentos: WhatsApp (11) 98765-4321</p>
+  </div>
+</div>
+</body>
+</html>

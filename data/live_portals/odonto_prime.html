@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>OdontoPrime - Sala de Espera VIP</title>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --primary: #0284c7;
+    --primary-dark: #0369a1;
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #10b981;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-user-select: none; user-select: none; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px 16px; }
+  .container { max-width: 440px; width: 100%; display: flex; flex-direction: column; gap: 16px; }
+  .badge { align-self: center; background: #e0f2fe; color: var(--primary-dark); font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 6px; }
+  .header { text-align: center; }
+  .logo-icon { font-size: 38px; margin-bottom: 4px; }
+  .header h1 { font-size: 24px; font-weight: 800; color: #0f172a; }
+  .header p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .card { background: var(--card); border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+  .checkin-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: 16px; text-align: center; margin-bottom: 16px; }
+  .checkin-title { font-weight: 700; color: #166534; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .checkin-sub { font-size: 12px; color: #15803d; margin-top: 4px; }
+  .btn-action { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25); }
+  .btn-action:active { background: var(--primary-dark); }
+  .info-list { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .info-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #f8fafc; border-radius: 10px; font-size: 13px; font-weight: 500; border: 1px solid #f1f5f9; }
+  .footer { text-align: center; color: #94a3b8; font-size: 12px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="badge">✨ Conexão Segura Paciente VIP</div>
+  <div class="header">
+    <div class="logo-icon">🦷</div>
+    <h1>OdontoPrime Clínica</h1>
+    <p>Odontologia Estética & Reabilitação Oral</p>
+  </div>
+  <div class="card">
+    <div class="checkin-box">
+      <div class="checkin-title">☕ Lounge com Café Nespresso & Wi-Fi 5G</div>
+      <div class="checkin-sub">Sente-se confortavelmente, seu dentista já foi avisado.</div>
+    </div>
+    <div class="info-list">
+      <div class="info-row">
+        <span>👨‍⚕️ Plantão & Emergências</span>
+        <strong style="color:var(--primary);">Sala 03</strong>
+      </div>
+      <div class="info-row">
+        <span>📶 Velocidade Local</span>
+        <strong style="color:var(--accent);">100 Mbps Dedicados</strong>
+      </div>
+      <div class="info-row">
+        <span>🕒 Tempo Estimado</span>
+        <strong>~ 5 minutos</strong>
+      </div>
+    </div>
+    <button class="btn-action" onclick="notificarRecepcao()">
+      <span>💬</span> Chamar Recepção no WhatsApp
+    </button>
+    <div id="odontoToast" style="display:none; margin-top:14px; background:#ecfdf5; border:1px solid #10b981; color:#065f46; padding:14px; border-radius:12px; text-align:center; font-weight:700;">
+      ✅ ASSISTENTE NOTIFICADA!<br>
+      <span style="font-size:12px; font-weight:400;">Aguarde alguns instantes no lounge. Café Nespresso à disposição.</span>
+    </div>
+  </div>
+  <div class="footer">PromoBeacon Health • Atendimento Humanizado</div>
+</div>
+<script>
+function notificarRecepcao() {
+  document.getElementById('odontoToast').style.display = 'block';
+}
+</script>
+</body>
+</html>

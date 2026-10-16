@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FitZone Pro - Free Pass VIP</title>
+<style>
+  :root {
+    --bg: #090a0f;
+    --card: #12151f;
+    --neon: #10b981;
+    --neon-hover: #059669;
+    --text: #f3f4f6;
+    --muted: #9ca3af;
+    --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-user-select: none; user-select: none; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px 16px; }
+  .container { max-width: 440px; width: 100%; display: flex; flex-direction: column; gap: 16px; }
+  .badge { align-self: center; background: rgba(16, 185, 129, 0.15); color: var(--neon); border: 1px solid var(--neon); font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 999px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
+  .header { text-align: center; }
+  .header h1 { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; margin-top: 4px; }
+  .header h1 span { color: var(--neon); }
+  .header p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .card { background: var(--card); border: 1px solid #1f2937; border-radius: 18px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+  .pass-box { text-align: center; border: 2px dashed rgba(16, 185, 129, 0.4); border-radius: 14px; padding: 18px 12px; background: rgba(16, 185, 129, 0.04); margin-bottom: 16px; }
+  .pass-title { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .pass-code { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: 3px; margin: 8px 0; font-family: monospace; text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+  .btn-claim { width: 100%; background: linear-gradient(135deg, var(--neon), var(--neon-hover)); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.1s; }
+  .btn-claim:active { transform: scale(0.98); }
+  .perks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .perk-item { background: #1a1e2e; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; border: 1px solid #283149; }
+  .footer { text-align: center; color: #4b5563; font-size: 12px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="badge">⚡ Wi-Fi Atleta Conectado</div>
+  <div class="header">
+    <h1>FITZONE <span>PRO CLUB</span></h1>
+    <p>Aqueça seus treinos com internet de alta performance</p>
+  </div>
+  <div class="card">
+    <div class="pass-box">
+      <div class="pass-title">Seu Day Pass Exclusivo</div>
+      <div class="pass-code" id="passCode">FITZONE-2026</div>
+      <p style="font-size:12px;color:var(--muted)">Apresente na catraca para liberar o acesso</p>
+    </div>
+    <button class="btn-claim" onclick="liberarAcesso()">
+      <span>🏋️</span> RESGATAR SHAKE PROTEICO
+    </button>
+    <div id="fitToast" style="display:none; margin-top:12px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#10b981; padding:12px; border-radius:10px; text-align:center; font-weight:700;">
+      ✅ SHAKE PROTEICO LIBERADO!<br>
+      <span style="font-size:12px; font-weight:400; color:#e5e7eb;">Apresente o código FITZONE-2026 na recepção.</span>
+    </div>
+    <div class="perks">
+      <div class="perk-item">🥤 Whey Cortesia</div>
+      <div class="perk-item">🏊 Piscina Térmica</div>
+      <div class="perk-item">🥊 Área Boxe</div>
+      <div class="perk-item">🧖 Sauna Seca</div>
+    </div>
+  </div>
+  <div class="card" style="text-align:center;padding:14px;">
+    <p style="font-size:13px;color:#d1d5db;margin-bottom:6px;"><strong>Horário de Funcionamento:</strong> 06h às 23h</p>
+    <p style="font-size:12px;color:var(--muted)">Wi-Fi Beacon C3 • Conexão Local Criptografada</p>
+  </div>
+  <div class="footer">PromoBeacon FitZone • Conectividade Inteligente</div>
+</div>
+<script>
+function liberarAcesso() {
+  document.getElementById('fitToast').style.display = 'block';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Global Tech Summit 2026 — Official Attendee Portal</title>
+<style>
+:root { --primary: #6366f1; --accent: #06b6d4; --bg: #0b0f19; --card: #111827; --text: #f9fafb; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+body { background: var(--bg); color: var(--text); padding: 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+.container { max-width: 480px; width: 100%; }
+.badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(99, 102, 241, 0.15); border: 1px solid var(--primary); color: #a5b4fc; font-size: 11.5px; font-weight: 600; padding: 4px 12px; border-radius: 999px; margin-bottom: 12px; }
+.header { text-align: center; margin-bottom: 20px; }
+.logo-icon { font-size: 44px; margin-bottom: 8px; filter: drop-shadow(0 0 16px rgba(99,102,241,0.5)); }
+h1 { font-size: 25px; font-weight: 800; color: #fff; margin-bottom: 6px; letter-spacing: -0.5px; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.subtitle { font-size: 13.5px; color: #94a3b8; line-height: 1.4; }
+.card { background: var(--card); border-radius: 16px; padding: 18px; margin-bottom: 16px; border: 1px solid #1f2937; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+.section-title { font-size: 16px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.schedule-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #1f2937; }
+.schedule-item:last-child { border-bottom: none; }
+.time-tag { background: #1e1b4b; color: #818cf8; font-weight: 700; font-size: 12px; padding: 4px 8px; border-radius: 6px; height: fit-content; }
+.schedule-info h4 { font-size: 14px; color: #fff; margin-bottom: 3px; }
+.schedule-info p { font-size: 12px; color: #9ca3af; }
+.status-pill { display: inline-block; font-size: 10px; font-weight: 700; color: #34d399; background: rgba(52,211,153,0.1); padding: 2px 6px; border-radius: 4px; margin-top: 4px; }
+.btn-main { width: 100%; background: linear-gradient(135deg, var(--primary), #4f46e5); color: white; border: none; padding: 14px; border-radius: 12px; font-size: 14.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; box-shadow: 0 4px 16px rgba(99,102,241,0.4); }
+.btn-sec { width: 100%; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; }
+.footer { text-align: center; margin-top: 16px; font-size: 11px; color: #64748b; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo-icon">🌐</div>
+    <div class="badge">⚡ PromoBeacon Gigabit Micro-Cell</div>
+    <h1>Global Tech Summit 2026</h1>
+    <p class="subtitle">Autonomous AI Systems, Edge Intelligence & Robotics</p>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🎙️ Main Auditorium Track</div>
+    <div class="schedule-item">
+      <div class="time-tag">10:00</div>
+      <div class="schedule-info">
+        <h4>Keynote: The 100ms Decision Frontier</h4>
+        <p>Dr. Marcus Vance • TypeSafe AI</p>
+        <span class="status-pill">● LIVE IN SESSION</span>
+      </div>
+    </div>
+    <div class="schedule-item">
+      <div class="time-tag">14:30</div>
+      <div class="schedule-info">
+        <h4>Panel: Decentralized Physical Infrastructure</h4>
+        <p>Elena Rostova, Satoshi Labs & Guest Leaders</p>
+        <span class="status-pill" style="color:#fbbf24; background:rgba(251,191,36,0.1);">UPCOMING</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">🎫 VIP Accreditation</div>
+    <p style="font-size:13px; color:#cbd5e1; margin-bottom:14px; line-height:1.5;">Welcome to the convention hall. Download your offline credential pass with cryptographic QR code for seamless turnstile entry.</p>
+    <button class="btn-main" onclick="alert('📲 VIP Pass downloaded! QR code stored offline in your gallery.')">
+      <span>📥 Download Offline VIP Pass (PDF)</span>
+    </button>
+    <button class="btn-sec" onclick="alert('💬 Q&A Portal: Submit your live questions for Dr. Marcus Vance!')">
+      <span>❓ Ask Question to Keynote Speaker</span>
+    </button>
+  </div>
+
+  <div class="footer">
+    <p>PromoBeacon Edge Gateway • Stand 42 • Convention Center</p>
+    <p>Zero internet dependence • 100% On-Premise Mesh</p>
+  </div>
+</div>
+</body>
+</html>

@@ -166,6 +166,9 @@ static esp_err_t root_get_handler(httpd_req_t *req)
 
     /* Device is configured, serve promotion index */
     httpd_resp_set_type(req, "text/html");
+    httpd_resp_set_hdr(req, "Cache-Control", "no-cache, no-store, must-revalidate");
+    httpd_resp_set_hdr(req, "Pragma", "no-cache");
+    httpd_resp_set_hdr(req, "Expires", "0");
     
     /* 1. Check if custom index.html exists in BigStorage SPIFFS (/storage/index.html) */
     FILE *spiffs_index = fopen("/storage/index.html", "r");
