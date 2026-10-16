@@ -44,6 +44,7 @@ static size_t local_content_len = 0;
 
 /* Forward declarations */
 static esp_err_t captive_portal_redirect_handler(httpd_req_t *req, httpd_err_code_t error);
+static esp_err_t check_and_enforce_http_admin_auth(httpd_req_t *req);
 
 /* Client authentication tracking (IP-based) */
 #define MAX_AUTH_CLIENTS 32
@@ -265,10 +266,37 @@ static void urldecode_in_place(char *str) {
 }
 
 /**
+ * @brief Validate SSID text for 802.11 standards and XSS/injection prevention
+ */
+static bool is_valid_ssid_text(const char *str)
+{
+    if (!str) return false;
+    size_t len = strlen(str);
+    if (len == 0 || len > 32) return false;
+    
+    for (size_t i = 0; i < len; i++) {
+        unsigned char c = (unsigned char)str[i];
+        /* Must be printable ASCII (32 to 126) */
+        if (c < 32 || c > 126) return false;
+        /* Strictly reject XSS, tag delimiters and shell-break characters */
+        if (c == '<' || c == '>' || c == '"' || c == '`' || c == '\\' || c == '\'') return false;
+    }
+    return true;
+}
+
+/**
  * @brief POST /setup - Handle initial configuration
  */
 static esp_err_t setup_post_handler(httpd_req_t *req)
 {
+    /* Security: If device is already configured, re-running setup requires admin auth */
+    if (is_device_configured()) {
+        if (check_and_enforce_http_admin_auth(req) != ESP_OK) {
+            ESP_LOGW(TAG, "Unauthorized attempt to overwrite configuration on already-configured device");
+            return ESP_FAIL;
+        }
+    }
+
     size_t content_len = req->content_len;
     if (content_len > 2048) {
         httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Request too large");
@@ -299,6 +327,12 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
     /* Decent enough parsing for setup form */
     if (httpd_query_key_value(buf, "promo_text", promo, sizeof(promo)) == ESP_OK) {
         urldecode_in_place(promo);
+        if (!is_valid_ssid_text(promo)) {
+            ESP_LOGW(TAG, "Rejected malicious or invalid promo_text/SSID: %s", promo);
+            free(buf);
+            httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Invalid characters in Promotion Name. HTML tags (<, >), quotes, and control chars are strictly forbidden (Max 32 chars).");
+            return ESP_FAIL;
+        }
         save_promo_text(promo);
         save_ssid(promo);
         update_ap_ssid(promo);
@@ -312,6 +346,12 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
     }
     if (httpd_query_key_value(buf, "admin_pwd", admin_pwd, sizeof(admin_pwd)) == ESP_OK) {
         urldecode_in_place(admin_pwd);
+        if (strlen(admin_pwd) < 4 || strlen(admin_pwd) > 32) {
+            ESP_LOGW(TAG, "Rejected admin_pwd with invalid length");
+            free(buf);
+            httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Admin password must be between 4 and 32 characters.");
+            return ESP_FAIL;
+        }
         save_admin_password(admin_pwd);
     }
 

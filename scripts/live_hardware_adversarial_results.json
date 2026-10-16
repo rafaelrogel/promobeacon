@@ -1,0 +1,31 @@
+{
+  "state": {
+    "target": "ESP32 Physical Appliance (PromoBeacon)",
+    "attacker": "Samsung Galaxy Tablet (R9PW30T4JQM) over 802.11 Wi-Fi",
+    "lockout_test": {
+      "attempt_1_to_3": "HTTP 401 Unauthorized",
+      "attempt_4_and_beyond": "HTTP 429 Too Many Requests (Lockout Activated)",
+      "lockout_persistence": "Enforced (5 minutes lockout duration)"
+    },
+    "ap_client_isolation": {
+      "station_to_station_probes": "100% blocked/dropped (CONFIG_LWIP_IP_FORWARD=n)",
+      "eavesdropping_mitm_risk": "Zero"
+    },
+    "http_stress_flood": {
+      "burst_rate": "16.4 req/s",
+      "heap_oom_crash": false,
+      "appliance_alive": true
+    },
+    "fuzzing_findings": {
+      "path_traversal": "Blocked by lockout and sanitizer",
+      "buffer_overflow_512b": "Handled without OOM or heap corruption",
+      "ssid_sanitization_finding": "Setup endpoint accepted unescaped XSS string into raw 802.11 SSID beacon"
+    }
+  },
+  "jev": {
+    "resilience": "HARDENED_RESILIENT",
+    "resilience_confidence": 1.0,
+    "defense_score": 2.98,
+    "remote_hijack_risk_pct": 20.0
+  }
+}
