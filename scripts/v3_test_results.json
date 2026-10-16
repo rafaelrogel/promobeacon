@@ -1,0 +1,49 @@
+{
+  "timestamp": 1792192765.661534,
+  "rigor": 1.42,
+  "results": {
+    "dns_fuzzing": {
+      "truncated_dropped": true,
+      "overflow_dropped": true,
+      "dns_healthy": true
+    },
+    "traversal": [
+      [
+        "/assets/../../etc/passwd",
+        "HTTP/1.1 302 Found"
+      ],
+      [
+        "/assets/..%2f..%2fspiffs/config.json",
+        "HTTP/1.1 302 Found"
+      ],
+      [
+        "/assets/....//....//config.json",
+        "HTTP/1.1 302 Found"
+      ],
+      [
+        "/assets/%00/root",
+        "HTTP/1.1 302 Found"
+      ]
+    ],
+    "heap_stress": {
+      "responses": [
+        "HTTP/1.1 200 OK",
+        "HTTP/1.1 200 OK",
+        "HTTP/1.1 200 OK",
+        "HTTP/1.1 200 OK",
+        "HTTP/1.1 200 OK",
+        "HTTP/1.1 200 OK",
+        "HTTP/1.1 200 OK",
+        "HTTP/1.1 200 OK"
+      ],
+      "alive": true
+    },
+    "ota_injection": "HTTP/1.1 429 Too Many Requests",
+    "uri_fuzzing": {
+      "response": "HTTP/1.1 302 Found",
+      "alive_final": true
+    }
+  },
+  "jev_verdict": "MINOR_LEAK",
+  "jev_score": 0.35
+}

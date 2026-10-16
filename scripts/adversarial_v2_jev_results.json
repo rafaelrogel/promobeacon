@@ -1,0 +1,113 @@
+{
+  "timestamp": "2026-10-16T22:25:04.654413+00:00",
+  "jev_guidance": {
+    "critical_focus": "INPUT_INJECTION",
+    "slowloris_rating": 2.96,
+    "bypass_prob": 0.51
+  },
+  "test_results": {
+    "http_verbs": [
+      {
+        "verb": "TRACE",
+        "status": "HTTP/1.1 405 Method Not Allowed"
+      },
+      {
+        "verb": "OPTIONS",
+        "status": "HTTP/1.1 405 Method Not Allowed"
+      },
+      {
+        "verb": "HEAD",
+        "status": "HTTP/1.1 405 Method Not Allowed"
+      },
+      {
+        "verb": "PUT",
+        "status": "HTTP/1.1 405 Method Not Allowed"
+      },
+      {
+        "verb": "DELETE",
+        "status": "HTTP/1.1 405 Method Not Allowed"
+      },
+      {
+        "verb": "PATCH",
+        "status": "HTTP/1.1 405 Method Not Allowed"
+      },
+      {
+        "verb": "EXPLOIT",
+        "status": "HTTP/1.1 400 Bad Request"
+      }
+    ],
+    "header_fuzzing": [
+      {
+        "case": "Missing Host Header",
+        "status": "HTTP/1.1 200 OK"
+      },
+      {
+        "case": "Negative Content-Length",
+        "status": "HTTP/1.1 400 Bad Request"
+      },
+      {
+        "case": "Extreme Content-Length (100MB)",
+        "status": "DROPPED/CLOSED"
+      },
+      {
+        "case": "Repeated Headers (Double Host)",
+        "status": "HTTP/1.1 200 OK"
+      },
+      {
+        "case": "Huge Request URI (>1024 chars)",
+        "status": "HTTP/1.1 302 Found"
+      }
+    ],
+    "slowloris_resilience": true,
+    "setup_patch_audit": [
+      {
+        "test": "Unauthenticated Reconfiguration Attempt",
+        "status": "EMPTY/CLOSED"
+      },
+      {
+        "test": "SSID Injection with HTML Script Tags",
+        "status": "nc: connect: Network is unreachable"
+      },
+      {
+        "test": "SSID with Quotes and Backticks",
+        "status": "nc: connect: Network is unreachable"
+      },
+      {
+        "test": "Admin Password Too Short (<4 chars)",
+        "status": "nc: connect: Network is unreachable"
+      },
+      {
+        "test": "Valid Clean Reconfiguration",
+        "status": "nc: connect: Network is unreachable"
+      }
+    ],
+    "traversal_audit": [
+      {
+        "path": "../../../../etc/shadow",
+        "status": "nc: connect: Network is unreachable"
+      },
+      {
+        "path": "..\\..\\..\\windows\\system32\\cmd.exe",
+        "status": "nc: connect: Network is unreachable"
+      },
+      {
+        "path": "assets/../../../index.html",
+        "status": "nc: connect: Network is unreachable"
+      },
+      {
+        "path": "exploit%00.html",
+        "status": "nc: connect: Network is unreachable"
+      },
+      {
+        "path": "/root/firmware.bin",
+        "status": "nc: connect: Network is unreachable"
+      }
+    ],
+    "final_appliance_healthy": false
+  },
+  "jev_certification": {
+    "posture": "UNACCEPTABLE_RISK",
+    "score": 0.57,
+    "risk_pct": 62.0
+  }
+}

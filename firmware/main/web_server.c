@@ -567,6 +567,11 @@ static esp_err_t favicon_get_handler(httpd_req_t *req)
  */
 esp_err_t stats_csv_get_handler(httpd_req_t *req)
 {
+    /* Require admin authentication with lockout & rate-limiting */
+    if (check_and_enforce_http_admin_auth(req) != ESP_OK) {
+        return ESP_FAIL;
+    }
+
     ESP_LOGI(TAG, "HTTP GET /stats.csv");
     
     /* 1. Set response headers */
