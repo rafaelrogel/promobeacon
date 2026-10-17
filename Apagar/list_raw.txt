@@ -1,0 +1,1 @@
+$(cat /tmp/openclaw-web-fetch-???????.log | grep -A 5000 "Lista de municípios do Ceará" | tail -n + 20 | head -n -1)

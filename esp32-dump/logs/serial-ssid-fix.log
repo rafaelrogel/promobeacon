@@ -1,0 +1,162 @@
+=== CAPTURE START 23:40:03 ===
+Agora envie o comando pelo app (Reboot ou Factory Reset).
+ Traceback (most recent call last):
+  File "/I (165602) BLE_MANAGER_NIMBLE: MTU update: conn_handle=1, mtu=256
+I (165612) BLE_MANAGER_NIMBLE: Subscribe event: attr_handle=41, cur_notify=1
+I (165632) BLE_MANAGER_NIMBLE: Subscribe event: attr_handle=22, cur_notify=1
+I (165762) BLE_MANAGER_NIMBLE: Subscribe event: attr_handle=36, cur_notify=1
+I (186422) BLE_MANAGER_NIMBLE: Authentication SUCCESS
+I (186422) BLE_MANAGER_NIMBLE: Auth Success
+I (186422) NimBLE: GATT procedure initiated: notify; 
+I (186422) NimBLE: att_handle=22
+
+I (186432) NimBLE: GATT procedure initiated: notify; 
+I (186432) NimBLE: att_handle=41
+
+I (213912) BLE_MANAGER_NIMBLE: Promo Text updated: VISITE-NOS
+I (213922) CONFIG: Device marked as configured - web portal locked
+I (213932) CONFIG: Promo text saved: VISITE-NOS
+I (213932) CONFIG: SSID saved: VISITE-NOS
+I (213932) wifi:flush txq
+I (213932) wifi:stop sw txq
+I (213932) wifi:lmac stop hw txq
+I (213942) wifi:mode : softAP (ac:a7:04:d4:23:89)
+I (213942) wifi:Total power save buffer number: 16
+I (213942) wifi:Init max length of beacon: 752/752
+I (213942) wifi:Init max length of beacon: 752/752
+I (213952) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+I (213962) WIFI_MGR: AP SSID updated (clean restart): VISITE-NOS
+I (213972) CONFIG: Device name saved: VISITE-NOS
+I (213972) BLE_MANAGER_NIMBLE: Name updated, advertising will refresh on next disconnect
+I (213982) G_MODE: Promo text updated, AP SSID and BLE name updated to: VISITE-NOS
+I (213982) CONFIG: SSID saved: VISITE-NOS
+I (213992) wifi:flush txq
+I (213992) wifi:stop sw txq
+I (213992) wifi:lmac stop hw txq
+I (214002) wifi:mode : softAP (ac:a7:04:d4:23:89)
+I (214002) wifi:Total power save buffer number: 16
+I (214002) wifi:Init max length of beacon: 752/752
+I (214012) wifi:Init max length of beacon: 752/752
+I (214012) BLE_MANAGER_NIMBLE: Promo Text updated: PromoBeacon-FIX
+I (214022) CONFIG: Device marked as configured - web portal locked
+I (214022) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+I (214032) WIFI_MGR: AP SSID updated (clean restart): VISITE-NOS
+I (214052) CONFIG: Promo text saved: PromoBeacon-FIX
+I (214052) CONFIG: SSID saved: PromoBeacon-FIX
+I (214052) wifi:flush txq
+I (214052) wifi:stop sw txq
+I (214052) wifi:lmac stop hw txq
+I (214062) wifi:mode : softAP (ac:a7:04:d4:23:89)
+I (214062) wifi:Total power save buffer number: 16
+I (214062) wifi:Init max length of beacon: 752/752
+I (214072) wifi:Init max length of beacon: 752/752
+I (214072) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+I (214082) WIFI_MGR: AP SSID updated (clean restart): PromoBeacon-FIX
+I (214102) CONFIG: Device name saved: PromoBeacon-FIX
+I (214102) BLE_MANAGER_NIMBLE: Name updated, advertising will refresh on next disconnect
+I (214102) G_MODE: Promo text updated, AP SSID and BLE name updated to: PromoBeacon-FIX
+I (214112) CONFIG: SSID saved: PromoBeacon-FIX
+I (214112) wifi:flush txq
+I (214112) wifi:stop sw txq
+I (214122) wifi:lmac stop hw txq
+I (214122) wifi:mode : softAP (ac:a7:04:d4:23:89)
+I (214122) wifi:Total power save buffer number: 16
+I (214132) wifi:Init max length of beacon: 752/752
+I (214132) wifi:Init max length of beacon: 752/752
+I (214142) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+I (214152) WIFI_MGR: AP SSID updated (clean restart): PromoBeacon-FIX
+I (226792) wifi:new:<1,1>, old:<1,1>, ap:<1,1>, sta:<255,255>, prof:1, snd_ch_cfg:0x0
+I (226792) wifi:station: ae:0c:fe:2c:d6:2b join, AID=1, bgn, 40U
+I (226792) MAIN: Station connected: AID=1, MAC=ae:0c:fe:2c:d6:2b
+I (226802) CLIENT_TRACKER: Client connected: ae:0c:fe:2c:d6:2b
+I (226802) CLIENT_TRACKER: New MAC tracked: AE:0C:FE:2C:D6:2B (first visit)
+I (226862) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.2
+I (236562) wifi:<ba-add>idx:2 (ifx:1, ae:0c:fe:2c:d6:2b), tid:0, ssn:12, winSize:64
+I (239942) WEB_SVR: HTTP GET / - Device configured: 1 - Free Heap: 86520
+I (246252) WEB_SVR: Redirecting probe for unauthenticated client: /generate_204
+I (253962) BLE_MANAGER_NIMBLE: Subscribe event: attr_handle=22, cur_notify=0
+I (253962) BLE_MANAGER_NIMBLE: Subscribe event: attr_handle=36, cur_notify=0
+I (253972) BLE_MANAGER_NIMBLE: Subscribe event: attr_handle=41, cur_notify=0
+I (253972) BLE_MANAGER_NIMBLE: BLE Disconnected
+I (253982) NimBLE: GAP procedure initiated: stop advertising.
+
+I (253982) NimBLE: GAP procedure initiated: advertise; 
+I (253992) NimBLE: disc_mode=2
+I (253992) NimBLE:  adv_channel_map=0 own_addr_type=0 adv_filter_policy=0 adv_itvl_min=0 adv_itvl_max=0
+I (254002) NimBLE: 
+
+I (254002) BLE_MANAGER_NIMBLE: Advertising started as PromoBeacon-FIX
+I (294522) WIFI_MGR: DNS Query received (Len: 47)
+I (306942) BLE_MANAGER_NIMBLE: BLE Connected
+I (308092) BLE_MANAGER_NIMBLE: MTU update: conn_handle=1, mtu=256
+I (308102) BLE_MANAGER_NIMBLE: Subscribe event: attr_handle=41, cur_notify=1
+I (308122) BLE_MANAGER_NIMBLE: Subscribe event: attr_handle=22, cur_notify=1
+I (308182) BLE_MANAGER_NIMBLE: Subscribe event: attr_handle=36, cur_notify=1
+I (328662) BLE_MANAGER_NIMBLE: Authentication SUCCESS
+I (328662) BLE_MANAGER_NIMBLE: Auth Success
+I (328662) NimBLE: GATT procedure initiated: notify; 
+I (328662) NimBLE: att_handle=22
+
+I (328662) NimBLE: GATT procedure initiated: notify; 
+I (328672) NimBLE: att_handle=41
+
+I (360562) BLE_MANAGER_NIMBLE: Promo Text updated: VISITE-NOS
+I (360562) CONFIG: Device marked as configured - web portal locked
+I (360572) CONFIG: Promo text saved: VISITE-NOS
+I (360572) CONFIG: SSID saved: VISITE-NOS
+I (360572) wifi:station: ae:0c:fe:2c:d6:2b leave, AID = 1, reason = 2, bss_flags is 33786995, bss:0x3fcc8f04
+I (360582) wifi:new:<1,0>, old:<1,1>, ap:<1,1>, sta:<255,255>, prof:1, snd_ch_cfg:0x0
+I (360592) wifi:<ba-del>idx:2, tid:0
+I (360592) wifi:new:<1,1>, old:<1,0>, ap:<1,1>, sta:<255,255>, prof:1, snd_ch_cfg:0x0
+I (360602) MAIN: Station disconnected: AID=1, MAC=ae:0c:fe:2c:d6:2b
+I (360602) CLIENT_TRACKER: Client disconnected: ae:0c:fe:2c:d6:2b
+I (360612) CLIENT_TRACKER: MAC AE:0C:FE:2C:D6:2B session: 134 sec, total: 134 sec across 1 visits
+I (360622) CLIENT_TRACKER: Session duration: 134 seconds, 0 requests, paths: 0x0000
+I (360642) wifi:flush txq
+I (360642) wifi:stop sw txq
+I (360642) wifi:lmac stop hw txq
+I (360652) wifi:mode : softAP (ac:a7:04:d4:23:89)
+I (360652) wifi:Total power save buffer number: 16
+I (360652) wifi:Init max length of beacon: 752/752
+I (360652) wifi:Init max length of beacon: 752/752
+I (360662) BLE_MANAGER_NIMBLE: Promo Text updated: PromoBeacon
+I (360662) CONFIG: Device marked as configured - web portal locked
+I (360672) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+I (360682) WIFI_MGR: AP SSID updated (clean restart): VISITE-NOS
+I (360692) CONFIG: Device name saved: VISITE-NOS
+I (360692) BLE_MANAGER_NIMBLE: Name updated, advertising will refresh on next disconnect
+I (360702) G_MODE: Promo text updated, AP SSID and BLE name updated to: VISITE-NOS
+I (360702) CONFIG: SSID saved: VISITE-NOS
+I (360712) wifi:flush txq
+I (360712) wifi:stop sw txq
+I (360712) wifi:lmac stop hw txq
+I (360722) wifi:mode : softAP (ac:a7:04:d4:23:89)
+I (360722) wifi:Total power save buffer number: 16
+I (360722) wifi:Init max length of beacon: 752/752
+I (360732) wifi:Init max length of beacon: 752/752
+I (360732) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+I (360742) WIFI_MGR: AP SSID updated (clean restart): VISITE-NOS
+I (360762) CONFIG: Promo text saved: PromoBeacon
+I (360762) CONFIG: SSID saved: PromoBeacon
+I (360762) wifi:flush txq
+I (360762) wifi:stop sw txq
+I (360762) wifi:lmac stop hw txq
+I (360772) wifi:mode : softAP (ac:a7:04:d4:23:89)
+I (360772) wifi:Total power save buffer number: 16
+I (360772) wifi:Init max length of beacon: 752/752
+I (360782) wifi:Init max length of beacon: 752/752
+I (360782) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+I (360792) WIFI_MGR: AP SSID updated (clean restart): PromoBeacon
+I (360802) CONFIG: Device name saved: PromoBeacon
+I (360802) BLE_MANAGER_NIMBLE: Name updated, advertising will refresh on next disconnect
+I (360812) G_MODE: Promo text updated, AP SSID and BLE name updated to: PromoBeacon
+I (360812) CONFIG: SSID saved: PromoBeacon
+I (360822) wifi:flush txq
+I (360822) wifi:stop sw txq
+I (360822) wifi:lmac stop hw txq
+I (360832) wifi:mode : softAP (ac:a7:04:d4:23:89)
+I (360832) wifi:Total power save buffer number: 16
+I (360832) wifi:Init max length of beacon: 752/752
+I (360842) wifi:Init max length of beacon: 752/752
+I (360842) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+I (360852) WIFI_MGR: AP SSID updated (clean restart): PromoBeacon

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Doe - Portfolio</title>
+    <meta name="description" content="Professional portfolio of John Doe, web designer and developer.">
+    <link rel="stylesheet" href="style.proposed.css">
+    <style>
+        /* Neon dark theme */
+        :root {
+            --primary: #00ffff;
+            --bg: #0d0d0d;
+            --text: #e0e0e0;
+            --transition: 0.3s;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        header {
+            background-color: #0d0d0d;
+            border-bottom: 2px solid var(--primary);
+            padding: 1rem;
+        }
+        header .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-logo {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .nav-container nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 0.5rem;
+        }
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        header nav ul li {
+            list-style: none;
+        }
+        .hero {
+            background: linear-gradient(135deg, #0d0d0d, #0d1a2a);
+            color: var(--primary);
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: #0d0d0d;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .cta-button:hover {
+            background-color: #0099ff;
+        }
+        section {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .about, .projects, .contact {
+            padding: 2rem;
+        }
+        .projects .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .project-card {
+            background-color: #1a1a1a;
+            border: 1px solid var(--primary);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .project-link {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        footer {
+            background-color: #0d0d0d;
+            color: var(--text);
+            text-align: center;
+            padding: 1rem;
+            border-top: 2px solid var(--primary);
+        }
+        .social-links {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .social-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .social-links a:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <a href="#home" class="nav-logo">John Doe</a>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>John Doe</h1>
+            <p>Web Designer & Developer</p>
+            <a href="#projects" class="cta-button">View Projects</a>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About Me</h2>
+        <p>I am a passionate web designer and developer with a knack for creating clean, responsive, and user-friendly websites.</p>
+    </section>
+
+    <section id="projects" class="projects">
+        <h2>Projects</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <h3>Project One</h3>
+                <p>Short description of the project.</p>
+                <a href="#" class="project-link">View</a>
+            </div>
+            <div class="project-card">
+                <h3>Project Two</h3>
+                <p>Short description of the second project.</p>
+                <a href="#" class="project-link">View</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Contact Me</h2>
+        <form id="contact-form">
+            <input type="text" placeholder="Name" required>
+            <input type="email" placeholder="Email" required>
+            <textarea placeholder="Message" required></textarea>
+            <button type="submit" class="cta-button">Send</button>
+        </form>
+        <div id="form-response"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 John Doe. All rights reserved.</p>
+        <ul class="social-links">
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">GitHub</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        // Improved client-side validation
+        const form = document.getElementById('contact-form');
+        const responseDiv = document.getElementById('form-response');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (form.checkValidity()) {
+                responseDiv.textContent = 'Thank you! Your message has been sent.';
+            } else {
+                responseDiv.textContent = 'Please fill out all fields correctly.';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Doe - Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>John Doe</h1>
+            <p>Web Designer & Developer</p>
+            <a href="#projects" class="cta-button">View Projects</a>
+        </div>
+    </section>
+    <section id="about" class="about">
+        <h2>About Me</h2>
+        <p>Brief bio about John Doe, his passion for design, and his experience.</p>
+    </section>
+    <section id="projects" class="projects">
+        <h2>Projects</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <h3>Project One</h3>
+                <p>Short description.</p>
+                <a href="#">View</a>
+            </div>
+            <div class="project-card">
+                <h3>Project Two</h3>
+                <p>Short description.</p>
+                <a href="#">View</a>
+            </div>
+        </div>
+    </section>
+    <section id="contact" class="contact">
+        <h2>Contact Me</h2>
+        <form id="contact-form">
+            <input type="text" placeholder="Name" required>
+            <input type="email" placeholder="Email" required>
+            <textarea placeholder="Message" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+        <div id="form-response"></div>
+    </section>
+    <footer>
+        <p>&copy; 2026 John Doe. All rights reserved.</p>
+        <ul class="social-links">
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">GitHub</a></li>
+        </ul>
+    </footer>
+    <script>
+        // Simple client-side validation for the contact form
+        const form = document.getElementById('contact-form');
+        const responseDiv = document.getElementById('form-response');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Basic validation
+            if (form.checkValidity()) {
+                responseDiv.textContent = 'Thank you! Your message has been sent.';
+            } else {
+                responseDiv.textContent = 'Please fill out all fields correctly.';
+            }
+        });
+    </script>
+</body>
+</html>

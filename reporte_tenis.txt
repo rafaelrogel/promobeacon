@@ -1,0 +1,10 @@
+RELATÓRIO DIÁRIO - Pechinchas Ténis Infantil (14/10/2026)
+=================================================================
+Nenhuma oferta encontrada hoje com preço verificado ≤ €20 e tamanhos 32-34 ou 36-38 disponíveis.
+
+Detalhes da varredura:
+- Calçado Guimarães: Vários produtos entre 9,90€ e 19,99€, mas sem stock nos tamanhos alvo (32-34, 36-38).
+- Decathlon.pt, Spartoo.pt, Adidas.pt: Acesso bloqueado (erro 403/503) via script automático.
+- Validação de preço aplicada: snippets do Google ignorados, apenas preços reais na página considerados.
+
+Recomendação: Tentar novamente mais tarde ou verificar manualmente a secção de saldos da Calçado Guimarães.

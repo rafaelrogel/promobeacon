@@ -1,0 +1,3 @@
+file 'a.wav'
+file 'silence.wav'
+file 'b.wav'

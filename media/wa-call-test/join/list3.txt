@@ -1,0 +1,5 @@
+file '1a.wav'
+file 's1.wav'
+file '1b.wav'
+file 's1.wav'
+file '1c.wav'

@@ -1,0 +1,2756 @@
+=== daily_checks 2026-08-20T09:05:16.838387+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-20T12:10:01.618882+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-20T12:10:01.618882+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-20T16:10:01.294336+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-20T16:10:01.294336+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-20T20:10:01.494031+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-20T20:10:01.494031+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-21T00:10:01.876050+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-21T00:10:01.876050+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-21T04:10:01.226239+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-21T04:10:01.226239+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-21T08:10:02.053161+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-21T08:10:02.053161+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-21T12:10:01.686559+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-21T12:10:01.686559+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-21T16:10:01.087038+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-21T16:10:01.087038+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-21T20:10:01.433159+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-21T20:10:01.433159+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-22T00:10:02.018453+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T00:10:02.018453+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T04:10:01.403359+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T04:10:01.403359+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T08:10:01.883527+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T08:10:01.883527+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T12:10:01.255416+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T12:10:01.255416+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T16:10:01.578201+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T16:10:01.578201+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T20:10:02.063119+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-22T20:10:02.063119+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T00:10:01.685539+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T00:10:01.685539+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T04:10:01.374078+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T04:10:01.374078+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T08:10:01.742010+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T08:10:01.742010+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   32G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T12:10:01.140161+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   31G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T12:10:01.140161+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   62G   31G  67% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T16:10:01.740473+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T16:10:01.740473+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T20:10:01.558174+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-23T20:10:01.558174+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T00:10:01.926112+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T00:10:01.926112+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T04:10:01.482998+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T04:10:01.482998+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T08:10:01.584073+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T08:10:01.584073+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T12:10:02.068898+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T12:10:02.068898+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T16:10:01.436035+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T16:10:01.436035+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T20:10:01.599717+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-24T20:10:01.599717+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-25T00:10:01.481463+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-25T00:10:01.481463+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-25T04:10:01.253404+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-25T04:10:01.253404+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-25T08:10:02.044575+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-25T08:10:02.044575+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   63G   31G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-25T12:10:01.998535+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-25T12:10:01.998535+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-25T16:10:01.240096+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-25T16:10:01.240096+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-25T20:10:01.312880+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-25T20:10:01.312880+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-26T00:10:01.851759+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T00:10:01.851759+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T04:10:02.073686+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T04:10:02.073686+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T08:10:02.050043+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T08:10:02.050043+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T12:10:01.355592+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T12:10:01.355592+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  68% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T16:10:01.762844+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T16:10:01.762844+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T20:10:02.384608+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-26T20:10:02.384608+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-27T00:10:01.600549+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-27T00:10:01.600549+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   64G   30G  69% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-27T04:11:54.298404+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   28G  71% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-27T04:11:54.298404+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   28G  71% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-27T08:10:01.154801+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   28G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-27T08:10:01.154801+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   28G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-27T12:10:01.650872+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   28G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-27T12:10:01.650872+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   28G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-27T16:10:01.807298+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   28G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-27T16:10:01.807298+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   28G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-27T20:10:01.619968+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-27T20:10:01.619968+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-28T00:10:01.915288+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T00:10:01.915288+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T04:10:01.168446+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T04:10:01.168446+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T08:10:01.550153+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T08:10:01.550153+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T12:10:01.655486+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T12:10:01.655486+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T16:10:01.094277+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T16:10:01.094277+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T20:10:01.538996+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-28T20:10:01.538996+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  71% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T00:10:01.463838+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T00:10:01.463838+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T04:10:01.595608+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T04:10:01.595608+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T08:10:01.896042+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T08:10:01.896042+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   66G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T12:10:01.798593+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T12:10:01.798593+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T16:10:01.630119+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T16:10:01.630119+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T20:10:02.033737+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-29T20:10:02.033737+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-30T00:10:01.531225+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-30T00:10:01.531225+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-30T04:10:01.500996+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-30T04:10:01.500996+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-30T08:10:01.224201+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-30T08:10:01.224201+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-30T12:10:01.333653+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-30T12:10:01.333653+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-30T16:10:01.885084+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-30T16:10:01.885084+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-30T20:10:01.600735+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-30T20:10:01.600735+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-08-31T00:10:02.087707+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T00:10:02.087707+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T04:10:01.108085+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T04:10:01.108085+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T08:10:02.001102+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T08:10:02.001102+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T12:10:01.581996+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T12:10:01.581996+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   67G   27G  72% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T16:10:01.598128+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   68G   26G  73% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T16:10:01.598128+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   68G   26G  73% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T20:10:01.358642+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   68G   26G  73% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-08-31T20:10:01.358642+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   68G   26G  73% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T00:10:01.185358+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   68G   26G  73% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T00:10:01.185358+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   68G   26G  73% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T04:10:02.086124+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   68G   26G  73% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T04:10:02.086124+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   68G   26G  73% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T08:10:01.364503+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   68G   26G  73% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T08:10:01.364503+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   68G   26G  73% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T12:10:01.522994+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T12:10:01.522994+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T16:10:02.036325+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T16:10:02.036325+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T20:10:01.596990+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-01T20:10:01.596990+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T00:10:01.430027+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T00:10:01.430027+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T04:10:01.135199+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T04:10:01.135199+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T08:10:01.737246+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T08:10:01.737246+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T12:10:01.651801+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T12:10:01.651801+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T16:10:01.994568+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T16:10:01.994568+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T20:10:02.011981+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-02T20:10:02.011981+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T00:10:01.704537+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T00:10:01.704537+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T04:10:01.453019+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T04:10:01.453019+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T08:10:01.605213+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T08:10:01.605213+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T12:10:01.741045+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T12:10:01.741045+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T16:10:01.759118+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T16:10:01.759118+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T20:10:01.178879+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-03T20:10:01.178879+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T00:10:01.143088+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T00:10:01.143088+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T04:10:02.101355+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T04:10:02.101355+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T08:10:02.053621+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T08:10:02.053621+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T12:10:01.303986+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T12:10:01.303986+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T16:10:01.662397+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T16:10:01.662397+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T20:10:01.851468+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-04T20:10:01.851468+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T00:10:01.619172+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T00:10:01.619172+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T04:10:01.499859+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T04:10:01.499859+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T08:10:01.543934+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T08:10:01.543934+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T12:10:02.040511+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T12:10:02.040511+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T16:10:01.212293+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T16:10:01.212293+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-05T20:10:01.577670+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-05T20:10:01.577670+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-06T00:10:01.740520+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T00:10:01.740520+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T04:10:01.744539+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T04:10:01.744539+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T08:10:01.639765+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T08:10:01.639765+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T12:10:01.326678+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T12:10:01.326678+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T16:10:01.668354+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T16:10:01.668354+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T20:10:01.289126+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-06T20:10:01.289126+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T00:10:01.396951+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T00:10:01.396951+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T04:10:02.208520+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T04:10:02.208520+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T08:10:01.154198+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T08:10:01.154198+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T12:10:01.721909+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T12:10:01.721909+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T16:10:01.295845+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T16:10:01.295845+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T20:10:01.530734+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-07T20:10:01.530734+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T00:10:01.988142+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T00:10:01.988142+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T04:10:01.636534+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T04:10:01.636534+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T08:10:01.392152+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T08:10:01.392152+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T12:10:01.401834+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T12:10:01.401834+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T16:10:01.242221+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T16:10:01.242221+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T20:10:01.813329+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-08T20:10:01.813329+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T00:10:01.918015+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T00:10:01.918015+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T04:10:01.419819+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T04:10:01.419819+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T08:10:01.308108+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T08:10:01.308108+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T12:10:01.340267+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T12:10:01.340267+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T16:10:02.063602+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T16:10:02.063602+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T20:10:01.718939+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-09T20:10:01.718939+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T00:10:01.379345+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T00:10:01.379345+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T04:10:01.452487+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T04:10:01.452487+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T08:10:01.661416+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T08:10:01.661416+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T12:10:01.666515+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T12:10:01.666515+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T16:10:01.834487+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T16:10:01.834487+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T20:10:01.687327+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-10T20:10:01.687327+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  74% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T00:10:01.252419+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T00:10:01.252419+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T04:10:02.051319+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T04:10:02.051319+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T08:10:01.363914+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T08:10:01.363914+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T12:10:01.187377+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T12:10:01.187377+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T16:10:01.381813+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T16:10:01.381813+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   25G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T20:10:01.797791+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-11T20:10:01.797791+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T00:10:01.930365+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T00:10:01.930365+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T04:10:01.709512+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T04:10:01.709512+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T08:10:01.498430+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T08:10:01.498430+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T12:10:01.283327+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T12:10:01.283327+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T16:10:01.380712+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T16:10:01.380712+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T20:10:01.478382+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-12T20:10:01.478382+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T00:10:01.946841+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T00:10:01.946841+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T04:10:01.977673+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T04:10:01.977673+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T08:10:01.347661+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T08:10:01.347661+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   69G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T12:10:01.467006+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T12:10:01.467006+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T16:10:01.892305+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T16:10:01.892305+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T20:10:01.405834+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-13T20:10:01.405834+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T00:10:02.031950+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T00:10:02.031950+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T04:10:01.629097+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T04:10:01.629097+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T08:10:01.865792+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T08:10:01.865792+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T12:10:01.376302+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T12:10:01.376302+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T16:10:01.810289+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T16:10:01.810289+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T20:10:01.538208+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-14T20:10:01.538208+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T00:10:01.836314+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T00:10:01.836314+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T04:24:47.152316+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: DOWN
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T04:24:47.152316+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: DOWN
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T08:10:01.734218+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T08:10:01.734218+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T12:10:01.360178+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T12:10:01.360178+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T16:10:01.909191+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T16:10:01.909191+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T20:10:01.886860+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-15T20:10:01.886860+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T00:10:01.714397+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T00:10:01.714397+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T04:10:01.720520+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T04:10:01.720520+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T08:10:01.934730+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T08:10:01.934730+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  75% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T12:10:01.556630+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T12:10:01.556630+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T16:10:01.579018+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T16:10:01.579018+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   70G   24G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T20:10:02.077656+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   71G   23G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-16T20:10:02.077656+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   71G   23G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T00:10:01.272316+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   71G   23G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T00:10:01.272316+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   71G   23G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T04:10:01.845142+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   71G   23G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T04:10:01.845142+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   71G   23G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T08:10:01.220659+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   71G   23G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T08:10:01.220659+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   71G   23G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T12:10:01.408070+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   71G   23G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T12:10:01.408070+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   71G   23G  76% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T16:10:02.468236+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T16:10:02.468236+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T20:10:01.147802+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-17T20:10:01.147802+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T00:10:01.899667+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T00:10:01.899667+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T04:10:01.191526+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T04:10:01.191526+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T08:10:01.519730+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T08:10:01.519730+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T12:10:01.751538+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T12:10:01.751538+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T16:10:01.568578+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T16:10:01.568578+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T20:10:01.382601+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-18T20:10:01.382601+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T00:10:01.165608+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T00:10:01.165608+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T04:10:02.139207+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T04:10:02.139207+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T08:10:02.004454+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T08:10:02.004454+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  77% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T12:10:01.463239+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T12:10:01.463239+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T16:10:01.148920+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T16:10:01.148920+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T20:10:01.296662+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-19T20:10:01.296662+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-20T00:10:01.854308+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-20T00:10:01.854308+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-20T04:10:02.251673+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-20T04:10:02.251673+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-20T08:10:01.900927+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-20T08:10:01.900927+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-20T12:10:02.059463+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-20T12:10:02.059463+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-20T16:10:01.998079+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-20T16:10:01.998079+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-20T20:10:01.533188+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-20T20:10:01.533188+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ok
+=== daily_checks 2026-09-21T00:10:01.639339+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T00:10:01.639339+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T04:10:01.621350+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T04:10:01.621350+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T08:10:01.899269+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T08:10:01.899269+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T12:10:01.876509+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T12:10:01.876509+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T16:10:01.945645+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T16:10:01.945645+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T20:10:02.090503+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-21T20:10:02.090503+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T00:10:01.690954+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T00:10:01.690954+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T04:10:02.077681+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T04:10:02.077681+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T08:10:02.567706+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T08:10:02.567706+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T12:10:02.259515+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T12:10:02.259515+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T16:10:01.768246+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T16:10:01.768246+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T20:10:01.253822+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-22T20:10:01.253822+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T00:10:01.189449+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T00:10:01.189449+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T04:10:01.942479+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T04:10:01.942479+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T08:10:01.475387+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T08:10:01.475387+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T12:10:01.593641+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T12:10:01.593641+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T16:10:01.482762+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T16:10:01.482762+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T20:10:01.174935+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  80% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-23T20:10:01.174935+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  80% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T00:10:01.507058+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  80% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T00:10:01.507058+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  80% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T04:10:01.905096+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  80% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T04:10:01.905096+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  80% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T08:10:02.024440+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T08:10:02.024440+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T12:10:01.133177+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T12:10:01.133177+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T16:10:01.980713+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T16:10:01.980713+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T20:10:01.438279+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-24T20:10:01.438279+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T00:10:02.020059+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T00:10:02.020059+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T04:10:01.833224+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T04:10:01.833224+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T08:10:01.171603+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T08:10:01.171603+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T12:10:02.071805+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T12:10:02.071805+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T16:10:01.479471+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T16:10:01.479471+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T20:10:03.404409+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-25T20:10:03.404409+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T00:10:01.886324+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T00:10:01.886324+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T04:10:01.869467+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T04:10:01.869467+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T08:10:01.329514+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T08:10:01.329514+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T12:10:01.433202+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T12:10:01.433202+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T16:10:01.811786+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T16:10:01.811786+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T20:10:01.936084+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-26T20:10:01.936084+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T00:10:01.817397+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T00:10:01.817397+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T04:10:02.127421+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T04:10:02.127421+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T08:10:01.940932+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T08:10:01.940932+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T12:10:02.060890+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T12:10:02.060890+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T16:10:02.066634+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T16:10:02.066634+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T20:10:01.652336+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-27T20:10:01.652336+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T00:10:01.558473+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T00:10:01.558473+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T04:10:02.100408+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T04:10:02.100408+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T08:10:01.282759+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T08:10:01.282759+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T12:10:01.128757+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T12:10:01.128757+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   19G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T16:10:02.004396+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   76G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T16:10:02.004396+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   76G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T20:10:01.884061+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-28T20:10:01.884061+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T00:10:01.988920+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T00:10:01.988920+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T04:10:01.971572+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T04:10:01.971572+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T08:10:01.336424+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T08:10:01.336424+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T12:10:01.300636+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T12:10:01.300636+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T16:23:00.146684+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T16:23:00.146684+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T20:22:50.899598+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-29T20:22:50.899598+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   75G   18G  81% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-30T00:25:44.270818+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-30T00:25:44.270818+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-30T04:47:57.970095+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-30T04:47:57.970095+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-30T09:00:17.203570+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-30T09:00:17.203570+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-30T13:10:35.778574+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-30T13:10:35.778574+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-30T20:10:01.467404+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   76G   18G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-09-30T20:10:01.467404+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   76G   18G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T00:10:01.217235+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T00:10:01.217235+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T04:10:01.108198+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T04:10:01.108198+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T08:10:02.136570+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T08:10:02.136570+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T12:10:01.707388+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T12:10:01.707388+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T16:10:01.765441+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T16:10:01.765441+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T20:10:02.059118+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-01T20:10:02.059118+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T00:10:01.135977+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T00:10:01.135977+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T04:10:01.141063+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T04:10:01.141063+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  82% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T08:10:01.943161+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T08:10:01.943161+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T12:10:01.514769+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T12:10:01.514769+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T16:10:01.477966+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T16:10:01.477966+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T20:10:01.535525+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-02T20:10:01.535525+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T00:10:01.841940+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T00:10:01.841940+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T04:10:01.847143+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T04:10:01.847143+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T08:10:01.852766+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T08:10:01.852766+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T12:10:01.996163+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T12:10:01.996163+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T16:10:01.577189+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T16:10:01.577189+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T20:10:01.099513+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-03T20:10:01.099513+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T00:10:01.665391+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T00:10:01.665391+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   77G   17G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T04:12:24.689578+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  83% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T04:12:24.689578+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  83% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T08:10:02.208913+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T08:10:02.208913+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  83% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T12:10:01.878270+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T12:10:01.878270+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T16:10:01.596214+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T16:10:01.596214+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T20:10:01.146890+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-04T20:10:01.146890+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T00:10:01.259125+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T00:10:01.259125+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T04:10:01.886270+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T04:10:01.886270+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T08:10:01.250914+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T08:10:01.250914+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T12:10:02.002033+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T12:10:02.002033+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   78G   16G  84% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T16:10:01.432007+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   79G   15G  85% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T16:10:01.432007+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   79G   15G  85% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T20:10:01.828618+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   79G   15G  85% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-05T20:10:01.828618+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   79G   15G  85% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T00:10:02.058872+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   79G   15G  85% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T00:10:02.058872+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   79G   15G  85% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T04:57:35.859093+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T04:57:35.859093+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T08:10:02.412724+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   79G   15G  85% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T08:10:02.412724+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   79G   15G  85% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T12:10:01.748032+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T12:10:01.748032+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T16:10:01.956840+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T16:10:01.956840+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T20:10:01.286247+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-06T20:10:01.286247+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T00:10:01.500643+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T00:10:01.500643+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T04:10:01.085768+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T04:10:01.085768+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T08:10:01.551383+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T08:10:01.551383+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T12:10:01.893671+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T12:10:01.893671+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T16:10:01.471950+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T16:10:01.471950+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T20:10:01.403399+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-07T20:10:01.403399+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T00:10:01.465778+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T00:10:01.465778+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T04:10:01.251276+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T04:10:01.251276+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T08:10:01.793293+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T08:10:01.793293+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T12:10:01.279808+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T12:10:01.279808+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T16:10:01.898629+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T16:10:01.898629+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T20:10:01.740490+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-08T20:10:01.740490+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T00:10:01.887528+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T00:10:01.887528+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T04:10:01.654353+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T04:10:01.654353+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T08:10:01.757460+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T08:10:01.757460+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T12:10:01.676546+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T12:10:01.676546+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   14G  86% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T16:10:02.032938+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T16:10:02.032938+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T20:10:01.382519+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-09T20:10:01.382519+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T00:10:01.835228+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T00:10:01.835228+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T04:10:01.300339+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T04:10:01.300339+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T08:10:01.178482+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T08:10:01.178482+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T12:10:02.060006+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T12:10:02.060006+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T16:10:01.501336+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T16:10:01.501336+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T20:10:01.912955+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-10T20:10:01.912955+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T00:10:01.789478+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   12G  88% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T00:10:01.789478+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   81G   12G  88% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T04:10:01.689716+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  88% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T04:10:01.689716+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  88% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T08:10:01.799154+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  88% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T08:10:01.799154+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  88% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T12:10:24.096661+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: DOWN
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T12:10:24.096661+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: DOWN
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T16:12:45.162508+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T16:12:45.162508+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T20:21:41.051025+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-11T20:21:41.051025+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T00:17:21.054103+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  90% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T00:17:21.054103+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  90% /
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T04:29:05.456967+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T04:29:05.456967+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T08:25:02.615409+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T08:25:02.615409+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T12:14:13.789799+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T12:14:13.789799+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T16:10:02.057674+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T16:10:02.057674+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   80G   13G  87% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T20:10:01.657190+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-12T20:10:01.657190+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T00:10:01.454495+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T00:10:01.454495+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T04:10:02.953715+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T04:10:02.953715+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T08:10:01.859213+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T08:10:01.859213+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   12G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T12:10:01.375849+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T12:10:01.375849+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T16:10:01.333163+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T16:10:01.333163+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   82G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T20:10:02.117556+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-13T20:10:02.117556+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T00:10:01.924312+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T00:10:01.924312+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T04:10:04.607948+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T04:10:04.607948+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T08:10:01.295264+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T08:10:01.295264+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T12:10:01.557518+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T12:10:01.557518+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T16:10:01.925659+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T16:10:01.925659+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T20:10:01.640953+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-14T20:10:01.640953+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-15T00:10:01.830985+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-15T00:10:01.830985+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-15T04:32:51.493600+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-15T04:32:51.493600+00:00 ===
+DISCO: ERR Command 'df -h / | tail -1' timed out after 30 seconds
+OLLAMA: ERR Command 'curl -s --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && echo OK || echo DOWN' timed out after 30 seconds
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-15T12:10:02.286317+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-15T12:10:02.286317+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-15T16:10:02.079469+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-15T16:10:02.079469+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-15T20:10:01.211822+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-15T20:10:01.211822+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   83G   11G  89% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T00:10:02.132375+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T00:10:02.132375+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T04:10:01.823226+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T04:10:01.823226+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T08:10:01.312407+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T08:10:01.312407+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   72G   22G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T12:10:01.403818+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T12:10:01.403818+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T16:10:02.377337+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T16:10:02.377337+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T20:10:02.373095+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-16T20:10:02.373095+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  79% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-17T00:10:01.430732+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente
+=== daily_checks 2026-10-17T00:10:01.430732+00:00 ===
+DISCO: /dev/mapper/ubuntu--vg-ubuntu--lv   98G   73G   21G  78% /
+OLLAMA: OK
+MEMORIA_DIARIA: ausente

@@ -1,0 +1,57 @@
+[
+  {
+    "airline": "TAP",
+    "flight": "TP 88",
+    "route": "LIS->GRU",
+    "price": "€720",
+    "duration": "11h30m",
+    "stops": "Direto",
+    "departure": "09:30",
+    "arrival": "16:00",
+    "baggage": "23kg incluída"
+  },
+  {
+    "airline": "LATAM",
+    "flight": "LA 8085",
+    "route": "LIS->GRU",
+    "price": "€680",
+    "duration": "14h05m",
+    "stops": "1 escala (MAD 2h)",
+    "departure": "06:15",
+    "arrival": "18:20",
+    "baggage": "23kg incluída"
+  },
+  {
+    "airline": "Air Europa",
+    "flight": "UX 1154",
+    "route": "LIS->GRU",
+    "price": "€645",
+    "duration": "16h40m",
+    "stops": "1 escala (MAD 4h30m)",
+    "departure": "11:40",
+    "arrival": "22:20",
+    "baggage": "23kg incluída"
+  },
+  {
+    "airline": "Azul",
+    "flight": "AD 8701",
+    "route": "LIS->VCP",
+    "price": "€590",
+    "duration": "18h55m",
+    "stops": "1 escala (CDG 6h)",
+    "departure": "05:00",
+    "arrival": "21:55",
+    "baggage": "Somente mochila"
+  },
+  {
+    "airline": "TAP",
+    "flight": "TP 1820",
+    "route": "LIS->REC",
+    "price": "€830",
+    "duration": "9h10m",
+    "stops": "Direto",
+    "departure": "22:40",
+    "arrival": "04:50",
+    "baggage": "23kg incluída"
+  }
+]

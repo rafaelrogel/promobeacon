@@ -1,0 +1,1 @@
+{"type": "https://paymentauth.org/problems/payment-required", "title": "Payment Required", "status": 402, "detail": "Payment is required.", "challengeId": "_L6_47dDQ38VSMxtAQgQmZnVum6bdz2RXy9F-ohS8Mc"}

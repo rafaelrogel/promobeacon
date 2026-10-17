@@ -1,0 +1,11 @@
+{
+  "lastHeartbeat": "2026-10-12T19:35:00Z",
+  "lastChecks": {
+    "docker": "18 containers Up (todos saudáveis)",
+    "disk": "89% (12G livres) - subiu de 82% desde 01-10, vigiar",
+    "load": "1.16 (normal)",
+    "mem": "5.6G/7G usados (1.4G available)",
+    "uptime": "4h (máquina reiniciou desde último check)"
+  },
+  "notes": "2026-10-12 19:35 UTC - Tudo funcional. Disk em tendência de alta (82->89% em 11 dias); vigiar, sem ação agora. Memória apertada mas ok."
+}
