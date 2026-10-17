@@ -83,7 +83,7 @@ class UpdateGModeConfigUseCase @Inject constructor(
         // Validate configuration using IEEE 802.11 standards (max 32 bytes)
         val ssidBytes = config.ssid.toByteArray(Charsets.UTF_8).size
         if (ssidBytes > 32) {
-            return Result.failure(IllegalArgumentException("SSID excede o limite universal de 32 bytes ($ssidBytes bytes). Ajuste o nome da rede."))
+            return Result.failure(IllegalArgumentException("SSID exceeds the universal 32-byte limit ($ssidBytes bytes). Please adjust network name."))
         }
         if (config.ssid.isBlank()) {
             return Result.failure(IllegalArgumentException("SSID cannot be empty"))

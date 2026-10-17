@@ -519,7 +519,7 @@ private fun GModeSettingsCard(
                     val warning = SsidStandardsHelper.getStandardWarning(promoText)
                     Column {
                         Text(
-                            text = "Tamanho do SSID: $bytes / 32 bytes (Padrão IEEE 802.11)",
+                            text = "SSID Payload: $bytes / 32 bytes (IEEE 802.11 Standard)",
                             style = MaterialTheme.typography.bodySmall,
                             color = if (bytes > 32) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                         )

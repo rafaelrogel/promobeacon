@@ -48,15 +48,15 @@ object SsidStandardsHelper {
     fun getStandardWarning(text: String): String? {
         val bytes = getByteCount(text)
         if (bytes > MAX_SSID_BYTES) {
-            return "Aviso do Padrão Wi-Fi (IEEE 802.11): O nome possui $bytes bytes e excede o limite universal de 32 bytes. Aparelhos podem falhar ao conectar."
+            return "Wi-Fi Standard Warning (IEEE 802.11): SSID is $bytes bytes and exceeds the 32-byte limit. Devices may fail to connect."
         }
         val hasNonAscii = text.any { it.code < 32 || it.code > 126 }
         if (hasNonAscii) {
-            return "Padrão Wi-Fi: Acentos (ã, é, ç) e emojis no Wi-Fi podem aparecer desconfigurados no Windows ou celulares antigos. Sugerimos usar nome simplificado no Wi-Fi e completo no portal."
+            return "Wi-Fi Standard Notice: Accented characters and emojis may appear corrupted on Windows or older mobile devices. Use ASCII for Wi-Fi and full branding on the captive portal."
         }
         val hasUnsafe = text.any { it in listOf('<', '>', '"', '`', '\\') }
         if (hasUnsafe) {
-            return "Atenção: Caracteres especiais (<, >, \", `, \\) serão removidos pelo rádio do dispositivo."
+            return "Warning: Disallowed characters (<, >, \", \`, \\) will be stripped by the device radio."
         }
         return null
     }

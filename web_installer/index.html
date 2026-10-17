@@ -620,7 +620,7 @@
                             <div id="ssid-standards-alert" style="display: none; margin-top: 8px; padding: 10px 12px; border-radius: 8px; font-size: 0.8rem; line-height: 1.4;">
                                 <div id="ssid-standards-msg" style="margin-bottom: 6px;"></div>
                                 <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem; width: auto;" onclick="autoFixSsidStandard()">
-                                    ⚡ Ajustar ao Padrão Wi-Fi (Auto-Fix)
+                                    ⚡ Auto-Fix to Wi-Fi Standard
                                 </button>
                             </div>
                         </div>
@@ -639,18 +639,18 @@
                     <div class="form-row">
                         <div class="form-group" style="grid-column: span 2;">
                             <label style="display:flex; justify-content:space-between; align-items:center;">
-                                <span>🎨 Studio de Cores & Roda Cromática</span>
-                                <span style="font-size:0.75rem; color:var(--text-dim); text-transform:none;">Clique na roda para aplicar cor</span>
+                                <span>🎨 Color Studio & Color Wheel</span>
+                                <span style="font-size:0.75rem; color:var(--text-dim); text-transform:none;">Click or drag wheel to pick color</span>
                             </label>
 
                             <!-- Theme Presets -->
                             <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;">
-                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#1a120e', '#2c1e19', '#d32f2f', '#f59e0b', '#fef08a')">🍕 Pizzeria Quente</div>
-                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#090a0c', '#16181f', '#d4af37', '#aa8214', '#ffffff')">⚜️ Luxo Real</div>
-                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#0f172a', '#1e293b', '#64748b', '#d4af37', '#f1f5f9')">⚱️ Solene / Paz</div>
-                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#061a14', '#0e2e24', '#10b981', '#059669', '#ecfdf5')">🌿 Esmeralda</div>
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#1a120e', '#2c1e19', '#d32f2f', '#f59e0b', '#fef08a')">🍕 Hot Pizzeria</div>
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#090a0c', '#16181f', '#d4af37', '#aa8214', '#ffffff')">⚜️ Royal Luxury</div>
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#0f172a', '#1e293b', '#64748b', '#d4af37', '#f1f5f9')">⚱️ Solemn / Serene</div>
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#061a14', '#0e2e24', '#10b981', '#059669', '#ecfdf5')">🌿 Emerald Garden</div>
                                 <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#0d0221', '#190a38', '#ec4899', '#8b5cf6', '#f472b6')">🔮 Cyberpunk</div>
-                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#f8fafc', '#ffffff', '#3b82f6', '#6366f1', '#0f172a')">☀️ Claro / Clean</div>
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#f8fafc', '#ffffff', '#3b82f6', '#6366f1', '#0f172a')">☀️ Bright / Minimal</div>
                             </div>
 
                             <!-- Color Wheel & Target Controls Box -->
@@ -662,39 +662,39 @@
                                         <div id="wheel-cursor" style="position:absolute; width:12px; height:12px; border:2px solid white; border-radius:50%; box-shadow:0 0 4px black; transform:translate(-50%, -50%); pointer-events:none; top:70px; left:70px;"></div>
                                     </div>
                                     <div style="display:flex; align-items:center; gap:6px; width:100%;">
-                                        <span style="font-size:0.7rem; color:var(--text-muted)">Brilho:</span>
+                                        <span style="font-size:0.7rem; color:var(--text-muted)">Brightness:</span>
                                         <input type="range" id="wheel-brightness" min="10" max="100" value="100" style="flex:1; height:6px; cursor:pointer;" oninput="onBrightnessChange()">
                                     </div>
                                 </div>
 
                                 <!-- Target Element Selectors -->
                                 <div style="flex:1; min-width:200px; display:flex; flex-direction:column; gap:8px;">
-                                    <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Selecione o elemento para pintar:</span>
+                                    <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Select element to customize:</span>
                                     
                                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                                         <div id="target-btn-primary" class="color-target-chip active" onclick="setColorTarget('color1')" style="padding:6px 10px; border-radius:10px; border:1px solid var(--primary); background:rgba(99,102,241,0.2); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:8px;">
                                             <input type="color" id="cfg-color1" value="#6366f1" style="width:22px; height:22px; border:none; border-radius:6px; cursor:pointer; padding:0;" onchange="updatePreview()">
-                                            <span>Botão Início</span>
+                                            <span>Button Gradient Start</span>
                                         </div>
 
                                         <div id="target-btn-secondary" class="color-target-chip" onclick="setColorTarget('color2')" style="padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:8px;">
                                             <input type="color" id="cfg-color2" value="#a855f7" style="width:22px; height:22px; border:none; border-radius:6px; cursor:pointer; padding:0;" onchange="updatePreview()">
-                                            <span>Botão Fim</span>
+                                            <span>Button Gradient End</span>
                                         </div>
 
                                         <div id="target-btn-bg" class="color-target-chip" onclick="setColorTarget('colorBg')" style="padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:8px;">
                                             <input type="color" id="cfg-color-bg" value="#0f172a" style="width:22px; height:22px; border:none; border-radius:6px; cursor:pointer; padding:0;" onchange="updatePreview()">
-                                            <span>Fundo da Página</span>
+                                            <span>Page Background</span>
                                         </div>
 
                                         <div id="target-btn-card" class="color-target-chip" onclick="setColorTarget('colorCard')" style="padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:8px;">
                                             <input type="color" id="cfg-color-card" value="#1e293b" style="width:22px; height:22px; border:none; border-radius:6px; cursor:pointer; padding:0;" onchange="updatePreview()">
-                                            <span>Fundo do Card</span>
+                                            <span>Card Surface</span>
                                         </div>
 
                                         <div id="target-btn-text" class="color-target-chip" onclick="setColorTarget('colorText')" style="padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:8px; grid-column:span 2;">
                                             <input type="color" id="cfg-color-text" value="#f8fafc" style="width:22px; height:22px; border:none; border-radius:6px; cursor:pointer; padding:0;" onchange="updatePreview()">
-                                            <span>Cor do Texto & Subtítulos</span>
+                                            <span>Text & Subtitles</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1314,21 +1314,21 @@ p { font-size:0.9rem; line-height:1.5; color:var(--txt); opacity:0.75; margin-bo
                 alertBox.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
                 alertBox.style.border = '1px solid #ef4444';
                 alertBox.style.color = '#fca5a5';
-                alertMsg.innerHTML = `⚠️ <b>Aviso do Padrão Wi-Fi (IEEE 802.11):</b> O nome da rede possui <b>${byteCount} bytes</b> e excede o limite universal de <b>32 bytes</b>. Celulares e computadores não conseguirão se conectar a redes com mais de 32 bytes.`;
+                alertMsg.innerHTML = `⚠️ <b>Wi-Fi Standard Warning (IEEE 802.11):</b> Network SSID payload is <b>${byteCount} bytes</b>, exceeding the universal <b>32-byte limit</b>. Phones and laptops will fail to connect or detect the network.`;
             } else if (hasNonAscii) {
                 if (badge) badge.style.color = '#f59e0b';
                 alertBox.style.display = 'block';
                 alertBox.style.backgroundColor = 'rgba(245, 158, 11, 0.15)';
                 alertBox.style.border = '1px solid #f59e0b';
                 alertBox.style.color = '#fde68a';
-                alertMsg.innerHTML = `💡 <b>Aviso de Compatibilidade Global:</b> Acentos (ã, é, ç) e emojis na rede Wi-Fi podem aparecer como caracteres corrompidos no Windows e em celulares antigos. Sugerimos o nome simplificado no Wi-Fi e o nome completo no portal.`;
+                alertMsg.innerHTML = `💡 <b>Global Compatibility Notice:</b> Non-ASCII characters (accents, emojis) may appear corrupted on Windows and older mobile devices. We recommend keeping the Wi-Fi SSID clean ASCII and showing full localized titles on the portal.`;
             } else if (hasDangerousChars) {
                 if (badge) badge.style.color = '#ef4444';
                 alertBox.style.display = 'block';
                 alertBox.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
                 alertBox.style.border = '1px solid #ef4444';
                 alertBox.style.color = '#fca5a5';
-                alertMsg.innerHTML = `⚠️ Caracteres especiais proibidos detectados (<, >, ", \`, \\). Eles serão removidos pelo rádio do ESP32.`;
+                alertMsg.innerHTML = `⚠️ Prohibited special characters detected (<, >, ", \`, \\). They will be automatically stripped by the ESP32 Wi-Fi radio.`;
             } else {
                 if (badge) badge.style.color = '#10b981';
                 alertBox.style.display = 'none';
