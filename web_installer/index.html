@@ -637,15 +637,71 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Color Customization</label>
-                            <div class="color-pickers">
-                                <input type="color" id="cfg-color1" value="#6366f1" onchange="updatePreview()">
-                                <input type="color" id="cfg-color2" value="#a855f7" onchange="updatePreview()">
-                                <span style="font-size:0.85rem; color:var(--text-muted)">Button & Accent Gradients</span>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label style="display:flex; justify-content:space-between; align-items:center;">
+                                <span>🎨 Studio de Cores & Roda Cromática</span>
+                                <span style="font-size:0.75rem; color:var(--text-dim); text-transform:none;">Clique na roda para aplicar cor</span>
+                            </label>
+
+                            <!-- Theme Presets -->
+                            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;">
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#1a120e', '#2c1e19', '#d32f2f', '#f59e0b', '#fef08a')">🍕 Pizzeria Quente</div>
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#090a0c', '#16181f', '#d4af37', '#aa8214', '#ffffff')">⚜️ Luxo Real</div>
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#0f172a', '#1e293b', '#64748b', '#d4af37', '#f1f5f9')">⚱️ Solene / Paz</div>
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#061a14', '#0e2e24', '#10b981', '#059669', '#ecfdf5')">🌿 Esmeralda</div>
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#0d0221', '#190a38', '#ec4899', '#8b5cf6', '#f472b6')">🔮 Cyberpunk</div>
+                                <div class="tpl-chip" style="font-size:0.75rem; padding:4px 10px;" onclick="applyColorTheme('#f8fafc', '#ffffff', '#3b82f6', '#6366f1', '#0f172a')">☀️ Claro / Clean</div>
+                            </div>
+
+                            <!-- Color Wheel & Target Controls Box -->
+                            <div style="background:rgba(15, 23, 42, 0.5); border:1px solid var(--card-border); border-radius:16px; padding:16px; display:flex; flex-wrap:wrap; gap:18px; align-items:center;">
+                                <!-- Canvas Color Wheel -->
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                                    <div style="position:relative; width:140px; height:140px; border-radius:50%; box-shadow:0 6px 16px rgba(0,0,0,0.5);">
+                                        <canvas id="color-wheel-canvas" width="140" height="140" style="cursor:crosshair; border-radius:50%; display:block;"></canvas>
+                                        <div id="wheel-cursor" style="position:absolute; width:12px; height:12px; border:2px solid white; border-radius:50%; box-shadow:0 0 4px black; transform:translate(-50%, -50%); pointer-events:none; top:70px; left:70px;"></div>
+                                    </div>
+                                    <div style="display:flex; align-items:center; gap:6px; width:100%;">
+                                        <span style="font-size:0.7rem; color:var(--text-muted)">Brilho:</span>
+                                        <input type="range" id="wheel-brightness" min="10" max="100" value="100" style="flex:1; height:6px; cursor:pointer;" oninput="onBrightnessChange()">
+                                    </div>
+                                </div>
+
+                                <!-- Target Element Selectors -->
+                                <div style="flex:1; min-width:200px; display:flex; flex-direction:column; gap:8px;">
+                                    <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Selecione o elemento para pintar:</span>
+                                    
+                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                                        <div id="target-btn-primary" class="color-target-chip active" onclick="setColorTarget('color1')" style="padding:6px 10px; border-radius:10px; border:1px solid var(--primary); background:rgba(99,102,241,0.2); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:8px;">
+                                            <input type="color" id="cfg-color1" value="#6366f1" style="width:22px; height:22px; border:none; border-radius:6px; cursor:pointer; padding:0;" onchange="updatePreview()">
+                                            <span>Botão Início</span>
+                                        </div>
+
+                                        <div id="target-btn-secondary" class="color-target-chip" onclick="setColorTarget('color2')" style="padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:8px;">
+                                            <input type="color" id="cfg-color2" value="#a855f7" style="width:22px; height:22px; border:none; border-radius:6px; cursor:pointer; padding:0;" onchange="updatePreview()">
+                                            <span>Botão Fim</span>
+                                        </div>
+
+                                        <div id="target-btn-bg" class="color-target-chip" onclick="setColorTarget('colorBg')" style="padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:8px;">
+                                            <input type="color" id="cfg-color-bg" value="#0f172a" style="width:22px; height:22px; border:none; border-radius:6px; cursor:pointer; padding:0;" onchange="updatePreview()">
+                                            <span>Fundo da Página</span>
+                                        </div>
+
+                                        <div id="target-btn-card" class="color-target-chip" onclick="setColorTarget('colorCard')" style="padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:8px;">
+                                            <input type="color" id="cfg-color-card" value="#1e293b" style="width:22px; height:22px; border:none; border-radius:6px; cursor:pointer; padding:0;" onchange="updatePreview()">
+                                            <span>Fundo do Card</span>
+                                        </div>
+
+                                        <div id="target-btn-text" class="color-target-chip" onclick="setColorTarget('colorText')" style="padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:8px; grid-column:span 2;">
+                                            <input type="color" id="cfg-color-text" value="#f8fafc" style="width:22px; height:22px; border:none; border-radius:6px; cursor:pointer; padding:0;" onchange="updatePreview()">
+                                            <span>Cor do Texto & Subtítulos</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
+
+                        <div class="form-group" style="grid-column: span 2;">
                             <label>Featured Image / Logo</label>
                             <input type="file" id="cfg-img-file" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
                             <div class="file-dropzone" onclick="document.getElementById('cfg-img-file').click()">
@@ -781,6 +837,17 @@
 
             if (tabName === 'builder') {
                 updatePreview();
+                setTimeout(() => {
+                    initColorWheel();
+                    const canvas = document.getElementById('color-wheel-canvas');
+                    if (canvas && !canvas._boundEvents) {
+                        canvas._boundEvents = true;
+                        canvas.addEventListener('click', onColorWheelClick);
+                        canvas.addEventListener('mousemove', (e) => {
+                            if (e.buttons === 1) onColorWheelClick(e);
+                        });
+                    }
+                }, 50);
             }
         }
 
@@ -924,6 +991,9 @@
             document.getElementById('cfg-desc').value = t.desc;
             document.getElementById('cfg-color1').value = t.color1;
             document.getElementById('cfg-color2').value = t.color2;
+            if (document.getElementById('cfg-color-bg')) document.getElementById('cfg-color-bg').value = t.bg || "#0f172a";
+            if (document.getElementById('cfg-color-card')) document.getElementById('cfg-color-card').value = t.card || "rgba(30,41,59,0.85)";
+            if (document.getElementById('cfg-color-text')) document.getElementById('cfg-color-text').value = t.txt || "#f8fafc";
             document.getElementById('cfg-btn1-text').value = t.btn1Text;
             document.getElementById('cfg-btn1-url').value = t.btn1Url;
             if (!t.img) {
@@ -980,6 +1050,9 @@
             const desc = document.getElementById('cfg-desc').value || "";
             const color1 = document.getElementById('cfg-color1').value || "#6366f1";
             const color2 = document.getElementById('cfg-color2').value || "#a855f7";
+            const colorBg = document.getElementById('cfg-color-bg') ? document.getElementById('cfg-color-bg').value : "#0f172a";
+            const colorCard = document.getElementById('cfg-color-card') ? document.getElementById('cfg-color-card').value : "rgba(30,41,59,0.85)";
+            const colorText = document.getElementById('cfg-color-text') ? document.getElementById('cfg-color-text').value : "#f8fafc";
             const btn1Text = document.getElementById('cfg-btn1-text').value || "Access";
             const btn1Url = document.getElementById('cfg-btn1-url').value || "/assets/menu.pdf";
 
@@ -1003,7 +1076,7 @@
                 badgeLabel = "⛪ Community & Liturgy";
                 const churchDonation = escJs("giving@stjosephcommunity.org (Zelle / PayPal)");
                 secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('${churchDonation}').then(()=>alert('Donation information copied to clipboard!'))}else{alert('Donations: ${churchDonation}')}">🕊️ Copy Donation Details</button>`;
-            } else if (/residence|apartment|real estate|condo|floor plan|agent|broker|home/i.test(textAll)) {
+            } else if (/residence|apartment|real estate|condo|floor plan|agent|broker|home|imperial/i.test(textAll)) {
                 badgeLabel = "🏠 Sales Gallery Official";
                 secondaryBtnHtml = `<button class="btn btn-outline" onclick="if(navigator.clipboard){navigator.clipboard.writeText('On-Site Agent Contact: +1 (555) 019-2834').then(()=>alert('Agent contact copied!'))}else{alert('Visit our agent on site!')}">📞 Contact On-Site Agent</button>`;
             } else if (/hotel|resort|inn|guest|breeze|room|checkout|stay/i.test(textAll)) {
@@ -1015,9 +1088,12 @@
             } else if (/car|motor|vehicle|auto|pre-owned|inventory|showroom|deal/i.test(textAll)) {
                 badgeLabel = "🚗 Certified Inventory";
                 secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Speak with a showroom advisor for test drives and trade-in appraisals!')">🚘 Request Test Drive</button>`;
-            } else if (/menu|restaurant|bistro|lounge|food|burger|bar|coffee/i.test(textAll)) {
+            } else if (/pizz|menu|restaurant|bistro|lounge|food|burger|bar|coffee/i.test(textAll)) {
                 badgeLabel = "🍽️ Menu & Specials";
                 secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Show this voucher to your server to activate your special discount!')">⭐ Claim Offer with Server</button>`;
+            } else if (/funerar|velorio|assist|paz/i.test(textAll)) {
+                badgeLabel = "🕊️ Plantão 24 Horas";
+                secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Plantão 24 Horas: Ligue (11) 98765-4321')">📞 Ligar Plantão 24h</button>`;
             } else if (/summit|event|conference|schedule|keynote|workshop|speaker/i.test(textAll)) {
                 badgeLabel = "🎪 Official Program";
                 secondaryBtnHtml = `<button class="btn btn-outline" onclick="alert('Please present your registration QR badge at hall entry!')">🎟️ Registration & Badges</button>`;
@@ -1030,20 +1106,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${title}</title>
 <style>
-:root { --p: ${color1}; --s: ${color2}; --bg: #0f172a; }
+:root { --p: ${color1}; --s: ${color2}; --bg: ${colorBg}; --card-bg: ${colorCard}; --txt: ${colorText}; }
 * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
-body { background:var(--bg); color:#f8fafc; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; text-align:center; }
-.card { background:rgba(30,41,59,0.85); border:1px solid rgba(255,255,255,0.12); border-radius:24px; padding:32px 24px; width:100%; max-width:380px; box-shadow:0 20px 40px rgba(0,0,0,0.5); }
-.badge { display:inline-block; font-size:0.75rem; font-weight:700; color:#38bdf8; background:rgba(56,189,248,0.15); padding:4px 12px; border-radius:999px; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.05em; }
+body { background:var(--bg); color:var(--txt); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; text-align:center; transition:background 0.3s; }
+.card { background:var(--card-bg); border:1px solid rgba(255,255,255,0.12); border-radius:24px; padding:32px 24px; width:100%; max-width:380px; box-shadow:0 20px 40px rgba(0,0,0,0.5); backdrop-filter:blur(10px); }
+.badge { display:inline-block; font-size:0.75rem; font-weight:700; color:${color1}; background:rgba(255,255,255,0.08); padding:4px 12px; border-radius:999px; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.05em; border:1px solid rgba(255,255,255,0.12); }
 h1 { font-size:1.6rem; font-weight:800; background:linear-gradient(to right, ${color1}, ${color2}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; line-height:1.2; }
-h2 { font-size:1.05rem; font-weight:600; color:#cbd5e1; margin-bottom:14px; }
-p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
+h2 { font-size:1.05rem; font-weight:600; color:var(--txt); opacity:0.9; margin-bottom:14px; }
+p { font-size:0.9rem; line-height:1.5; color:var(--txt); opacity:0.75; margin-bottom:24px; }
 .img-wrap { width:100%; border-radius:16px; overflow:hidden; margin-bottom:20px; box-shadow:0 8px 20px rgba(0,0,0,0.4); max-height:180px; }
 .img-wrap img { width:100%; height:100%; object-fit:cover; display:block; }
-.btn { display:block; width:100%; padding:14px; background:linear-gradient(135deg, var(--p), var(--s)); color:#fff; text-decoration:none; border-radius:14px; font-weight:700; font-size:0.95rem; box-shadow:0 8px 18px rgba(99,102,241,0.35); transition:transform 0.15s; margin-bottom:12px; }
+.btn { display:block; width:100%; padding:14px; background:linear-gradient(135deg, var(--p), var(--s)); color:#fff; text-decoration:none; border-radius:14px; font-weight:700; font-size:0.95rem; box-shadow:0 8px 18px rgba(0,0,0,0.3); transition:transform 0.15s; margin-bottom:12px; }
 .btn:active { transform:scale(0.98); }
-.btn-outline { background:transparent; border:1px solid rgba(255,255,255,0.2); box-shadow:none; color:#cbd5e1; }
-.footer { font-size:0.75rem; color:#64748b; margin-top:16px; }
+.btn-outline { background:transparent; border:1px solid rgba(255,255,255,0.2); box-shadow:none; color:var(--txt); }
+.footer { font-size:0.75rem; color:var(--txt); opacity:0.5; margin-top:16px; }
 </style>
 </head>
 <body>
@@ -1059,6 +1135,135 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
 </div>
 </body>
 </html>`;
+        }
+
+        let activeColorTarget = 'color1';
+
+        function setColorTarget(target) {
+            activeColorTarget = target;
+            const targets = {
+                'color1': 'target-btn-primary',
+                'color2': 'target-btn-secondary',
+                'colorBg': 'target-btn-bg',
+                'colorCard': 'target-btn-card',
+                'colorText': 'target-btn-text'
+            };
+            for (let k in targets) {
+                const el = document.getElementById(targets[k]);
+                if (el) {
+                    if (k === target) {
+                        el.style.border = '1px solid var(--primary)';
+                        el.style.background = 'rgba(99,102,241,0.25)';
+                    } else {
+                        el.style.border = '1px solid rgba(255,255,255,0.1)';
+                        el.style.background = 'rgba(255,255,255,0.05)';
+                    }
+                }
+            }
+        }
+
+        function applyColorTheme(bg, card, c1, c2, txt) {
+            if (document.getElementById('cfg-color-bg')) document.getElementById('cfg-color-bg').value = bg;
+            if (document.getElementById('cfg-color-card')) document.getElementById('cfg-color-card').value = card;
+            if (document.getElementById('cfg-color1')) document.getElementById('cfg-color1').value = c1;
+            if (document.getElementById('cfg-color2')) document.getElementById('cfg-color2').value = c2;
+            if (document.getElementById('cfg-color-text')) document.getElementById('cfg-color-text').value = txt;
+            updatePreview();
+        }
+
+        // HTML5 Canvas Color Wheel
+        function initColorWheel() {
+            const canvas = document.getElementById('color-wheel-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const radius = canvas.width / 2;
+            const brightness = (document.getElementById('wheel-brightness')?.value || 100) / 100;
+
+            const imgData = ctx.createImageData(canvas.width, canvas.height);
+            const data = imgData.data;
+
+            for (let y = -radius; y < radius; y++) {
+                for (let x = -radius; x < radius; x++) {
+                    const dist = Math.sqrt(x * x + y * y);
+                    const index = ((y + radius) * canvas.width + (x + radius)) * 4;
+
+                    if (dist <= radius) {
+                        let angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
+                        if (angle < 0) angle += 360;
+                        const sat = dist / radius;
+                        const rgb = hslToRgb(angle / 360, sat, 0.5 * brightness);
+
+                        data[index] = rgb[0];
+                        data[index + 1] = rgb[1];
+                        data[index + 2] = rgb[2];
+                        data[index + 3] = 255;
+                    } else {
+                        data[index + 3] = 0;
+                    }
+                }
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        function hslToRgb(h, s, l) {
+            let r, g, b;
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
+        function onColorWheelClick(e) {
+            const canvas = document.getElementById('color-wheel-canvas');
+            if (!canvas) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.round(e.clientX - rect.left);
+            const y = Math.round(e.clientY - rect.top);
+            const ctx = canvas.getContext('2d');
+            const p = ctx.getImageData(x, y, 1, 1).data;
+            if (p[3] === 0) return;
+
+            const hex = rgbToHex(p[0], p[1], p[2]);
+            const cursor = document.getElementById('wheel-cursor');
+            if (cursor) {
+                cursor.style.left = x + 'px';
+                cursor.style.top = y + 'px';
+            }
+
+            const inputMap = {
+                'color1': 'cfg-color1',
+                'color2': 'cfg-color2',
+                'colorBg': 'cfg-color-bg',
+                'colorCard': 'cfg-color-card',
+                'colorText': 'cfg-color-text'
+            };
+            const targetInput = document.getElementById(inputMap[activeColorTarget]);
+            if (targetInput) {
+                targetInput.value = hex;
+                updatePreview();
+            }
+        }
+
+        function onBrightnessChange() {
+            initColorWheel();
         }
 
         let isSsidManuallyEdited = false;
@@ -1355,9 +1560,18 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
             runLinterAudit();
         }
 
-        // Initial preview render on load
+        // Initial preview render and Color Wheel setup on load
         window.addEventListener('DOMContentLoaded', () => {
             updatePreview();
+            initColorWheel();
+            const canvas = document.getElementById('color-wheel-canvas');
+            if (canvas && !canvas._boundEvents) {
+                canvas._boundEvents = true;
+                canvas.addEventListener('click', onColorWheelClick);
+                canvas.addEventListener('mousemove', (e) => {
+                    if (e.buttons === 1) onColorWheelClick(e);
+                });
+            }
         });
     </script>
 </body>
