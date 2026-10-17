@@ -41,7 +41,7 @@ esp_err_t init_config_manager(void)
     
     /* Load configuration from NVS */
     ret = load_promo_text(current_config.promo_text, sizeof(current_config.promo_text));
-    if (ret != ESP_OK || strcmp(current_config.promo_text, "BOLSONARO_2030") == 0) {
+    if (ret != ESP_OK) {
         /* Use default promotion text */
         strncpy(current_config.promo_text, DEFAULT_PROMO_TEXT, 
                 MAX_PROMO_TEXT_LENGTH);
@@ -77,6 +77,15 @@ esp_err_t init_config_manager(void)
         save_admin_password(DEFAULT_ADMIN_PASSWORD);
         ESP_LOGI(TAG, "Admin password set to default (12345)");
     }
+
+    /* Load country code */
+    ret = load_country_code(current_config.country_code, sizeof(current_config.country_code));
+    if (ret != ESP_OK || current_config.country_code[0] == '\0') {
+        strncpy(current_config.country_code, DEFAULT_COUNTRY_CODE, COUNTRY_CODE_LENGTH);
+        current_config.country_code[COUNTRY_CODE_LENGTH] = '\0';
+        save_country_code(current_config.country_code);
+    }
+    ESP_LOGI(TAG, "Regulatory Country Code: %s", current_config.country_code);
 
     /* Load configuration state */
     nvs_handle_t state_handle;
@@ -576,6 +585,80 @@ esp_err_t load_admin_password(char* buffer, size_t buffer_size)
     }
     
     return ret;
+}
+
+/**
+ * @brief Save regulatory country code
+ */
+esp_err_t save_country_code(const char* country_code)
+{
+    if (!country_code || strlen(country_code) < 2) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    
+    nvs_handle_t handle;
+    esp_err_t ret;
+    
+    ret = nvs_open(CONFIG_NAMESPACE, NVS_READWRITE, &handle);
+    if (ret != ESP_OK) {
+        return ret;
+    }
+    
+    ret = nvs_set_str(handle, KEY_COUNTRY_CODE, country_code);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "NVS write country_code failed: %s", esp_err_to_name(ret));
+        nvs_close(handle);
+        return ret;
+    }
+    
+    ret = nvs_commit(handle);
+    nvs_close(handle);
+    
+    if (ret == ESP_OK) {
+        strncpy(current_config.country_code, country_code, COUNTRY_CODE_LENGTH);
+        current_config.country_code[COUNTRY_CODE_LENGTH] = '\0';
+        ESP_LOGI(TAG, "Regulatory country code saved: %s", current_config.country_code);
+    }
+    
+    return ret;
+}
+
+/**
+ * @brief Load regulatory country code
+ */
+esp_err_t load_country_code(char* buffer, size_t buffer_size)
+{
+    if (!buffer || buffer_size == 0) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    
+    nvs_handle_t handle;
+    esp_err_t ret;
+    
+    ret = nvs_open(CONFIG_NAMESPACE, NVS_READONLY, &handle);
+    if (ret != ESP_OK) {
+        return ret;
+    }
+    
+    size_t required_size = buffer_size;
+    ret = nvs_get_str(handle, KEY_COUNTRY_CODE, buffer, &required_size);
+    nvs_close(handle);
+    
+    if (ret == ESP_ERR_NVS_NOT_FOUND) {
+        strncpy(buffer, DEFAULT_COUNTRY_CODE, buffer_size - 1);
+        buffer[buffer_size - 1] = '\0';
+        return ESP_OK;
+    }
+    
+    return ret;
+}
+
+/**
+ * @brief Get active country code
+ */
+const char* get_country_code(void)
+{
+    return current_config.country_code[0] ? current_config.country_code : DEFAULT_COUNTRY_CODE;
 }
 
 /**

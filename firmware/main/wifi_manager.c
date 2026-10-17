@@ -1,4 +1,5 @@
 #include "wifi_manager.h"
+#include "config_manager.h"
 #include "esp_log.h"
 #include "esp_err.h"
 #include "esp_wifi.h"
@@ -138,6 +139,43 @@ esp_err_t init_wifi_ap(const char* ssid, const char* password)
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "WiFi config set failed: %s", esp_err_to_name(ret));
         return ret;
+    }
+
+    /* Apply Regulatory Country Code */
+    const char* cc = get_country_code();
+    wifi_country_t country = {
+        .schan = 1,
+        .policy = WIFI_COUNTRY_POLICY_MANUAL
+    };
+    memset(country.cc, 0, sizeof(country.cc));
+    snprintf(country.cc, sizeof(country.cc), "%s", cc ? cc : "01");
+    
+    if (strcasecmp(country.cc, "US") == 0 || strcasecmp(country.cc, "CA") == 0) {
+        country.nchan = 11;
+        country.max_tx_power = 20;
+    } else if (strcasecmp(country.cc, "JP") == 0) {
+        country.nchan = 14;
+        country.max_tx_power = 20;
+    } else if (strcasecmp(country.cc, "EU") == 0 || strcasecmp(country.cc, "GB") == 0) {
+        country.nchan = 13;
+        country.max_tx_power = 20; // 20 dBm (100mW) CE/ETSI limit
+    } else if (strcasecmp(country.cc, "BR") == 0) {
+        country.nchan = 13;
+        country.max_tx_power = 20;
+    } else {
+        /* World Safe 01 */
+        snprintf(country.cc, sizeof(country.cc), "01");
+        country.nchan = 11;
+        country.max_tx_power = 20;
+        country.policy = WIFI_COUNTRY_POLICY_AUTO;
+    }
+    
+    ret = esp_wifi_set_country(&country);
+    if (ret == ESP_OK) {
+        ESP_LOGI(TAG, "Regulatory domain applied: CC='%s', Channels=1-%d, MaxPower=%d dBm",
+                 country.cc, country.nchan, country.max_tx_power);
+    } else {
+        ESP_LOGW(TAG, "esp_wifi_set_country failed: %s", esp_err_to_name(ret));
     }
     
     /* Start WiFi */
@@ -396,7 +434,7 @@ void handle_dns_requests(void)
      
     /* 1. Modify Header for standard DNS Response */
     uint8_t rd = buffer[2] & 0x01; // Preserve RD (Recursion Desired)
-    buffer[2] = 0x80 | (rd ? 0x01 : 0x00); // QR=1 (Response), AA=0, TC=0, RD preserved
+    buffer[2] = 0x84 | (rd ? 0x01 : 0x00); // QR=1 (Response), AA=1 (Authoritative), TC=0, RD preserved
     buffer[3] = 0x80;                      // RA=1, Z=0, AD=0 (CRITICAL: prevents DNSSEC discard), CD=0, RCODE=0
 
     /* 3. Find the end of the Question section */

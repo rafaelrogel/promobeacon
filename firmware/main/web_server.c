@@ -139,7 +139,16 @@ static const char* get_setup_html(const char* device_id)
         "<h1>Setup PromoBeacon</h1>"
         "<form method=\"POST\" action=\"/setup\">"
         "<label>Promotion Name (WiFi SSID)</label>"
-        "<input type=\"text\" name=\"promo_text\" placeholder=\"e.g. 20% OFF\" required maxlength=\"32\">"
+        "<input type=\"text\" name=\"promo_text\" placeholder=\"e.g. 20%% OFF\" required maxlength=\"32\">"
+        "<label>Country / Regulatory Region</label>"
+        "<select name=\"country_code\" style=\"width:100%%;padding:0.75rem;margin-bottom:1.25rem;background:#0f172a;border:1px solid #334155;border-radius:0.5rem;color:white;box-sizing:border-box;\">"
+        "<option value=\"BR\">🇧🇷 Brasil (Anatel - Canais 1-13)</option>"
+        "<option value=\"US\">🇺🇸 Estados Unidos / Américas (FCC - Canais 1-11)</option>"
+        "<option value=\"EU\">🇪🇺 Europa / UK (CE/ETSI - 20 dBm)</option>"
+        "<option value=\"JP\">🇯🇵 Japão (TELEC)</option>"
+        "<option value=\"CN\">🇨🇳 China (SRRC)</option>"
+        "<option value=\"01\" selected>🌐 Padrão Mundial Seguro (Universal)</option>"
+        "</select>"
         "<label>Admin Password (required)</label>"
         "<input type=\"password\" name=\"admin_pwd\" placeholder=\"For OTA updates\" required minlength=\"4\">"
         "<button type=\"submit\">Complete Setup</button></form>"
@@ -455,6 +464,15 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
             return ESP_FAIL;
         }
         save_admin_password(admin_pwd);
+    }
+
+    char country_cd[16] = {0};
+    if (httpd_query_key_value(buf, "country_code", country_cd, sizeof(country_cd)) == ESP_OK) {
+        urldecode_in_place(country_cd);
+        if (strlen(country_cd) >= 2) {
+            save_country_code(country_cd);
+            ESP_LOGI(TAG, "Country code configured during setup: %s", country_cd);
+        }
     }
 
     set_device_configured();
@@ -973,16 +991,12 @@ static esp_err_t connectivity_check_handler(httpd_req_t *req)
 
     ESP_LOGI(TAG, "Redirecting probe for unauthenticated client: %s", req->uri);
     
-    /* Set headers to prevent caching of this redirect */
-    httpd_resp_set_type(req, "text/html");
+    httpd_resp_set_status(req, "302 Found");
+    httpd_resp_set_hdr(req, "Location", "http://192.168.4.1/");
     httpd_resp_set_hdr(req, "Cache-Control", "no-cache, no-store, must-revalidate");
     httpd_resp_set_hdr(req, "Pragma", "no-cache");
     httpd_resp_set_hdr(req, "Expires", "0");
-    
-    httpd_resp_set_status(req, "302 Found");
-    httpd_resp_set_hdr(req, "Location", "http://192.168.4.1/");
-    const char *redir_html = "<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0;url=http://192.168.4.1/\"><title>Redirecionando...</title></head><body><p>Abrindo portal <a href=\"http://192.168.4.1/\">BOLSONARO 2030</a>...</p></body></html>";
-    httpd_resp_send(req, redir_html, strlen(redir_html));
+    httpd_resp_send(req, NULL, 0);
     return ESP_OK;
 }
 

@@ -28,6 +28,7 @@ extern "C" {
 #define KEY_ADMIN_PASSWORD        "admin_pass"
 #define KEY_IS_CONFIGURED         "is_configured"
 #define KEY_AUTH_TOKEN            "auth_token"
+#define KEY_COUNTRY_CODE          "country_code"
 
 /* Configuration limits */
 #define MAX_PROMO_TEXT_LENGTH     32
@@ -38,11 +39,13 @@ extern "C" {
 #define MIN_ADMIN_PASSWORD_LENGTH 4
 #define MAX_DEVICE_ID_LENGTH      16
 #define AUTH_TOKEN_LENGTH         16  /* 16 bytes = 32 hex characters */
+#define COUNTRY_CODE_LENGTH       3   /* 2 chars + null */
 
 /* Default values */
-#define DEFAULT_PROMO_TEXT        "BOLSONARO_2030_BR"
-#define DEFAULT_DEVICE_NAME       "BOLSONARO_2030_BR"
+#define DEFAULT_PROMO_TEXT        "PROMOBEACON"
+#define DEFAULT_DEVICE_NAME       "PROMO-BEACON"
 #define DEFAULT_ADMIN_PASSWORD    "12345"
+#define DEFAULT_COUNTRY_CODE      "01" /* World Safe (Channels 1-11, 20dBm) */
 #define DEFAULT_HTML_SIZE         0  /* Use built-in default */
 
 /**
@@ -54,6 +57,7 @@ typedef struct {
     char wifi_password[MAX_PASSWORD_LENGTH + 1];
     char device_name[MAX_DEVICE_NAME_LENGTH + 1];
     char admin_password[MAX_PASSWORD_LENGTH + 1];
+    char country_code[COUNTRY_CODE_LENGTH + 1];
 } DeviceConfig;
 
 /**
@@ -155,6 +159,21 @@ esp_err_t save_wifi_password(const char* password);
  * @return ESP_OK on success, error code otherwise
  */
 esp_err_t load_wifi_password(char* buffer, size_t buffer_size);
+
+/**
+ * @brief Save Country Code (ISO 3166-1 alpha-2, e.g. "BR", "US", "EU", "01")
+ */
+esp_err_t save_country_code(const char* country_code);
+
+/**
+ * @brief Load Country Code
+ */
+esp_err_t load_country_code(char* buffer, size_t buffer_size);
+
+/**
+ * @brief Get active Country Code
+ */
+const char* get_country_code(void);
 
 /**
  * @brief Reset configuration to defaults
