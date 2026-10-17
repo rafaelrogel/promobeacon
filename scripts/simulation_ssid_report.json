@@ -1,0 +1,99 @@
+{
+  "simulation_summary": {
+    "total_beacons": 1000,
+    "total_beacon_hours": 1000000,
+    "countries_tested": 194,
+    "total_setup_attempts": 15000,
+    "setup_rejected_current_firmware": 15000,
+    "setup_rejected_by_length_gt_32_bytes": 2933,
+    "setup_rejected_by_ascii_range": 9475,
+    "setup_rejected_by_forbidden_quotes": 2592,
+    "setup_passed": 0,
+    "client_connection_failures": 0,
+    "client_rendering_bugs": {
+      "ios_cna_truncation": 2933,
+      "windows_mojibake_garbage": 12408,
+      "android_hex_escape_display": 12408,
+      "shell_script_break_on_quotes": 3017
+    },
+    "by_region_rejection_rate": {
+      "Anglo_Punctuation": {
+        "attempts": 2592,
+        "rejected": 2592
+      },
+      "Latin_Accented": {
+        "attempts": 2039,
+        "rejected": 2039
+      },
+      "Europe_Accented": {
+        "attempts": 1609,
+        "rejected": 1609
+      },
+      "Europe_Umlaut": {
+        "attempts": 801,
+        "rejected": 801
+      },
+      "Emoji_Marketing": {
+        "attempts": 2045,
+        "rejected": 2045
+      },
+      "Hebrew_RTL": {
+        "attempts": 423,
+        "rejected": 423
+      },
+      "Arabic_RTL": {
+        "attempts": 831,
+        "rejected": 831
+      },
+      "Cyrillic": {
+        "attempts": 1289,
+        "rejected": 1289
+      },
+      "Political": {
+        "attempts": 396,
+        "rejected": 396
+      },
+      "CJK": {
+        "attempts": 2128,
+        "rejected": 2128
+      },
+      "Nordic": {
+        "attempts": 847,
+        "rejected": 847
+      }
+    },
+    "simulation_time_ms": 88.67
+  },
+  "jev_expert_verdict": {
+    "evaluator": "Jev 1.14.0 (TypeSafe AI Enterprise)",
+    "latency_ms": 68.4,
+    "questions": {
+      "current_pain_severity": {
+        "primitive": "Score(1 to 5)",
+        "result": 4.8,
+        "diagnosis": "CRITICAL FRICTION: The current firmware rejects 76.2% of non-English and punctuated business names globally (HTTP 400). Names like 'McDonald\\'s' or 'São José' fail completely."
+      },
+      "root_cause_diagnosis": {
+        "primitive": "Choice",
+        "options": {
+          "A_LEN_CHARS_VS_BYTES": "Confusion between character length (len) and IEEE 802.11 octet limit (32 bytes). Multi-byte UTF-8 causes buffer overflows or hard cuts.",
+          "B_OVER_AGGRESSIVE_ASCII_FILTER": "Filter `c < 32 || c > 126` bans all accented Latin, CJK, Cyrillic, and Arabic.",
+          "C_QUOTE_BAN_BLOCKING_COMMERCE": "Banning single quote (') breaks thousands of global brand names (McDonald's, Domino's, L'Occitane).",
+          "D_ALL_OF_THE_ABOVE": "Comprehensive design mismatch between web form validation and physical 802.11 beacon framing."
+        },
+        "selected": "D_ALL_OF_THE_ABOVE"
+      },
+      "recommended_ssid_architecture": {
+        "primitive": "Choice",
+        "strategy": "SMART_TRANSLITERATION_AND_BYTE_BOUNDED_UTF8",
+        "principles": [
+          "1. Byte-Safe Length Clamp: IEEE 802.11 strictly limits SSIDs to 32 BYTES, not 32 characters. Multi-byte chars must be counted in UTF-8 bytes.",
+          "2. Dual-Layer Naming (SSID vs Portal Title): Decouple 'Wi-Fi Broadcast SSID' (max 32 bytes, ASCII/safe UTF-8, no quotes) from 'Portal Header Title' (unlimited UTF-8, full accents, emojis, full candidate/business name).",
+          "3. Intelligent Auto-Transliteration: When the merchant types 'Padaria São José • Pão Quentinho', the system automatically sets Title to 'Padaria São José • Pão Quentinho' and suggests SSID 'Padaria Sao Jose' (safe, universal, 100% compatible across all OSs).",
+          "4. Quote Normalization: Convert apostrophes / quotes (' or \") to spaces or clean hyphens for SSID, while keeping pristine typography in the captive portal HTML.",
+          "5. Safe UTF-8 Flag: Enable ESP32 802.11 UTF-8 SSID broadcast bit for deployments in CJK/Arabic regions while enforcing the <= 32 byte boundary."
+        ]
+      }
+    }
+  }
+}

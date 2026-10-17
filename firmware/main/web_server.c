@@ -269,22 +269,97 @@ static void urldecode_in_place(char *str) {
 }
 
 /**
- * @brief Validate SSID text for 802.11 standards and XSS/injection prevention
+ * @brief Sanitize and transliterate human-entered text into a standards-compliant IEEE 802.11 SSID
+ * 
+ * Accented Latin (ã, é, ç, etc.) is transliterated to ASCII, non-ASCII symbols like bullet '•'
+ * become hyphens, apostrophes are preserved, control/XSS chars are stripped, and the result is
+ * strictly clamped to 32 BYTES (octets) without breaking multi-byte UTF-8 boundaries.
  */
-static bool is_valid_ssid_text(const char *str)
+static void sanitize_and_transliterate_ssid(const char *input, char *out_ssid, size_t max_out_len)
 {
-    if (!str) return false;
-    size_t len = strlen(str);
-    if (len == 0 || len > 32) return false;
+    if (!input || !out_ssid || max_out_len == 0) return;
     
-    for (size_t i = 0; i < len; i++) {
-        unsigned char c = (unsigned char)str[i];
-        /* Must be printable ASCII (32 to 126) */
-        if (c < 32 || c > 126) return false;
-        /* Strictly reject XSS, tag delimiters and shell-break characters */
-        if (c == '<' || c == '>' || c == '"' || c == '`' || c == '\\' || c == '\'') return false;
+    size_t in_len = strlen(input);
+    size_t out_idx = 0;
+    
+    for (size_t i = 0; i < in_len && out_idx < (max_out_len - 1); i++) {
+        unsigned char c = (unsigned char)input[i];
+        
+        /* 1. Transliterate 2-byte UTF-8 accented Latin (0xC3...) */
+        if (c == 0xC3 && i + 1 < in_len) {
+            unsigned char c2 = (unsigned char)input[++i];
+            char repl = 0;
+            switch (c2) {
+                /* A variants */
+                case 0x80: case 0x81: case 0x82: case 0x83: case 0x84: case 0x85: repl = 'A'; break;
+                case 0xA0: case 0xA1: case 0xA2: case 0xA3: case 0xA4: case 0xA5: repl = 'a'; break;
+                /* E variants */
+                case 0x88: case 0x89: case 0x8A: case 0x8B: repl = 'E'; break;
+                case 0xA8: case 0xA9: case 0xAA: case 0xAB: repl = 'e'; break;
+                /* I variants */
+                case 0x8C: case 0x8D: case 0x8E: case 0x8F: repl = 'I'; break;
+                case 0xAC: case 0xAD: case 0xAE: case 0xAF: repl = 'i'; break;
+                /* O variants */
+                case 0x92: case 0x93: case 0x94: case 0x95: case 0x96: repl = 'O'; break;
+                case 0xB2: case 0xB3: case 0xB4: case 0xB5: case 0xB6: repl = 'o'; break;
+                /* U variants */
+                case 0x99: case 0x9A: case 0x9B: case 0x9C: repl = 'U'; break;
+                case 0xB9: case 0xBA: case 0xBB: case 0xBC: repl = 'u'; break;
+                /* C variants (ç, Ç) */
+                case 0x87: repl = 'C'; break;
+                case 0xA7: repl = 'c'; break;
+                /* N variants (ñ, Ñ) */
+                case 0x91: repl = 'N'; break;
+                case 0xB1: repl = 'n'; break;
+                default: repl = ' '; break;
+            }
+            if (repl && out_idx < (max_out_len - 1)) {
+                out_ssid[out_idx++] = repl;
+            }
+            continue;
+        }
+        
+        /* 2. Handle 3-byte UTF-8 symbols (Bullet '•' = E2 80 A2, etc.) */
+        if (c == 0xE2 && i + 2 < in_len) {
+            unsigned char c2 = (unsigned char)input[i+1];
+            unsigned char c3 = (unsigned char)input[i+2];
+            if (c2 == 0x80 && c3 == 0xA2) { // Bullet '•'
+                i += 2;
+                if (out_idx < (max_out_len - 1)) out_ssid[out_idx++] = '-';
+                continue;
+            }
+            i += 2; /* Skip unknown 3-byte unicode symbol */
+            if (out_idx < (max_out_len - 1)) out_ssid[out_idx++] = ' ';
+            continue;
+        }
+        
+        /* 3. Skip 4-byte characters (Emojis like 🍕, 🍺, 🗳️) */
+        if ((c & 0xF8) == 0xF0 && i + 3 < in_len) {
+            i += 3;
+            continue;
+        }
+        
+        /* 4. Printable ASCII (32 to 126) */
+        if (c >= 32 && c <= 126) {
+            /* Strip dangerous HTML/shell injection chars */
+            if (c == '<' || c == '>' || c == '"' || c == '`' || c == '\\') {
+                continue;
+            }
+            out_ssid[out_idx++] = (char)c;
+        }
     }
-    return true;
+    
+    /* Trim trailing spaces */
+    while (out_idx > 0 && out_ssid[out_idx - 1] == ' ') {
+        out_idx--;
+    }
+    out_ssid[out_idx] = '\0';
+    
+    /* Fallback default if completely empty */
+    if (out_idx == 0) {
+        strncpy(out_ssid, "PromoBeacon_WiFi", max_out_len - 1);
+        out_ssid[max_out_len - 1] = '\0';
+    }
 }
 
 /**
@@ -330,16 +405,24 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
     /* Decent enough parsing for setup form */
     if (httpd_query_key_value(buf, "promo_text", promo, sizeof(promo)) == ESP_OK) {
         urldecode_in_place(promo);
-        if (!is_valid_ssid_text(promo)) {
-            ESP_LOGW(TAG, "Rejected malicious or invalid promo_text/SSID: %s", promo);
-            free(buf);
-            httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Invalid characters in Promotion Name. HTML tags (<, >), quotes, and control chars are strictly forbidden (Max 32 chars).");
-            return ESP_FAIL;
+        
+        /* Auto-transliterate and clean SSID to safe IEEE 802.11 32-byte limit */
+        char clean_ssid[33] = {0};
+        sanitize_and_transliterate_ssid(promo, clean_ssid, sizeof(clean_ssid));
+        
+        /* Check if explicit 'ssid' was provided */
+        char explicit_ssid[64] = {0};
+        if (httpd_query_key_value(buf, "ssid", explicit_ssid, sizeof(explicit_ssid)) == ESP_OK) {
+            urldecode_in_place(explicit_ssid);
+            if (strlen(explicit_ssid) > 0) {
+                sanitize_and_transliterate_ssid(explicit_ssid, clean_ssid, sizeof(clean_ssid));
+            }
         }
+
         save_promo_text(promo);
-        save_ssid(promo);
-        update_ap_ssid(promo);
-        ESP_LOGI(TAG, "AP SSID synced to promo text: %s", promo);
+        save_ssid(clean_ssid);
+        update_ap_ssid(clean_ssid);
+        ESP_LOGI(TAG, "Promotion configured: Title='%s', AP SSID='%s'", promo, clean_ssid);
     }
     if (httpd_query_key_value(buf, "wifi_pwd", wifi_pwd, sizeof(wifi_pwd)) == ESP_OK && strlen(wifi_pwd) >= 8) {
         urldecode_in_place(wifi_pwd);

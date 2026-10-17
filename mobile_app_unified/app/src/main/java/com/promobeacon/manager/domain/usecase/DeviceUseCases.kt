@@ -80,15 +80,13 @@ class UpdateGModeConfigUseCase @Inject constructor(
     private val repository: DeviceRepository
 ) {
     suspend operator fun invoke(config: GModeConfig): Result<Unit> {
-        // Validate configuration
-        if (config.ssid.length > 32) {
-            return Result.failure(IllegalArgumentException("SSID cannot exceed 32 characters"))
+        // Validate configuration using IEEE 802.11 standards (max 32 bytes)
+        val ssidBytes = config.ssid.toByteArray(Charsets.UTF_8).size
+        if (ssidBytes > 32) {
+            return Result.failure(IllegalArgumentException("SSID excede o limite universal de 32 bytes ($ssidBytes bytes). Ajuste o nome da rede."))
         }
         if (config.ssid.isBlank()) {
             return Result.failure(IllegalArgumentException("SSID cannot be empty"))
-        }
-        if (config.promoText.length > 32) {
-            return Result.failure(IllegalArgumentException("Promotion text cannot exceed 32 characters"))
         }
 
         return repository.updateGModeConfig(config)

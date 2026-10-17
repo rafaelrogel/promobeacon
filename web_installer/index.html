@@ -605,12 +605,24 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Business / Candidate Name</label>
-                            <input type="text" id="cfg-title" value="Bistro & Gourmet Lounge" oninput="updatePreview()">
+                            <label>Business / Campaign Name (Portal Header)</label>
+                            <input type="text" id="cfg-title" value="Bistro & Gourmet Lounge" oninput="onTitleInput()">
+                            <span style="font-size: 0.75rem; color: var(--text-dim);">Full name displayed inside the portal (accents, symbols & emojis allowed).</span>
                         </div>
                         <div class="form-group">
-                            <label>Promotion Wi-Fi SSID</label>
-                            <input type="text" id="cfg-ssid" value="PromoBeacon_Bistro" maxlength="32" oninput="updatePreview()">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <label>Wi-Fi Broadcast SSID (Antenna Name)</label>
+                                <span id="ssid-byte-badge" style="font-size: 0.75rem; font-weight: 700; color: #10b981;">18 / 32 bytes</span>
+                            </div>
+                            <input type="text" id="cfg-ssid" value="PromoBeacon_Bistro" oninput="updateSsidValidation()">
+                            
+                            <!-- Standards Guidance / Warning Banner -->
+                            <div id="ssid-standards-alert" style="display: none; margin-top: 8px; padding: 10px 12px; border-radius: 8px; font-size: 0.8rem; line-height: 1.4;">
+                                <div id="ssid-standards-msg" style="margin-bottom: 6px;"></div>
+                                <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem; width: auto;" onclick="autoFixSsidStandard()">
+                                    ⚡ Ajustar ao Padrão Wi-Fi (Auto-Fix)
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -1049,8 +1061,87 @@ p { font-size:0.9rem; line-height:1.5; color:#94a3b8; margin-bottom:24px; }
 </html>`;
         }
 
+        let isSsidManuallyEdited = false;
+
+        function transliterateToSafeSsid(text) {
+            if (!text) return "PromoBeacon_WiFi";
+            let clean = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            clean = clean.replace(/[•|/]/g, "-");
+            clean = clean.replace(/[^\x20-\x7E]/g, "");
+            clean = clean.replace(/[<>"``\\]/g, "");
+            clean = clean.replace(/\s+/g, " ").trim();
+            const encoder = new TextEncoder();
+            while (encoder.encode(clean).length > 32 && clean.length > 0) {
+                clean = clean.slice(0, -1);
+            }
+            return clean || "PromoBeacon_WiFi";
+        }
+
+        function onTitleInput() {
+            const title = document.getElementById('cfg-title').value;
+            const ssidInput = document.getElementById('cfg-ssid');
+            if (!isSsidManuallyEdited) {
+                ssidInput.value = transliterateToSafeSsid(title);
+            }
+            updateSsidValidation();
+            updatePreview();
+        }
+
+        function updateSsidValidation() {
+            const ssidInput = document.getElementById('cfg-ssid');
+            const ssid = ssidInput ? (ssidInput.value || "") : "";
+            const byteCount = new TextEncoder().encode(ssid).length;
+            const badge = document.getElementById('ssid-byte-badge');
+            const alertBox = document.getElementById('ssid-standards-alert');
+            const alertMsg = document.getElementById('ssid-standards-msg');
+
+            if (badge) badge.innerText = `${byteCount} / 32 bytes`;
+
+            const hasNonAscii = /[^\x20-\x7E]/.test(ssid);
+            const exceeds32 = byteCount > 32;
+            const hasDangerousChars = /[<>"``\\]/.test(ssid);
+
+            if (!alertBox || !alertMsg) return;
+
+            if (exceeds32) {
+                if (badge) badge.style.color = '#ef4444';
+                alertBox.style.display = 'block';
+                alertBox.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+                alertBox.style.border = '1px solid #ef4444';
+                alertBox.style.color = '#fca5a5';
+                alertMsg.innerHTML = `⚠️ <b>Aviso do Padrão Wi-Fi (IEEE 802.11):</b> O nome da rede possui <b>${byteCount} bytes</b> e excede o limite universal de <b>32 bytes</b>. Celulares e computadores não conseguirão se conectar a redes com mais de 32 bytes.`;
+            } else if (hasNonAscii) {
+                if (badge) badge.style.color = '#f59e0b';
+                alertBox.style.display = 'block';
+                alertBox.style.backgroundColor = 'rgba(245, 158, 11, 0.15)';
+                alertBox.style.border = '1px solid #f59e0b';
+                alertBox.style.color = '#fde68a';
+                alertMsg.innerHTML = `💡 <b>Aviso de Compatibilidade Global:</b> Acentos (ã, é, ç) e emojis na rede Wi-Fi podem aparecer como caracteres corrompidos no Windows e em celulares antigos. Sugerimos o nome simplificado no Wi-Fi e o nome completo no portal.`;
+            } else if (hasDangerousChars) {
+                if (badge) badge.style.color = '#ef4444';
+                alertBox.style.display = 'block';
+                alertBox.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+                alertBox.style.border = '1px solid #ef4444';
+                alertBox.style.color = '#fca5a5';
+                alertMsg.innerHTML = `⚠️ Caracteres especiais proibidos detectados (<, >, ", \`, \\). Eles serão removidos pelo rádio do ESP32.`;
+            } else {
+                if (badge) badge.style.color = '#10b981';
+                alertBox.style.display = 'none';
+            }
+        }
+
+        function autoFixSsidStandard() {
+            const current = document.getElementById('cfg-ssid').value;
+            const fixed = transliterateToSafeSsid(current || document.getElementById('cfg-title').value);
+            document.getElementById('cfg-ssid').value = fixed;
+            isSsidManuallyEdited = true;
+            updateSsidValidation();
+            updatePreview();
+        }
+
         // Update Live Phone Preview & Byte Quota
         function updatePreview() {
+            updateSsidValidation();
             const html = generatePortalHtml();
             const iframe = document.getElementById('phone-preview-iframe');
             if (iframe) {

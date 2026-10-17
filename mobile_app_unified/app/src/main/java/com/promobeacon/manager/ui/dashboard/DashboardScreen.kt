@@ -28,6 +28,7 @@ import com.promobeacon.manager.BuildConfig
 import com.promobeacon.manager.data.ble.AuthenticationState
 import com.promobeacon.manager.domain.model.ConnectionState
 import com.promobeacon.manager.domain.model.GModeConfig
+import com.promobeacon.manager.domain.model.SsidStandardsHelper
 import com.promobeacon.manager.ui.components.*
 import com.promobeacon.manager.ui.theme.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -514,11 +515,22 @@ private fun GModeSettingsCard(
                     Icon(Icons.Default.TextFields, contentDescription = null)
                 },
                 supportingText = {
-                    Text(
-                        "Only shown when no custom HTML portal is uploaded. Uploaded HTML replaces this text.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    val bytes = SsidStandardsHelper.getByteCount(promoText)
+                    val warning = SsidStandardsHelper.getStandardWarning(promoText)
+                    Column {
+                        Text(
+                            text = "Tamanho do SSID: $bytes / 32 bytes (Padrão IEEE 802.11)",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (bytes > 32) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+                        )
+                        if (warning != null) {
+                            Text(
+                                text = warning,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 }
             )
 
@@ -552,10 +564,11 @@ private fun GModeSettingsCard(
             // Save button
             Button(
                 onClick = {
+                    val safeSsid = SsidStandardsHelper.toSafeSsid(promoText)
                     onSaveConfig(
                         config.copy(
                             deviceName = deviceName,
-                            ssid = promoText,
+                            ssid = safeSsid,
                             promoText = promoText,
                             password = if (showPasswordField) password else "",
                             newAdminPassword = newAdminPassword
