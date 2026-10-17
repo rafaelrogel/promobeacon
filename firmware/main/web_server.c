@@ -171,8 +171,11 @@ static esp_err_t root_get_handler(httpd_req_t *req)
     httpd_resp_set_hdr(req, "Pragma", "no-cache");
     httpd_resp_set_hdr(req, "Expires", "0");
     
-    /* 1. Check if custom index.html exists in BigStorage SPIFFS (/storage/index.html) */
+    /* 1. Check if custom index.html exists in BigStorage SPIFFS (/storage/index.html or /storage/assets/index.html) */
     FILE *spiffs_index = fopen("/storage/index.html", "r");
+    if (!spiffs_index) {
+        spiffs_index = fopen("/storage/assets/index.html", "r");
+    }
     if (spiffs_index) {
         char chunk[2048];
         size_t bytes_read;
@@ -677,6 +680,8 @@ static esp_err_t asset_get_handler(httpd_req_t *req)
         httpd_resp_set_type(req, "text/css");
     } else if (strstr(req->uri, ".js")) {
         httpd_resp_set_type(req, "application/javascript");
+    } else if (strstr(req->uri, ".html") || strstr(req->uri, ".htm")) {
+        httpd_resp_set_type(req, "text/html");
     } else {
         httpd_resp_set_type(req, "application/octet-stream");
     }
@@ -777,9 +782,13 @@ static esp_err_t upload_post_handler(httpd_req_t *req)
         return ESP_FAIL;
     }
 
-    /* SPIFFS has a flat namespace with path prefixes; /storage/assets/<filename> creates the object directly */
+    /* SPIFFS has a flat namespace; index.html goes to /storage/index.html, assets to /storage/assets/ */
     char filepath[128];
-    snprintf(filepath, sizeof(filepath), "/storage/assets/%s", filename);
+    if (strcmp(filename, "index.html") == 0) {
+        snprintf(filepath, sizeof(filepath), "/storage/index.html");
+    } else {
+        snprintf(filepath, sizeof(filepath), "/storage/assets/%s", filename);
+    }
 
     FILE *f = fopen(filepath, "w");
     if (!f) {
