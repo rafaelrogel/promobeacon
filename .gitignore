@@ -38,3 +38,22 @@ adws/adw_data/access_state.json
 *.key
 firmware/secure_boot_signing_key.pem
 firmware/secure_boot_digest.bin
+
+# Test and capture artifacts
+*.xml
+*.jpg
+*.png
+*.mp4
+*.apk
+recordings/
+scripts/*.xml
+scripts/*.jpg
+scripts/*.png
+scripts/*.bin
+scripts/*_frames/
+scripts/verify_*/
+audit_jev*.py
+monitor_serial.py
+test_*.py
+tablet_*.png
+

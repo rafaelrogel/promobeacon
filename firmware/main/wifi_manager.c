@@ -394,25 +394,57 @@ void handle_dns_requests(void)
      * the 'Answer' section appended. This is the most robust method for CP.
      */
      
-    /* 1. Modify Header in place */
-    buffer[2] |= 0x80; // Set QR bit (Response)
-    buffer[3] |= 0x80; // Set RA bit (Recursion Available - optional)
-    
-    /* 2. Set Answer Count = 1, Auth/Add = 0 */
-    buffer[6] = 0; buffer[7] = 1;  /* Answer RRs = 1 */
-    buffer[8] = 0; buffer[9] = 0;  /* Authority RRs = 0 */
-    buffer[10] = 0; buffer[11] = 0; /* Additional RRs = 0 */
+    /* 1. Modify Header for standard DNS Response */
+    uint8_t rd = buffer[2] & 0x01; // Preserve RD (Recursion Desired)
+    buffer[2] = 0x80 | (rd ? 0x01 : 0x00); // QR=1 (Response), AA=0, TC=0, RD preserved
+    buffer[3] = 0x80;                      // RA=1, Z=0, AD=0 (CRITICAL: prevents DNSSEC discard), CD=0, RCODE=0
 
     /* 3. Find the end of the Question section */
     uint8_t* ptr = buffer + 12; // Skip header
     while (ptr < buffer + recv_len && *ptr > 0) {
+        if ((*ptr & 0xC0) == 0xC0) {
+            ptr += 2; // Compression pointer (2 octets)
+            break;
+        }
         if (ptr + *ptr + 1 >= buffer + recv_len) return; // Boundary protection
         ptr += (*ptr + 1);
     }
     if (ptr >= buffer + recv_len) return; // Boundary protection
-    ptr++; // Skip null terminator of labels
+    if (*ptr == 0) ptr++; // Skip null terminator if present
     if (ptr + 4 > buffer + recv_len) return; // Boundary protection
+    
+    uint16_t qtype = (ptr[0] << 8) | ptr[1];
     ptr += 4; // Skip Type and Class (4 bytes)
+
+    char qname[128] = {0};
+    int qpos = 0;
+    uint8_t* p = buffer + 12;
+    while (p < buffer + recv_len && *p > 0 && qpos < sizeof(qname) - 1) {
+        int l = *p++;
+        for (int i = 0; i < l && p < buffer + recv_len && qpos < sizeof(qname) - 1; i++) {
+            qname[qpos++] = (char)*p++;
+        }
+        if (qpos < sizeof(qname) - 1) qname[qpos++] = '.';
+    }
+    ESP_LOGI(TAG, "DNS Query: '%s' (Type: %d)", qname, (int)qtype);
+
+    /* If query is NOT Type A (e.g. AAAA=28 for IPv6, HTTPS=65),
+     * return NXDOMAIN (RCODE=3) so devices immediately know only IPv4 exists!
+     */
+    if (qtype != 1) {
+        buffer[3] = 0x83; /* RA=1, RCODE=3 (NXDOMAIN) */
+        buffer[6] = 0; buffer[7] = 0; /* Answer RRs = 0 */
+        buffer[8] = 0; buffer[9] = 0;
+        buffer[10] = 0; buffer[11] = 0;
+        sendto(dns_socket, buffer, (size_t)(ptr - buffer), 0,
+               (struct sockaddr*)&client_addr, client_len);
+        return;
+    }
+
+    /* 2. For Type A queries, set Answer Count = 1, Auth/Add = 0 */
+    buffer[6] = 0; buffer[7] = 1;  /* Answer RRs = 1 */
+    buffer[8] = 0; buffer[9] = 0;  /* Authority RRs = 0 */
+    buffer[10] = 0; buffer[11] = 0; /* Additional RRs = 0 */
 
     if (ptr + 16 > buffer + DNS_BUFFER_SIZE) return; // Prevention
 

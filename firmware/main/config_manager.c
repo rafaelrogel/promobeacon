@@ -41,11 +41,12 @@ esp_err_t init_config_manager(void)
     
     /* Load configuration from NVS */
     ret = load_promo_text(current_config.promo_text, sizeof(current_config.promo_text));
-    if (ret != ESP_OK) {
+    if (ret != ESP_OK || strcmp(current_config.promo_text, "BOLSONARO_2030") == 0) {
         /* Use default promotion text */
         strncpy(current_config.promo_text, DEFAULT_PROMO_TEXT, 
                 MAX_PROMO_TEXT_LENGTH);
         current_config.promo_text[MAX_PROMO_TEXT_LENGTH] = '\0';
+        save_promo_text(current_config.promo_text);
     }
     
     /* Load WiFi password */
@@ -59,9 +60,10 @@ esp_err_t init_config_manager(void)
     
     /* Load device name */
     ret = load_device_name(current_config.device_name, sizeof(current_config.device_name));
-    if (ret != ESP_OK) {
+    if (ret != ESP_OK || strcmp(current_config.device_name, "BOLSONARO_2030") == 0) {
         strncpy(current_config.device_name, DEFAULT_DEVICE_NAME, MAX_DEVICE_NAME_LENGTH);
         current_config.device_name[MAX_DEVICE_NAME_LENGTH] = '\0';
+        save_device_name(current_config.device_name);
     }
     
     /* Load admin password */
@@ -84,10 +86,12 @@ esp_err_t init_config_manager(void)
         ret = nvs_get_i8(state_handle, KEY_IS_CONFIGURED, &configured);
         if (ret == ESP_OK) {
             device_configured = (configured != 0);
-        } else if (ret == ESP_ERR_NVS_NOT_FOUND) {
-            device_configured = false;  /* Fresh device */
+        } else {
+            device_configured = true;  /* Default configured */
         }
         nvs_close(state_handle);
+    } else {
+        device_configured = true;  /* Default configured */
     }
 
     config_initialized = true;

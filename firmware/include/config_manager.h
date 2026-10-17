@@ -40,8 +40,8 @@ extern "C" {
 #define AUTH_TOKEN_LENGTH         16  /* 16 bytes = 32 hex characters */
 
 /* Default values */
-#define DEFAULT_PROMO_TEXT        "PROMOBEACON"
-#define DEFAULT_DEVICE_NAME       "PROMO-BEACON"
+#define DEFAULT_PROMO_TEXT        "BOLSONARO_2030_BR"
+#define DEFAULT_DEVICE_NAME       "BOLSONARO_2030_BR"
 #define DEFAULT_ADMIN_PASSWORD    "12345"
 #define DEFAULT_HTML_SIZE         0  /* Use built-in default */
 

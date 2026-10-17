@@ -148,6 +148,8 @@ static const char* get_setup_html(const char* device_id)
     return setup_buffer;
 }
 
+static esp_err_t connectivity_check_handler(httpd_req_t *req);
+
 /**
  * @brief GET / - Root handler
  */
@@ -155,6 +157,20 @@ static esp_err_t root_get_handler(httpd_req_t *req)
 {
     ESP_LOGI(TAG, "HTTP GET / - Device configured: %d - Free Heap: %d", 
              is_device_configured(), (int)xPortGetFreeHeapSize());
+
+    /* CRITICAL CAPTIVE PORTAL LOGIC:
+     * When an OS (Android/Samsung/iOS/Windows) probes 'http://www.google.com/' or other foreign domain,
+     * it lands on GET / with 'Host: www.google.com'.
+     * If we return 200 OK, the OS validator believes Google loaded and thinks internet works ("Conectado")!
+     * We MUST return a 302 Redirect to http://192.168.4.1/ so the OS detects the Captive Portal and pops up!
+     */
+    char host_hdr[256] = {0};
+    if (httpd_req_get_hdr_value_str(req, "Host", host_hdr, sizeof(host_hdr)) == ESP_OK) {
+        if (strstr(host_hdr, "192.168.4.1") == NULL) {
+            ESP_LOGI(TAG, "Intercepting foreign Host '%s' on root -> 302 to http://192.168.4.1/", host_hdr);
+            return connectivity_check_handler(req);
+        }
+    }
 
     if (!is_device_configured()) {
         char device_id[32];
@@ -958,13 +974,15 @@ static esp_err_t connectivity_check_handler(httpd_req_t *req)
     ESP_LOGI(TAG, "Redirecting probe for unauthenticated client: %s", req->uri);
     
     /* Set headers to prevent caching of this redirect */
+    httpd_resp_set_type(req, "text/html");
     httpd_resp_set_hdr(req, "Cache-Control", "no-cache, no-store, must-revalidate");
     httpd_resp_set_hdr(req, "Pragma", "no-cache");
     httpd_resp_set_hdr(req, "Expires", "0");
     
     httpd_resp_set_status(req, "302 Found");
     httpd_resp_set_hdr(req, "Location", "http://192.168.4.1/");
-    httpd_resp_send(req, NULL, 0);
+    const char *redir_html = "<!DOCTYPE html><html><head><meta http-equiv=\"refresh\" content=\"0;url=http://192.168.4.1/\"><title>Redirecionando...</title></head><body><p>Abrindo portal <a href=\"http://192.168.4.1/\">BOLSONARO 2030</a>...</p></body></html>";
+    httpd_resp_send(req, redir_html, strlen(redir_html));
     return ESP_OK;
 }
 
@@ -977,13 +995,34 @@ static esp_err_t captive_portal_redirect_handler(httpd_req_t *req, httpd_err_cod
     return connectivity_check_handler(req);
 }
 
-/* Connectivity check URIs */
+/* RFC 8908 Captive Portal API */
+static esp_err_t portal_json_handler(httpd_req_t *req)
+{
+    httpd_resp_set_type(req, "application/captive+json");
+    httpd_resp_set_hdr(req, "Cache-Control", "no-cache, no-store, must-revalidate");
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+    const char *json_resp = "{\"captive\":true,\"user-portal-url\":\"http://192.168.4.1/\",\"venue-info-url\":\"http://192.168.4.1/\"}";
+    httpd_resp_send(req, json_resp, strlen(json_resp));
+    return ESP_OK;
+}
+static const httpd_uri_t portal_json_uri = { .uri = "/portal.json", .method = HTTP_GET, .handler = portal_json_handler };
+
+/* Universal Connectivity check URIs */
 static const httpd_uri_t probe_android = { .uri = "/generate_204", .method = HTTP_GET, .handler = connectivity_check_handler };
+static const httpd_uri_t probe_android_alt = { .uri = "/gen_204", .method = HTTP_GET, .handler = connectivity_check_handler };
+static const httpd_uri_t probe_android_alt2 = { .uri = "/generate204", .method = HTTP_GET, .handler = connectivity_check_handler };
 static const httpd_uri_t probe_apple = { .uri = "/hotspot-detect.html", .method = HTTP_GET, .handler = connectivity_check_handler };
 static const httpd_uri_t probe_apple_alt = { .uri = "/library/test/success.html", .method = HTTP_GET, .handler = connectivity_check_handler };
+static const httpd_uri_t probe_apple_alt2 = { .uri = "/success.txt", .method = HTTP_GET, .handler = connectivity_check_handler };
 static const httpd_uri_t probe_win = { .uri = "/ncsi.txt", .method = HTTP_GET, .handler = connectivity_check_handler };
+static const httpd_uri_t probe_win_alt = { .uri = "/connecttest.txt", .method = HTTP_GET, .handler = connectivity_check_handler };
+static const httpd_uri_t probe_firefox = { .uri = "/canonical.html", .method = HTTP_GET, .handler = connectivity_check_handler };
+static const httpd_uri_t probe_status = { .uri = "/check_network_status.txt", .method = HTTP_GET, .handler = connectivity_check_handler };
 
-
+/* HTTPS Port 443: Left closed (TCP RST).
+ * Modern mobile browsers (Chrome, Safari) fall back to HTTP (port 80) immediately
+ * when port 443 refuses connection, avoiding ERR_SSL_VERSION_OR_CIPHER_MISMATCH.
+ */
 
 esp_err_t init_http_server(void)
 {
@@ -993,7 +1032,7 @@ esp_err_t init_http_server(void)
     if (http_server_active) return ESP_OK;
 
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
-    config.max_uri_handlers = 16;
+    config.max_uri_handlers = 32;
     config.stack_size = 15360;
     config.lru_purge_enable = true;
     config.uri_match_fn = httpd_uri_match_wildcard;
@@ -1013,12 +1052,19 @@ esp_err_t init_http_server(void)
         httpd_register_uri_handler(server, &asset_uri);
         httpd_register_uri_handler(server, &upload_get);
         httpd_register_uri_handler(server, &upload_post);
+        httpd_register_uri_handler(server, &portal_json_uri);
         
-        /* Register connectivity check probes */
+        /* Register universal connectivity check probes */
         httpd_register_uri_handler(server, &probe_android);
+        httpd_register_uri_handler(server, &probe_android_alt);
+        httpd_register_uri_handler(server, &probe_android_alt2);
         httpd_register_uri_handler(server, &probe_apple);
         httpd_register_uri_handler(server, &probe_apple_alt);
+        httpd_register_uri_handler(server, &probe_apple_alt2);
         httpd_register_uri_handler(server, &probe_win);
+        httpd_register_uri_handler(server, &probe_win_alt);
+        httpd_register_uri_handler(server, &probe_firefox);
+        httpd_register_uri_handler(server, &probe_status);
         
         /* Register error handler for Captive Portal detection */
         httpd_register_err_handler(server, HTTPD_404_NOT_FOUND, captive_portal_redirect_handler);
