@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Bella Napoli | Forneria & Pizzas Artesanais</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at top, #2b1f1a, #130f0d 80%);
+      color: #f5f0eb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 12px 32px;
+    }
+    .container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .hero-card {
+      background: linear-gradient(145deg, rgba(48, 35, 30, 0.95), rgba(28, 20, 17, 0.98));
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 20px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #d32f2f, #f59e0b, #10b981);
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .brand-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .brand-sub {
+      font-size: 13px;
+      color: #d1c7bd;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+    .promo-banner {
+      background: linear-gradient(135deg, rgba(211, 47, 47, 0.2), rgba(245, 158, 11, 0.15));
+      border: 1px dashed #f59e0b;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .promo-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #fca5a5;
+      font-weight: 600;
+    }
+    .coupon-code {
+      font-size: 20px;
+      font-weight: 900;
+      color: #fde047;
+      letter-spacing: 2px;
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+      margin-bottom: 10px;
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fde047;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    .btn:active {
+      transform: scale(0.98);
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f59e0b;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin: 8px 4px 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .items-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .item-card {
+      background: rgba(38, 30, 27, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .item-info {
+      flex: 1;
+    }
+    .item-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .item-desc {
+      font-size: 12px;
+      color: #b8aba0;
+      line-height: 1.4;
+    }
+    .item-price {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fde047;
+      white-space: nowrap;
+      background: rgba(245, 158, 11, 0.1);
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+    .info-card {
+      background: rgba(28, 22, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12px;
+      color: #c9bfb5;
+    }
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .info-icon {
+      font-size: 16px;
+      width: 24px;
+      text-align: center;
+    }
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #7a6e65;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero-card">
+      <div class="badge">🔥 Forno a Lenha & Fermentação 48h</div>
+      <div style="font-size: 42px; margin-bottom: 8px;">🍕</div>
+      <h1 class="brand-title">Bella Napoli</h1>
+      <p class="brand-sub">A autêntica tradição napolitana com borda alta e crocante, molho artesanal de tomates pelados e os melhores ingredientes italianos.</p>
+      
+      <div class="promo-banner">
+        <span class="promo-label">Presente de Boas-Vindas Wi-Fi</span>
+        <span class="coupon-code">CUPOM: BELLA15</span>
+        <span style="font-size: 11px; color: #f5f0eb;">15% OFF no seu 1º pedido hoje</span>
+      </div>
+
+      <a href="https://wa.me/5511987654321?text=Ol%C3%A1%2C%20peguei%20o%20cupom%20BELLA15%20no%20WiFi%20e%20quero%20fazer%20um%20pedido%21" class="btn btn-primary">
+        <span>📲</span> Fazer Pedido no WhatsApp
+      </a>
+
+      <a href="/assets/cardapio.pdf" download="Cardapio_Bella_Napoli.pdf" class="btn btn-secondary">
+        <span>📄</span> Baixar Cardápio Completo (PDF)
+      </a>
+    </div>
+
+    <div class="section-title">✨ Mais Pedidas do Forno</div>
+    <div class="items-grid">
+      <div class="item-card">
+        <div class="item-info">
+          <div class="item-name">Margherita Di Bufala</div>
+          <div class="item-desc">Tomates San Marzano, mozzarella de búfala artesanal, manjericão fresco e azeite extravirgem italiano.</div>
+        </div>
+        <div class="item-price">R$ 68</div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-info">
+          <div class="item-name">Calabresa Curada & Cebola Roxa</div>
+          <div class="item-desc">Calabresa defumada artesanal, finas fatias de cebola roxa marinadas, azeitonas pretas chilenas e orégano.</div>
+        </div>
+        <div class="item-price">R$ 62</div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-info">
+          <div class="item-name">Quattro Formaggi D.O.P.</div>
+          <div class="item-desc">Fior di latte cremoso, gorgonzola doce, parmesão reggiano 24 meses e provolone defumado.</div>
+        </div>
+        <div class="item-price">R$ 74</div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-info">
+          <div class="item-name">Nutella com Morangos Frescos</div>
+          <div class="item-desc">Massa crocante com generosa camada de Nutella legítima, morangos frescos fatiados e raspas de chocolate branco.</div>
+        </div>
+        <div class="item-price">R$ 56</div>
+      </div>
+    </div>
+
+    <div class="section-title">📍 Informações & Atendimento</div>
+    <div class="info-card">
+      <div class="info-row">
+        <span class="info-icon">📍</span>
+        <span>Rua das Oliveiras, 450 — Jardins</span>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">⏰</span>
+        <span>Terça a Domingo: 18h30 às 23h30</span>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">🛵</span>
+        <span>Entrega rápida em embalagem térmica especial</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Bella Napoli Forneria Artesanal • PromoBeacon Proximity Marketing
+    </div>
+  </div>
+</body>
+</html>
