@@ -56,7 +56,7 @@ object SsidStandardsHelper {
         }
         val hasUnsafe = text.any { it in listOf('<', '>', '"', '`', '\\') }
         if (hasUnsafe) {
-            return "Warning: Disallowed characters (<, >, \", \`, \\) will be stripped by the device radio."
+            return "Warning: Disallowed characters (<, >, \", `, \\) will be stripped by the device radio."
         }
         return null
     }
