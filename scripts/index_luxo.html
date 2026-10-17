@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Reserva Imperial | Mansões Suspensas</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Cinzel", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, serif;
+    }
+    body {
+      background: radial-gradient(circle at top, #16181f 0%, #08090b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 12px 36px;
+    }
+    .container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .hero-card {
+      background: linear-gradient(160deg, rgba(26, 29, 36, 0.95), rgba(12, 14, 18, 0.98));
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 20px;
+      padding: 24px 18px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #d4af37, #fef08a, #d4af37);
+    }
+    .tag-exclusive {
+      display: inline-block;
+      background: rgba(212, 175, 55, 0.12);
+      color: #d4af37;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      box-sizing: border-box;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #d4af37, #aa8214);
+      color: #0b0d11;
+      box-shadow: 0 4px 18px rgba(212, 175, 55, 0.35);
+      margin-bottom: 10px;
+    }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fef08a;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+    }
+    .btn:active {
+      transform: scale(0.98);
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #d4af37;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 10px 4px 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .photo-card {
+      background: rgba(18, 20, 26, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .photo-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .photo-caption {
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .photo-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .photo-badge {
+      font-size: 10px;
+      color: #d4af37;
+      background: rgba(212, 175, 55, 0.1);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .specs-card {
+      background: rgba(18, 20, 26, 0.95);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 16px;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .spec-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #cbd5e1;
+    }
+    .spec-icon {
+      color: #d4af37;
+      font-size: 14px;
+      margin-top: 1px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 10px;
+      color: #64748b;
+      letter-spacing: 1px;
+      margin-top: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero-card">
+      <div class="tag-exclusive">⚜️ Empreendimento Exclusivo • 12 Unidades</div>
+      <h1 class="title">Reserva Imperial</h1>
+      <p class="subtitle">Mansões Suspensas de 650m² a 980m² privativos. A união sublime entre alta arquitetura internacional e privacidade absoluta nos Jardins.</p>
+
+      <a href="/assets/dossie.pdf" download="Reserva_Imperial_Dossie.pdf" class="btn btn-gold">
+        <span>📑</span> Baixar Dossiê Completo (PDF 528 KB)
+      </a>
+
+      <a href="https://wa.me/5511999998888?text=Ola%2C%20gostaria%20de%20agendar%20um%20atendimento%20VIP%20para%20o%20Reserva%20Imperial." class="btn btn-outline">
+        <span>🛎️</span> Agendar Visita com Concierge VIP
+      </a>
+    </div>
+
+    <div class="section-title">🏛️ Galeria de Alta Definição</div>
+    <div class="gallery">
+      <div class="photo-card">
+        <img class="photo-img" src="/assets/foto1.jpg" alt="Fachada Monumental" loading="lazy">
+        <div class="photo-caption">
+          <span class="photo-title">Fachada Monumental</span>
+          <span class="photo-badge">HD • 393 KB</span>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <img class="photo-img" src="/assets/foto2.jpg" alt="Living com Pé-Direito Duplo" loading="lazy">
+        <div class="photo-caption">
+          <span class="photo-title">Living Panorâmico & Pé-Direito 6m</span>
+          <span class="photo-badge">HD • 261 KB</span>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <img class="photo-img" src="/assets/foto3.jpg" alt="Piscina & Spa" loading="lazy">
+        <div class="photo-caption">
+          <span class="photo-title">Infinity Pool & Spa Aquecido</span>
+          <span class="photo-badge">HD • 271 KB</span>
+        </div>
+      </div>
+
+      <div class="photo-card">
+        <img class="photo-img" src="/assets/foto4.jpg" alt="Suíte Presidencial" loading="lazy">
+        <div class="photo-caption">
+          <span class="photo-title">Suíte Master com Vista Panorâmica</span>
+          <span class="photo-badge">HD • 254 KB</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">📋 Especificações Técnicas</div>
+    <div class="specs-card">
+      <div class="spec-item">
+        <span class="spec-icon">◆</span>
+        <span><b>Heliponto Homologado:</b> Operação privativa para proprietários e convidados executivos.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-icon">◆</span>
+        <span><b>6 a 8 Vagas Determinadas:</b> Com infraestrutura dedicada de carregamento ultrarrápido para EVs.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-icon">◆</span>
+        <span><b>Elevadores Biométricos:</b> Velocidade de 4m/s com hall de entrada blindado e privativo.</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-icon">◆</span>
+        <span><b>Certificação LEED Platinum:</b> Autossuficiência energética nas áreas sociais e reuso hídrico.</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      RESERVA IMPERIAL • PROMOBEACON HIGH-CAPACITY STORAGE (1.7 MB HD ASSETS)
+    </div>
+  </div>
+</body>
+</html>
