@@ -984,37 +984,13 @@ static const httpd_uri_t upload_post = { .uri = "/upload", .method = HTTP_POST, 
 
 /**
  * @brief Unified handler for connectivity check probes (Android, iOS, Windows)
+ *
+ * Marketing Beacon Mode: Always returns 302 Found to guarantee that every
+ * connection/reconnection immediately triggers the OS captive portal notification.
  */
 static esp_err_t connectivity_check_handler(httpd_req_t *req)
 {
-    struct sockaddr_in client_addr;
-    int sockfd = httpd_req_to_sockfd(req);
-    if (sockfd < 0) {
-        httpd_resp_send_500(req);
-        return ESP_FAIL;
-    }
-    socklen_t addr_len = sizeof(client_addr);
-    getpeername(sockfd, (struct sockaddr*)&client_addr, &addr_len);
-    
-    uint32_t ip = client_addr.sin_addr.s_addr;
-    
-    if (is_client_authenticated(ip)) {
-        ESP_LOGI(TAG, "Satisfying connectivity probe for authenticated client: %s", req->uri);
-        
-        /* Satisfy probe based on URI */
-        if (strstr(req->uri, "generate_204")) {
-            httpd_resp_set_status(req, "204 No Content");
-            httpd_resp_send(req, NULL, 0);
-            return ESP_OK;
-        }
-        
-        /* Default Success response for Apple/Others */
-        httpd_resp_set_type(req, "text/html");
-        httpd_resp_send(req, "Success", 7);
-        return ESP_OK;
-    }
-
-    ESP_LOGI(TAG, "Redirecting probe for unauthenticated client: %s", req->uri);
+    ESP_LOGI(TAG, "Redirecting probe (Always-302 Marketing Portal): %s", req->uri);
     
     httpd_resp_set_status(req, "302 Found");
     httpd_resp_set_hdr(req, "Location", "http://192.168.4.1/");
