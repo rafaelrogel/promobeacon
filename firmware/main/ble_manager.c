@@ -465,13 +465,8 @@ esp_err_t ble_authenticate(const char *password)
         }
     }
     
-    /* 2. Validate password against NVS or default build fallback */
+    /* 2. Validate password against configured NVS admin password */
     bool valid = verify_admin_password(password);
-#ifndef PROMOBEACON_SECURE_BUILD
-    if (!valid && strcmp(password, "12345") == 0) {
-        valid = true;
-    }
-#endif
 
     if (valid) {
         g_is_authenticated = true;

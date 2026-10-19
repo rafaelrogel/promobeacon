@@ -1,0 +1,36 @@
+{
+  "battery1_concurrency": {
+    "total": 60,
+    "success": 0,
+    "success_rate_pct": 0.0,
+    "throughput_req_s": 0.4,
+    "avg_latency_ms": 0,
+    "p50_latency_ms": 0,
+    "p95_latency_ms": 0
+  },
+  "battery2_chaos_404": {
+    "total": 50,
+    "redirect_302_ok": 0
+  },
+  "battery3_slowloris": {
+    "sockets_flooded": 6,
+    "handled_legit_user": true,
+    "legit_latency_ms": 442.1
+  },
+  "battery4_buffer_overflow": {
+    "payload_bytes": 8192,
+    "resilience_ok": true
+  },
+  "battery5_sustained_soak": {
+    "duration_sec": 120,
+    "total_probes": 225,
+    "success_rate_pct": 100.0,
+    "avg_latency_ms": 128.2,
+    "jitter_ms": 29.9
+  },
+  "jev_evaluation": {
+    "verdict": "needs_hardening",
+    "robustness_score": 1.63,
+    "summary": "Probe Burst (100 reqs): 0% success, Throughput: 0.4 req/s, Avg Latency: 0ms. 404 Captive Redirect: 0/50 ok. Slowloris LRU Purge: PASSED. 8KB Buffer Overflow Handling: SAFE. 120s Sustained Soak: 100.0% success, Jitter: \u00b129.9ms."
+  }
+}

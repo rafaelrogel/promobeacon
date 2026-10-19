@@ -182,14 +182,10 @@ void app_main(void)
 {
     esp_err_t ret;
 
-    /* Initialize Status LED
-     * NOTE: On ESP32-C3 DevKitM-1, GPIO8 is a boot strapping pin.
-     * Setting it as OUTPUT can interfere with boot. Skip on C3. */
-#ifndef CONFIG_IDF_TARGET_ESP32C3
+    /* Initialize Status LED */
     gpio_reset_pin(STATUS_LED_PIN);
     gpio_set_direction(STATUS_LED_PIN, GPIO_MODE_OUTPUT);
     gpio_set_level(STATUS_LED_PIN, 0);
-#endif
 
     ESP_LOGI(TAG, "==================================================");
     ESP_LOGI(TAG, "PromoBeacon firmware starting on %s", DEVICE_CHIP_NAME);
@@ -342,16 +338,21 @@ void app_main(void)
             }
 #endif
             
-            /* Heap Canary Guard: monitor free heap to prevent OOM panic */
+            /* Heap Canary Guard: monitor free heap to prevent OOM panic (32KB Safeguard) */
+            #define HEAP_CANARY_THRESHOLD_BYTES (32768)
             uint32_t free_heap = esp_get_free_heap_size();
             static uint8_t low_heap_consecutive = 0;
-            if (free_heap < 16384) {
+            if (free_heap < HEAP_CANARY_THRESHOLD_BYTES) {
                 if (++low_heap_consecutive >= 3) {
-                    ESP_LOGE(TAG, "CRITICAL: Free heap dangerously low (%" PRIu32 " bytes). Initiating safe recovery restart...", free_heap);
+                    ESP_LOGE(TAG, "CRITICAL: Free heap dangerously low (%" PRIu32 " bytes < %d). Initiating safe recovery restart...",
+                             free_heap, HEAP_CANARY_THRESHOLD_BYTES);
                     tracker_save_to_nvs();
                     tracker_mac_save_to_nvs();
                     vTaskDelay(pdMS_TO_TICKS(100));
                     esp_restart();
+                } else {
+                    ESP_LOGW(TAG, "WARNING: Free heap low (%" PRIu32 " bytes). Canary alert count: %d/3",
+                             free_heap, low_heap_consecutive);
                 }
             } else {
                 low_heap_consecutive = 0;

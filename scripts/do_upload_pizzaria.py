@@ -12,9 +12,10 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 SERIAL_DEVICE = "R9PW30T4JQM"
 BEACON_IP = "192.168.4.1"
 ADMIN_PWD = "12345"
+ADB_PATH = r"C:\android-sdk\platform-tools\adb.exe"
 
 def run_adb(cmd):
-    return subprocess.run(["adb", "-s", SERIAL_DEVICE, "shell", cmd], capture_output=True, text=True)
+    return subprocess.run([ADB_PATH, "-s", SERIAL_DEVICE, "shell", cmd], capture_output=True, text=True)
 
 # 1. Upload cardapio.pdf
 pdf_path = ROOT_DIR / "scripts" / "cardapio_pizzaria.pdf"
@@ -26,7 +27,7 @@ with open(ROOT_DIR / "scripts" / "req_cardapio.bin", "wb") as f:
         f.write(fp.read())
 
 print("Enviando cardapio.pdf para o tablet...")
-subprocess.run(["adb", "-s", SERIAL_DEVICE, "push", str(ROOT_DIR / "scripts" / "req_cardapio.bin"), "/data/local/tmp/req_cardapio.bin"], capture_output=True)
+subprocess.run([ADB_PATH, "-s", SERIAL_DEVICE, "push", str(ROOT_DIR / "scripts" / "req_cardapio.bin"), "/data/local/tmp/req_cardapio.bin"], capture_output=True)
 res_g = run_adb(f"cat /data/local/tmp/req_cardapio.bin | nc -w 5 {BEACON_IP} 80")
 print("Upload cardapio.pdf resposta:", res_g.stdout.splitlines()[:2])
 
@@ -40,7 +41,7 @@ with open(ROOT_DIR / "scripts" / "req_index_pizzaria.bin", "wb") as f:
         f.write(fh.read())
 
 print("Enviando index.html para o tablet...")
-subprocess.run(["adb", "-s", SERIAL_DEVICE, "push", str(ROOT_DIR / "scripts" / "req_index_pizzaria.bin"), "/data/local/tmp/req_index_pizzaria.bin"], capture_output=True)
+subprocess.run([ADB_PATH, "-s", SERIAL_DEVICE, "push", str(ROOT_DIR / "scripts" / "req_index_pizzaria.bin"), "/data/local/tmp/req_index_pizzaria.bin"], capture_output=True)
 res_h = run_adb(f"cat /data/local/tmp/req_index_pizzaria.bin | nc -w 5 {BEACON_IP} 80")
 print("Upload index.html resposta:", res_h.stdout.splitlines()[:2])
 
@@ -52,7 +53,7 @@ with open(ROOT_DIR / "scripts" / "req_setup_pizzaria.bin", "wb") as fs:
     fs.write(setup_req)
 
 print(f"Atualizando SSID para '{new_ssid}' via POST /setup...")
-subprocess.run(["adb", "-s", SERIAL_DEVICE, "push", str(ROOT_DIR / "scripts" / "req_setup_pizzaria.bin"), "/data/local/tmp/req_setup_pizzaria.bin"], capture_output=True)
+subprocess.run([ADB_PATH, "-s", SERIAL_DEVICE, "push", str(ROOT_DIR / "scripts" / "req_setup_pizzaria.bin"), "/data/local/tmp/req_setup_pizzaria.bin"], capture_output=True)
 res_s = run_adb(f"cat /data/local/tmp/req_setup_pizzaria.bin | nc -w 5 {BEACON_IP} 80")
 print("Setup resposta:", res_s.stdout.splitlines()[:2])
 

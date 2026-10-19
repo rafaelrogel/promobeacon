@@ -392,11 +392,14 @@ static void sanitize_and_transliterate_ssid(const char *input, char *out_ssid, s
  */
 static esp_err_t setup_post_handler(httpd_req_t *req)
 {
-    /* Security: If device is already configured, re-running setup requires admin auth */
+    /* Security: Check header auth if provided upfront on already-configured devices */
+    bool header_auth_passed = false;
     if (is_device_configured()) {
-        if (check_and_enforce_http_admin_auth(req) != ESP_OK) {
-            ESP_LOGW(TAG, "Unauthorized attempt to overwrite configuration on already-configured device");
-            return ESP_FAIL;
+        char pwd_header[64] = {0};
+        if (httpd_req_get_hdr_value_str(req, "X-Admin-Pwd", pwd_header, sizeof(pwd_header)) == ESP_OK) {
+            if (verify_admin_password(pwd_header)) {
+                header_auth_passed = true;
+            }
         }
     }
 
@@ -426,7 +429,26 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
     buf[total] = '\0';
 
     char promo[64] = {0}, wifi_pwd[64] = {0}, admin_pwd[64] = {0};
-    
+
+    /* Security: If device is already configured, enforce admin auth via header OR body */
+    if (is_device_configured() && !header_auth_passed) {
+        char auth_pwd[64] = {0};
+        bool auth_ok = false;
+        if (httpd_query_key_value(buf, "current_admin_pwd", auth_pwd, sizeof(auth_pwd)) == ESP_OK ||
+            httpd_query_key_value(buf, "admin_pwd", auth_pwd, sizeof(auth_pwd)) == ESP_OK) {
+            urldecode_in_place(auth_pwd);
+            if (verify_admin_password(auth_pwd)) {
+                auth_ok = true;
+            }
+        }
+        if (!auth_ok) {
+            ESP_LOGW(TAG, "Unauthorized attempt to overwrite configuration on already-configured device");
+            free(buf);
+            httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Admin authentication required to reconfigure device");
+            return ESP_FAIL;
+        }
+    }
+
     /* Decent enough parsing for setup form */
     if (httpd_query_key_value(buf, "promo_text", promo, sizeof(promo)) == ESP_OK) {
         urldecode_in_place(promo);
@@ -464,6 +486,12 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
             return ESP_FAIL;
         }
         save_admin_password(admin_pwd);
+    } else if (!is_device_configured()) {
+        /* Initial setup requires setting an admin password */
+        ESP_LOGW(TAG, "Setup rejected: admin_pwd is required on initial setup");
+        free(buf);
+        httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Admin password is required (minimum 4 characters)");
+        return ESP_FAIL;
     }
 
     char country_cd[16] = {0};
@@ -477,6 +505,9 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
 
     set_device_configured();
 
+    /* Clean up allocated buffer immediately after parsing */
+    free(buf);
+
     const char* success = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body style='font-family:sans-serif;text-align:center;padding:50px;background:#f0f9ff;'>"
                           "<h1 style='color:#0369a1'>Setup Successful!</h1>"
                           "<p>Device is restarting to apply changes...</p></body></html>";
@@ -487,7 +518,6 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
     vTaskDelay(pdMS_TO_TICKS(1000));
     esp_restart();
     
-    free(buf);
     return ESP_OK;
 }
 
@@ -587,11 +617,6 @@ static esp_err_t check_and_enforce_http_admin_auth(httpd_req_t *req)
         if (verify_admin_password(pwd_header)) {
             valid = true;
         }
-#ifndef PROMOBEACON_SECURE_BUILD
-        else if (strcmp(pwd_header, "12345") == 0) {
-            valid = true;
-        }
-#endif
     }
 
     if (!valid) {
@@ -844,7 +869,7 @@ static esp_err_t upload_get_handler(httpd_req_t *req)
         "<input type=\"file\" id=\"file_input\" onchange=\"fileChosen()\">"
         "</div>"
         "<input type=\"text\" id=\"file_name\" placeholder=\"Filename on ESP32 (e.g. menu.pdf)\">"
-        "<input type=\"password\" id=\"admin_pwd\" placeholder=\"Admin Password (e.g. 12345)\" style=\"width:100%;padding:0.75rem;margin-bottom:1rem;background:#0f172a;border:1px solid #334155;border-radius:0.5rem;color:white;box-sizing:border-box;font-size:0.9rem;\">"
+        "<input type=\"password\" id=\"admin_pwd\" placeholder=\"Admin Password\" style=\"width:100%;padding:0.75rem;margin-bottom:1rem;background:#0f172a;border:1px solid #334155;border-radius:0.5rem;color:white;box-sizing:border-box;font-size:0.9rem;\">"
         "<button class=\"btn\" onclick=\"uploadFile()\">🚀 Upload to ESP32 Storage</button>"
         "<div id=\"upload_status\" class=\"status\"></div>"
         "<script>"

@@ -390,15 +390,6 @@ class DashboardViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true, error = null) }
             val result = bleClient.authenticate(token)
             
-            // EMERGENCY BYPASS: If using the master password, force authenticated state immediately
-            if (token == "12345") {
-                _uiState.update { it.copy(
-                    authenticationState = AuthenticationState.AUTHENTICATED,
-                    isLoading = false
-                ) }
-                return@launch
-            }
-            
             if (!result) {
                 _uiState.update { 
                     it.copy(

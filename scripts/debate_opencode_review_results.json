@@ -1,0 +1,44 @@
+[
+  {
+    "id": "P1-SETUP-AUTH",
+    "title": "/setup Authentication Flow & Out-of-the-Box AP Takeover Risk",
+    "jev_verdict": "VALID_MUST_FIX",
+    "jev_severity": 3.33,
+    "action": "1. In setup form, add client-side XHR/Fetch with X-Admin-Pwd header or validate both X-Admin-Pwd and POST body password. 2. Enforce minimum 4-char admin password on initial setup. 3. Lock setup once configured unless valid admin credentials are provided."
+  },
+  {
+    "id": "P2-BACKDOOR-FALLBACK",
+    "title": "Fallback Password ('12345') Backdoor in Firmware & Client-Side Bypass in APK",
+    "jev_verdict": "VALID_MUST_FIX",
+    "jev_severity": 3.6,
+    "action": "1. Remove the '12345' fallback backdoor from web_server.c and ble_manager.c so only the configured NVS password (or default if unconfigured) is valid. 2. Remove default password hint from UI placeholder. 3. In Mobile APK, remove hardcoded prefill in DashboardScreen.kt and eliminate the client-side bypass in DashboardViewModel.kt."
+  },
+  {
+    "id": "P3-HEAP-CANARY",
+    "title": "Heap Canary Safeguard Threshold & Policy Inconsistency",
+    "jev_verdict": "VALID_MUST_FIX",
+    "jev_severity": 2.97,
+    "action": "Define HEAP_CANARY_THRESHOLD_BYTES as 32768 (or 49152), log proactive warnings, and trigger safe recovery restart if heap remains critically low."
+  },
+  {
+    "id": "P4-LED-DRIVER-C3",
+    "title": "Status LED GPIO Initialization Skipped on ESP32-C3 SuperMini",
+    "jev_verdict": "VALID_MUST_FIX",
+    "jev_severity": 1.74,
+    "action": "Properly initialize STATUS_LED_PIN as output in app_main() across all targets including ESP32-C3, ensuring the 10-minute heartbeat blink functions properly."
+  },
+  {
+    "id": "P5-DEAD-CODE-REBOOT",
+    "title": "Dead Code: free(buf) after esp_restart()",
+    "jev_verdict": "VALID_MUST_FIX",
+    "jev_severity": 1.71,
+    "action": "Call free(buf) immediately after parsing the POST parameters, before sending the response and delaying for esp_restart()."
+  },
+  {
+    "id": "P6-REPO-HYGIENE",
+    "title": "Repository Hygiene & Build Artifacts in Git",
+    "jev_verdict": "VALID_MINOR",
+    "jev_severity": 1.0,
+    "action": "Verify git status, untrack any unintended artifacts, and ensure pristine repository state."
+  }
+]

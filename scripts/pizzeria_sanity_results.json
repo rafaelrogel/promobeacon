@@ -1,0 +1,9 @@
+{
+  "ssid": "mWifiInfo SSID: \"PIZZA BELLA NAPOLI\", BSSID: ac:a7:04:d4:23:89, MAC: a6:f1:43:06:1f:ef, IP: /192.168.4.2, Security type: 0, Supplicant state: COMPLETED, Wi-Fi standard: 4, RSSI: -56, Link speed: 65Mbps, Tx Link speed: 65Mbps, Max Supported Tx Link speed: 150Mbps, Rx Link speed: 52Mbps, Max Supported Rx Link speed: 150Mbps, Frequency: 2412MHz, Net ID: 12, Metered hint: false, score: 30, isUsable: false, CarrierMerged: false, SubscriptionId: -1, IsPrimary: 1, Trusted: true, Restricted: false, Ephemeral: false, OEM paid: false, OEM private: false, OSU AP: false, FQDN: <none>, Provider friendly name: <none>, Requesting package name: <none>\"PIZZA BELLA NAPOLI\"openMLO Information: , Is TID-To-Link negotiation supported by the AP: false, AP MLD Address: <none>, AP MLO Link Id: <none>, AP MLO Affiliated links: <none>",
+  "landing_page": "HTTP/1.1 200 OK",
+  "has_pizzeria_content": false,
+  "burst_success": 30,
+  "avg_latency_ms": 103.5,
+  "jev_verdict": "perfect_pass",
+  "jev_score": 3.82
+}

@@ -249,7 +249,7 @@ private fun AdministratorAuthDialog(
     onAuthenticate: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    var password by remember { mutableStateOf("12345") }
+    var password by remember { mutableStateOf("") }
     val isAuthenticating = authState == AuthenticationState.AUTHENTICATING
 
     AlertDialog(
