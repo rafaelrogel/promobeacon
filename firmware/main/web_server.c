@@ -186,12 +186,14 @@ static esp_err_t root_get_handler(httpd_req_t *req)
         get_device_id(device_id, sizeof(device_id));
         ESP_LOGI(TAG, "Serving setup page for ID: %s", device_id);
         const char* html = get_setup_html(device_id);
+        httpd_resp_set_hdr(req, "Connection", "close");
         httpd_resp_send(req, html, strlen(html));
         return ESP_OK;
     }
 
     /* Device is configured, serve promotion index */
     httpd_resp_set_type(req, "text/html");
+    httpd_resp_set_hdr(req, "Connection", "close");
     httpd_resp_set_hdr(req, "Cache-Control", "no-cache, no-store, must-revalidate");
     httpd_resp_set_hdr(req, "Pragma", "no-cache");
     httpd_resp_set_hdr(req, "Expires", "0");
@@ -704,6 +706,7 @@ static esp_err_t update_post_handler(httpd_req_t *req)
 static esp_err_t favicon_get_handler(httpd_req_t *req)
 {
     httpd_resp_set_status(req, "204 No Content");
+    httpd_resp_set_hdr(req, "Connection", "close");
     httpd_resp_send(req, NULL, 0);
     return ESP_OK;
 }
@@ -807,6 +810,8 @@ static esp_err_t asset_get_handler(httpd_req_t *req)
         ESP_LOGD(TAG, "Asset not found: %s", req->uri);
         return captive_portal_redirect_handler(req, HTTPD_404_NOT_FOUND);
     }
+
+    httpd_resp_set_hdr(req, "Connection", "close");
 
     /* Detect MIME Type */
     if (strstr(req->uri, ".pdf")) {
@@ -1016,6 +1021,7 @@ static esp_err_t captive_portal_redirect_handler(httpd_req_t *req, httpd_err_cod
 static esp_err_t portal_json_handler(httpd_req_t *req)
 {
     httpd_resp_set_type(req, "application/captive+json");
+    httpd_resp_set_hdr(req, "Connection", "close");
     httpd_resp_set_hdr(req, "Cache-Control", "no-cache, no-store, must-revalidate");
     httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
     const char *json_resp = "{\"captive\":true,\"user-portal-url\":\"http://192.168.4.1/\",\"venue-info-url\":\"http://192.168.4.1/\"}";

@@ -98,6 +98,7 @@ void testCaptivePortalProbes() {
     for (int i = 0; i < 5; i++) {
         String url = "http://" + gw.toString() + probes[i];
         http.begin(url);
+        http.addHeader("Connection", "close");
         unsigned long reqStart = millis();
         int httpCode = http.GET();
         unsigned long reqElapsed = millis() - reqStart;
