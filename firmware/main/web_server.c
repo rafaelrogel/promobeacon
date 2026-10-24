@@ -249,6 +249,7 @@ static esp_err_t connect_get_handler(httpd_req_t *req)
     /* Redirect to index, but now OS will see 'Internet' */
     httpd_resp_set_status(req, "302 Found");
     httpd_resp_set_hdr(req, "Location", "http://192.168.4.1/");
+    httpd_resp_set_hdr(req, "Connection", "close");
     httpd_resp_send(req, NULL, 0);
     return ESP_OK;
 }
@@ -994,6 +995,7 @@ static esp_err_t connectivity_check_handler(httpd_req_t *req)
     
     httpd_resp_set_status(req, "302 Found");
     httpd_resp_set_hdr(req, "Location", "http://192.168.4.1/");
+    httpd_resp_set_hdr(req, "Connection", "close");
     httpd_resp_set_hdr(req, "Cache-Control", "no-cache, no-store, must-revalidate");
     httpd_resp_set_hdr(req, "Pragma", "no-cache");
     httpd_resp_set_hdr(req, "Expires", "0");
@@ -1049,7 +1051,10 @@ esp_err_t init_http_server(void)
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     config.max_uri_handlers = 32;
     config.stack_size = 15360;
+    config.max_open_sockets = 7;
     config.lru_purge_enable = true;
+    config.recv_wait_timeout = 2;
+    config.send_wait_timeout = 2;
     config.uri_match_fn = httpd_uri_match_wildcard;
 
     /* Dynamic serving used now - no static initialization needed here */

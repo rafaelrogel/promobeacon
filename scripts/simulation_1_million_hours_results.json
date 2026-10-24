@@ -1,0 +1,109 @@
+{
+  "data_simulacao": "2026-10-24T13:47:02.963171+00:00",
+  "configuracao": {
+    "total_beacons": 10000,
+    "horas_por_beacon": 100,
+    "total_horas": 1000000,
+    "max_clientes_dhcp_simultaneos": 8,
+    "heap_canary_kb": 32,
+    "rf_coex_interval_ms": 100
+  },
+  "metricas_globais": {
+    "conexoes_totais": 25243087,
+    "conexoes_sucesso": 25212880,
+    "taxa_sucesso_pct": 99.88033555483923,
+    "notificacoes_disparadas": 25212880,
+    "taxa_notificacao_reconexao_pct": 100.0,
+    "taxa_abertura_portal_pct": 97.4756632324431,
+    "taxa_drop_4g_pct": 1.1486351420385137,
+    "heap_canary_reboots_preventivos": 1020,
+    "ataques_ble_bloqueados": 2956
+  },
+  "por_regiao": {
+    "Europa Ocidental & Reino Unido": {
+      "conexoes": 4678627,
+      "sucessos": 4678627,
+      "notificacoes": 4678627,
+      "drops": 53729
+    },
+    "Índia & Sul da Ásia": {
+      "conexoes": 2586636,
+      "sucessos": 2576382,
+      "notificacoes": 2576382,
+      "drops": 29438
+    },
+    "Ásia Desenvolvida (Japão/Coreia/Singapura)": {
+      "conexoes": 2933228,
+      "sucessos": 2921406,
+      "notificacoes": 2921406,
+      "drops": 33316
+    },
+    "Brasil & América do Sul": {
+      "conexoes": 6201440,
+      "sucessos": 6201440,
+      "notificacoes": 6201440,
+      "drops": 71589
+    },
+    "China & Leste Asiático": {
+      "conexoes": 2026159,
+      "sucessos": 2018028,
+      "notificacoes": 2018028,
+      "drops": 23310
+    },
+    "América do Norte (EUA/Canadá)": {
+      "conexoes": 4973435,
+      "sucessos": 4973435,
+      "notificacoes": 4973435,
+      "drops": 56944
+    },
+    "África & Oriente Médio": {
+      "conexoes": 1843562,
+      "sucessos": 1843562,
+      "notificacoes": 1843562,
+      "drops": 21278
+    }
+  },
+  "por_dispositivo": {
+    "Xiaomi MIUI / HyperOS": {
+      "conexoes": 3787679,
+      "sucessos": 3783103,
+      "popups": 3783103,
+      "drops": 37511
+    },
+    "Apple iOS (iPhone 11 a 16 Pro Max)": {
+      "conexoes": 8833675,
+      "sucessos": 8823153,
+      "popups": 8823153,
+      "drops": 70680
+    },
+    "Samsung One UI (Android 11 a 15)": {
+      "conexoes": 7072852,
+      "sucessos": 7064395,
+      "popups": 6569365,
+      "drops": 106131
+    },
+    "Smartphones de Entrada (Transsion/Infinix/Positivo)": {
+      "conexoes": 2019316,
+      "sucessos": 2016858,
+      "popups": 1875430,
+      "drops": 40145
+    },
+    "Motorola My UX / Stock Android": {
+      "conexoes": 2521935,
+      "sucessos": 2518874,
+      "popups": 2518874,
+      "drops": 30158
+    },
+    "Laptops & Tablets (Windows 10/11, macOS)": {
+      "conexoes": 1007630,
+      "sucessos": 1006497,
+      "popups": 1006497,
+      "drops": 4979
+    }
+  },
+  "jev_auditoria": {
+    "qualificacao": "PRONTO_PARA_ESCALA_GLOBAL",
+    "score": 2.8,
+    "probabilidade_reclamacao": 0.07
+  }
+}

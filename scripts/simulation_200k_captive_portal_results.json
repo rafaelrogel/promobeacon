@@ -1,0 +1,72 @@
+{
+  "data_execucao": "2026-10-19T16:25:07.141813+00:00",
+  "configuracao": {
+    "total_beacons": 2000,
+    "horas_por_beacon": 100,
+    "total_horas_simuladas": 200000,
+    "max_dhcp_concorrente": 8,
+    "lwip_heap_canary_kb": 32,
+    "probe_always_302": true,
+    "option_114_active": true,
+    "rfc_8908_active": true
+  },
+  "metricas_consolidadas": {
+    "conexoes_tentadas": 4358668,
+    "conexoes_sucesso": 4358668,
+    "taxa_sucesso_pct": 100.0,
+    "notificacoes_disparadas": 4358668,
+    "taxa_notificacao_reconexao_pct": 100.0,
+    "taxa_abertura_portal_pct": 96.93410922786502,
+    "taxa_drop_4g_pct": 1.209199691281832,
+    "conexoes_rejeitadas_dhcp_full": 0
+  },
+  "por_dispositivo": {
+    "Dispositivos Entrada (Tecno/Infinix/Positivo)": {
+      "tentativas": 348407,
+      "sucessos": 348407,
+      "notificacoes": 348407,
+      "popups": 318587,
+      "drops_4g": 4221
+    },
+    "Apple iOS": {
+      "tentativas": 1395242,
+      "sucessos": 1395242,
+      "notificacoes": 1395242,
+      "popups": 1395242,
+      "drops_4g": 16859
+    },
+    "Motorola / Stock Android": {
+      "tentativas": 523769,
+      "sucessos": 523769,
+      "notificacoes": 523769,
+      "popups": 523769,
+      "drops_4g": 6326
+    },
+    "Xiaomi / MIUI / HyperOS": {
+      "tentativas": 697908,
+      "sucessos": 697908,
+      "notificacoes": 697908,
+      "popups": 697908,
+      "drops_4g": 8424
+    },
+    "Samsung One UI": {
+      "tentativas": 1219218,
+      "sucessos": 1219218,
+      "notificacoes": 1219218,
+      "popups": 1115406,
+      "drops_4g": 14827
+    },
+    "Windows / Laptops": {
+      "tentativas": 174124,
+      "sucessos": 174124,
+      "notificacoes": 174124,
+      "popups": 174124,
+      "drops_4g": 2048
+    }
+  },
+  "jev_auditoria": {
+    "veredicto_302": "ALTAMENTE_SUPERIOR",
+    "score_robustez": 3.17,
+    "risco_bloqueio_os": 0.12
+  }
+}
